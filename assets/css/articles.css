@@ -1,0 +1,107 @@
+@charset "UTF-8";
+.f-articles {
+  display: grid;
+  margin-top: 3rem;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+}
+@media (min-width: 768px) {
+  .f-articles {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+}
+.f-articles .articles__img {
+  display: block;
+  overflow: hidden;
+  height: 22rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 768px) {
+  .f-articles .articles__img {
+    height: 30rem;
+  }
+}
+.f-articles .articles__ttl {
+  display: block;
+  font-size: 1.6rem;
+}
+@media (min-width: 768px) {
+  .f-articles .articles__ttl {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* số dòng muốn giới hạn */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+.f-articles .articles__ttl:hover {
+  color: #42665a;
+}
+.f-articles .articles__des {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* số dòng muốn giới hạn */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 1.5rem;
+}
+.f-articles .articles__date {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: #999;
+}
+@media (min-width: 768px) {
+  .f-articles .articles__date {
+    font-size: 1.4rem;
+  }
+}
+
+.related-articles {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.related-articles .ttl02 {
+  margin-bottom: 1rem;
+}
+.related-articles__lst {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .related-articles__lst {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+}
+.related-articles__lst .related-item {
+  gap: 1rem;
+  display: flex;
+}
+@media (min-width: 768px) {
+  .related-articles__lst .related-item {
+    gap: 2rem;
+  }
+}
+.related-articles__lst .related-item__img {
+  width: 20%;
+  flex-shrink: 0;
+  height: 6rem;
+  object-fit: cover;
+}
+@media (min-width: 768px) {
+  .related-articles__lst .related-item__img {
+    width: 30%;
+    height: 10rem;
+  }
+}
+.related-articles__lst .related-item__ttl {
+  flex: 1;
+  font-size: 1.5rem;
+}
+@media (min-width: 768px) {
+  .related-articles__lst .related-item__ttl {
+    font-size: 1.6rem;
+  }
+}

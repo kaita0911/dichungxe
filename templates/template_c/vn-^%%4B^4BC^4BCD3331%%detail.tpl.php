@@ -1,0 +1,81 @@
+<?php /* Smarty version 2.6.30, created on 2025-12-28 12:03:43
+         compiled from service/detail.tpl */ ?>
+<?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'service/detail.tpl', 27, false),)), $this); ?>
+<main>
+   <div class="container">
+      <div class="breadcumb"><?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => 'breadcumb.tpl', 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?></div>
+      <!-- Main content -->
+      <div class="artseed-body">
+         <div class="title-page">
+            <h1 class="ttl01" itemprop="headline"><?php echo $this->_tpl_vars['detail']['name']; ?>
+</h1>
+            <div class="artseed-detail" itemprop="articleBody">
+               <div class="c-short">
+                  <?php echo $this->_tpl_vars['detail']['short']; ?>
+
+               </div>
+
+               <?php if ($this->_tpl_vars['hasPassword'] && ! $this->_tpl_vars['isAllowed']): ?>
+               <div class="view-set-detail">Xem chi tiết</div>
+               <div class="c-description" id="articleContent">
+                  <?php echo $this->_tpl_vars['content']; ?>
+
+               </div>
+               <?php else: ?>
+               <div class="c-description" id="articleContent" style="display: block;">
+                  <?php echo $this->_tpl_vars['content']; ?>
+
+               </div>
+               <?php endif; ?>
+
+            </div>
+            <?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => 'tag.tpl', 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
+         </div>
+         <?php if (count($this->_tpl_vars['articles_related']) > 0): ?>
+         <div class="related-articles">
+            <h2 class="ttl02">Tin liên quan</h2>
+            <div class="related-articles__lst">
+               <?php $_from = $this->_tpl_vars['articles_related']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['item']):
+?>
+               <a class="related-item" href="<?php echo $this->_tpl_vars['path_url']; ?>
+/<?php echo $this->_tpl_vars['lang_prefix']; ?>
+<?php echo $this->_tpl_vars['item']['unique_key']; ?>
+" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+">
+                  <img src="<?php echo $this->_tpl_vars['path_url']; ?>
+/<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
+" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+" class="related-item__img">
+                  <h3 class="related-item__ttl hover"><?php echo $this->_tpl_vars['item']['name_detail']; ?>
+</h3>
+               </a>
+               <?php endforeach; endif; unset($_from); ?>
+            </div>
+         </div>
+         <?php endif; ?>
+         <!-- /.artseed-ftn-body -->
+      </div>
+   </div>
+</main>
+<div id="passwordModal" class="pw-modal">
+   <div class="pw-box">
+      <h3>🔒 Nhập mật khẩu để xem nội dung</h3>
+      <input type="hidden" value="<?php echo $this->_tpl_vars['detail']['article_id']; ?>
+" id="article_id">
+      <input type="password" id="articlePassword" placeholder="Nhập mật khẩu">
+
+      <div class="pw-error" id="pwError"></div>
+
+      <button id="btnCheckPassword">Xác nhận</button>
+   </div>
+</div>
