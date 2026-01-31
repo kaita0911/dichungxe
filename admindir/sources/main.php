@@ -74,7 +74,7 @@ $top_urls = $GLOBALS['sp']->getAll("
     FROM {$GLOBALS['db_sp']}.visit_logs
     GROUP BY url
     ORDER BY total DESC
-    LIMIT 10
+    LIMIT 15
 ");
 $smarty->assign('top_links', $top_urls);
 /////

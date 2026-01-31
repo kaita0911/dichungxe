@@ -37,7 +37,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="box-browers">
+					<div class="box-browers scroll">
 						<h2>Thống kê truy cập theo</h2>
 
 						<div class="tk-item --head">
@@ -68,7 +68,9 @@
 							{foreach from=$top_links key=i item=row}
 							<tr>
 								<td align="center">{$i+1}</td>
-								<td align="left"><span class="url-cell" title="{$row.url}">{$row.url}</span></td>
+								<td align="left">
+									<div class="url-cell" title="{$row.url}"><a href="{$row.url}">{$row.url}</a></div>
+								</td>
 								<td align="center"><span class="badge">{$row.total}</span></td>
 							</tr>
 							{/foreach}

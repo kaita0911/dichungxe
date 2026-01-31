@@ -2597,6 +2597,10 @@ input#img_thumb_vn, input#multiimages,input#img_vn {
   width: 50%;
   margin-bottom: 15px;
 }
+.box-browers.scroll{
+  max-height: 300px;
+  overflow-y: auto;
+}
 .box-browers h2 {
   color: #333;
   font-size: 16px;
