@@ -21,6 +21,41 @@
 
   <div class="popupqc"><img src="images/giahan.jpg" alt="Gia hạn" /></div>
   <div class="header">
+    <div class="box-time">
+      <p>Ngày hết hạn 05/02/2027</p>
+      <p id="demo"></p>
+
+      {literal}
+      <script>
+        // FIX TIMEZONE
+        var endTime = new Date("2027-02-05T11:00:00+07:00").getTime();
+
+        function updateCountdown() {
+          var now = Date.now();
+          var distance = Math.max(0, Math.floor((endTime - now) / 1000));
+
+          var days = Math.floor(distance / 86400);
+          var hours = Math.floor((distance % 86400) / 3600);
+          var minutes = Math.floor((distance % 3600) / 60);
+          var seconds = distance % 60;
+
+          document.getElementById("demo").innerHTML =
+            days + " Ngày " +
+            hours + " Giờ " +
+            minutes + " Phút " +
+            seconds + " Giây";
+
+          if (distance <= 0) {
+            clearInterval(timer);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+          }
+        }
+
+        updateCountdown();
+        var timer = setInterval(updateCountdown, 1000);
+      </script>
+      {/literal}
+    </div>
     <div class="box-cart">
       {if $showcart.open eq 1}
       <a class="c-cart" href="index.php?do=orders">

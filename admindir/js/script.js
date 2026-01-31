@@ -142,31 +142,6 @@
       this.value = number ? Number(number).toLocaleString("vi-VN") : "";
     });
 
-    // ==================== Countdown ====================
-    (function () {
-      const countDownDate = new Date("May 15, 2026 11:00:00").getTime();
-      const timer = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = countDownDate - now;
-        if (distance < 0) {
-          clearInterval(timer);
-          $("#demo").text("EXPIRED");
-          $(".bgleft").addClass("hide");
-          $(".popupqc").addClass("show");
-          return;
-        }
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        $("#demo").text(
-          `${days} Ngày ${hours} Giờ ${minutes} Phút ${seconds} Giây`
-        );
-      }, 1000);
-    })();
-
     // ==================== Button actions ====================
     function ajaxButton(selector, urlSuffix, dataMapper, onSuccess) {
       $(document).on("click", selector, function () {
