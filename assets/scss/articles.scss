@@ -27,7 +27,8 @@
         &__ttl {
             display: block;
             font-size: 1.6rem;
-
+            font-weight: 600;
+            line-height: 1.4;
 
             @include mq('md', min) {
                 display: -webkit-box;
@@ -48,7 +49,10 @@
             /* số dòng muốn giới hạn */
             -webkit-box-orient: vertical;
             overflow: hidden;
-            font-size: 1.5rem;
+
+            @include mq('md', min) {
+                font-size: 1.5rem;
+            }
         }
 
         &__date {

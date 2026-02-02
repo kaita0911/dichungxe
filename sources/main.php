@@ -172,6 +172,15 @@ if (!empty($categories)) {
         // format giá
         if (!empty($products)) {
             foreach ($products as &$item) {
+                // ❌ xoá thẻ <em> trong short_more
+                if (!empty($item['short_more'])) {
+                    $item['short_more'] = preg_replace(
+                        '/<\/?em[^>]*>/i',
+                        '',
+                        $item['short_more']
+                    );
+                }
+                // ❌ format giá
                 $item['price_formatted'] = (!empty($item['price']) && $item['price'] > 0)
                     ? number_format($item['price'], 0, ',', '.') . '₫'
                     : $contact;

@@ -546,6 +546,9 @@
   background: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0.2rem 3rem 0px;
 }
+.product-item:hover .product-item__more p {
+  background: #eee;
+}
 @media (min-width: 768px) {
   .product-item {
     border-radius: 1.2rem;
@@ -563,7 +566,7 @@
 }
 .product-item__ttl {
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   text-align: center;
   display: block;
   font-weight: 600;
@@ -575,7 +578,7 @@
 }
 @media (min-width: 768px) {
   .product-item__ttl {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 }
 .product-item__ct {
@@ -608,7 +611,7 @@
   padding: 1rem 0.5rem;
   display: flex;
   flex-wrap: wrap;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   gap: 0.7rem;
 }

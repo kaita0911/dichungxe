@@ -82,6 +82,15 @@ LIMIT {$start}, {$per_Page}
 $list = $GLOBALS['sp']->getAll($sql, $params);
 if (!empty($list)) {
   foreach ($list as &$item) {
+    // ❌ xoá thẻ <em> trong short_more
+    if (!empty($item['short_more'])) {
+      $item['short_more'] = preg_replace(
+        '/<\/?em[^>]*>/i',
+        '',
+        $item['short_more']
+      );
+    }
+    // ❌ format giá
     $item['price_formatted'] = !empty($item['price'])
       ? number_format($item['price'], 0, ',', '.') . '₫'
       : $contact;

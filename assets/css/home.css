@@ -271,14 +271,19 @@
 }
 .p-news .news-item__ttl {
   margin: 1rem 0;
-  font-size: 1.7rem;
   line-height: 1.4;
+  font-size: 1.5rem;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   font-weight: 600;
+}
+@media (min-width: 768px) {
+  .p-news .news-item__ttl {
+    font-size: 1.7rem;
+  }
 }
 .p-news .news-item__short {
   overflow: hidden;
@@ -287,4 +292,9 @@
   -webkit-line-clamp: 3;
   line-clamp: 3;
   font-size: 1.5rem;
+}
+@media (max-width: 767px) {
+  .p-news .news-item__short {
+    font-size: 1.4rem;
+  }
 }

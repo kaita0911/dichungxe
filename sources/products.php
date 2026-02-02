@@ -221,6 +221,15 @@ switch ($act) {
 
         if (!empty($rs_related)) {
             foreach ($rs_related as &$item) {
+                // ❌ xoá thẻ <em> trong short_more
+                if (!empty($item['short_more'])) {
+                    $item['short_more'] = preg_replace(
+                        '/<\/?em[^>]*>/i',
+                        '',
+                        $item['short_more']
+                    );
+                }
+                // ❌ format giá
                 $item['price_formatted']    = !empty($item['price']) ? number_format($item['price'], 0, ',', '.') . '₫' : $contact;
                 $item['priceold_formatted'] = !empty($item['priceold']) ? number_format($item['priceold'], 0, ',', '.') . '₫' : '';
             }
@@ -343,6 +352,15 @@ switch ($act) {
         $articles = $GLOBALS['sp']->getAll($sql);
         if (!empty($articles)) {
             foreach ($articles as &$item) {
+                // ❌ xoá thẻ <em> trong short_more
+                if (!empty($item['short_more'])) {
+                    $item['short_more'] = preg_replace(
+                        '/<\/?em[^>]*>/i',
+                        '',
+                        $item['short_more']
+                    );
+                }
+                // ❌ format giá
                 $item['price_formatted']    = !empty($item['price']) ? number_format($item['price'], 0, ',', '.') . '₫' : $contact;
                 $item['priceold_formatted'] = !empty($item['priceold']) ? number_format($item['priceold'], 0, ',', '.') . '₫' : '';
             }

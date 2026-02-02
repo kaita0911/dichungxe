@@ -25,6 +25,8 @@
 .f-articles .articles__ttl {
   display: block;
   font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 @media (min-width: 768px) {
   .f-articles .articles__ttl {
@@ -44,7 +46,11 @@
   /* số dòng muốn giới hạn */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 1.5rem;
+}
+@media (min-width: 768px) {
+  .f-articles .articles__des {
+    font-size: 1.5rem;
+  }
 }
 .f-articles .articles__date {
   font-size: 1.2rem;
