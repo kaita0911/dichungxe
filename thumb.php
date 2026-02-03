@@ -31,7 +31,7 @@ switch ($ext) {
         break;
 
     case 'png':
-        $img = imagecreatefromjpeg($source_path);
+        $img = imagecreatefrompng($source_path);
         break;
 
     case 'gif':

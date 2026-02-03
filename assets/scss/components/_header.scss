@@ -58,7 +58,7 @@
     .logo {
         display: inline-block;
         outline: none !important;
-        max-width: 6rem;
+        max-width: 5rem;
 
 
         @include mq('md', min) {

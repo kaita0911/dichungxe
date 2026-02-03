@@ -508,7 +508,7 @@ img.alignleft {
 .p-header .logo {
   display: inline-block;
   outline: none !important;
-  max-width: 6rem;
+  max-width: 5rem;
 }
 @media (min-width: 768px) {
   .p-header .logo {
@@ -1519,7 +1519,7 @@ input[type=month].form-control {
 }
 
 .breadcumb {
-  display: flex;
+  display: none !important;
   gap: 0.5rem;
   padding: 1rem 0;
 }
@@ -2248,9 +2248,6 @@ main {
 }
 @media (min-width: 768px) {
   main {
-    margin-top: 9rem;
-  }
-  main.home {
     margin-top: 12rem;
   }
 }
@@ -2295,10 +2292,10 @@ main {
 }
 @media (max-width: 767px) {
   .btn-order {
-    padding: 1rem 2rem 1rem 4rem;
-    font-size: 1.6rem;
-    background-position: 1.2rem 1.2rem;
-    background-size: 2rem 2.7rem;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    font-size: 1.4rem;
+    background-position: 1rem 1rem;
+    background-size: 1.5rem 1.9rem;
   }
 }
 .btn-order:hover {

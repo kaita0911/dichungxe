@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-01 06:25:25
+<?php /* Smarty version 2.6.30, created on 2026-02-03 08:45:13
          compiled from products/list.tpl */ ?>
 <div class="p-products">
   <?php $_from = $this->_tpl_vars['view']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
@@ -12,17 +12,20 @@
 ">
       <div class="img-gall-js">
         <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-?width=700&height=1000&mode=cover"
+"
           alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 "
-          class="img-cover"
+          class="img-cover img-gall"
           loading="lazy">
         <?php $_from = $this->_tpl_vars['item']['gallery']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['img']):
 ?>
+
         <img src="<?php echo $this->_tpl_vars['img']; ?>
-?width=700&height=1000&mode=cover" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-" class="img-cover"
+"
+          alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+"
+          class="img-cover img-gall"
           loading="lazy">
         <?php endforeach; endif; unset($_from); ?>
       </div>

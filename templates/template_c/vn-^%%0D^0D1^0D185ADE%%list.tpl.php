@@ -1,87 +1,80 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-31 15:09:32
+<?php /* Smarty version 2.6.30, created on 2026-02-03 08:45:44
          compiled from ./search/list.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', './search/list.tpl', 9, false),)), $this); ?>
-<div class="container">
-    <ul class="breadcumb">
-        <li><a href="./">Trang chủ</a> »</li>
-        <li><span>Tìm kiếm</span></li>
-    </ul>
-    <h1 class="ttl01" itemprop="headline">Tìm kiếm: "<?php echo $this->_tpl_vars['keyword']; ?>
-        "</h1>
-    <br>
-    <div class="p-products">
-        <?php if (count($this->_tpl_vars['view']) > 0): ?>
-            <?php $_from = $this->_tpl_vars['view'];
-            if (!is_array($_from) && !is_object($_from)) {
-                settype($_from, 'array');
-            }
-            if (count($_from)):
-                foreach ($_from as $this->_tpl_vars['item']):
-            ?>
-                    <div class="product-item">
-                        <a class="product-item__img" href="<?php echo $this->_tpl_vars['path_url']; ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', './search/list.tpl', 10, false),)), $this); ?>
+<main>
+    <div class="container">
+        <ul class="breadcumb">
+            <li><a href="./">Trang chủ</a> »</li>
+            <li><span>Tìm kiếm</span></li>
+        </ul>
+        <h1 class="ttl01" itemprop="headline">Tìm kiếm: "<?php echo $this->_tpl_vars['keyword']; ?>
+"</h1>
+        <br>
+        <div class="p-products">
+            <?php if (count($this->_tpl_vars['view']) > 0): ?>
+            <?php $_from = $this->_tpl_vars['view']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['item']):
+?>
+            <div class="product-item">
+                <a class="product-item__img" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
 .html" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 ">
-                            <div class="img-gall-js">
-                                <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-?width=700&height=1000&mode=cover"
-                                    alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+                    <div class="img-gall-js">
+                        <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
 "
-                                    class="img-cover"
-                                    loading="lazy">
-                                <?php $_from = $this->_tpl_vars['item']['gallery'];
-                                if (!is_array($_from) && !is_object($_from)) {
-                                    settype($_from, 'array');
-                                }
-                                if (count($_from)):
-                                    foreach ($_from as $this->_tpl_vars['img']):
-                                ?>
-                                        <img src="<?php echo $this->_tpl_vars['img']; ?>
-?width=700&height=1000&mode=cover" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-" class="img-cover"
-                                            loading="lazy">
-                                <?php endforeach;
-                                endif;
-                                unset($_from); ?>
-                            </div>
-                            <div class="product-item__ct">
-                                <span class="ic-w level"><?php echo $this->_tpl_vars['item']['difficulty']; ?>
-                                </span>
-                                <span class="ic-w rate">4.9</span>
-                                <span class="ic-w time"><?php echo $this->_tpl_vars['item']['time']; ?>
-                                </span>
-                            </div>
-                            <div class="product-price">
-                                <span class="price-current"><?php echo $this->_tpl_vars['item']['price_formatted']; ?>
-                                </span>
-                                <?php if ($this->_tpl_vars['item']['priceold'] > 0): ?>
-                                    <span class="price-old"><?php echo $this->_tpl_vars['item']['priceold_formatted']; ?>
-                                    </span>
-                                <?php endif; ?> /Vé
-                            </div>
-                        </a>
-                        <h3><a class="product-item__ttl hover" href="<?php echo $this->_tpl_vars['path_url']; ?>
+                            alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+"
+                            class="img-cover img-gall"
+                            loading="lazy">
+                        <?php $_from = $this->_tpl_vars['item']['gallery']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['img']):
+?>
+
+                        <img src="<?php echo $this->_tpl_vars['img']; ?>
+"
+                            alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+"
+                            class="img-cover img-gall"
+                            loading="lazy">
+                        <?php endforeach; endif; unset($_from); ?>
+                    </div>
+                    <div class="product-item__ct">
+                        <span class="ic-w level"><?php echo $this->_tpl_vars['item']['difficulty']; ?>
+</span>
+                        <span class="ic-w rate">4.9</span>
+                        <span class="ic-w time"><?php echo $this->_tpl_vars['item']['time']; ?>
+</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-current"><?php echo $this->_tpl_vars['item']['price_formatted']; ?>
+</span>
+                        <?php if ($this->_tpl_vars['item']['priceold'] > 0): ?>
+                        <span class="price-old"><?php echo $this->_tpl_vars['item']['priceold_formatted']; ?>
+</span>
+                        <?php endif; ?> /Vé
+                    </div>
+                </a>
+                <h3><a class="product-item__ttl hover" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
 .html" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 "><?php echo $this->_tpl_vars['item']['name_detail']; ?>
-                            </a></h3>
-                        <div class="product-item__more">
-                            <?php echo $this->_tpl_vars['item']['short_more']; ?>
+</a></h3>
+                <div class="product-item__more">
+                    <?php echo $this->_tpl_vars['item']['short_more']; ?>
 
-                        </div>
-                    </div>
-            <?php endforeach;
-            endif;
-            unset($_from); ?>
-        <?php else: ?>
+                </div>
+            </div>
+            <?php endforeach; endif; unset($_from); ?>
+            <?php else: ?>
             <div class="nodate">Không tìm thấy kết quả</div>
-        <?php endif; ?>
+            <?php endif; ?>
 
-    </div>
-    <div id="viewpage" class="pagination"> <?php echo $this->_tpl_vars['pagination']; ?>
-    </div>
+        </div>
+        <div id="viewpage" class="pagination"> <?php echo $this->_tpl_vars['pagination']; ?>
 </div>
+    </div>
+</main>

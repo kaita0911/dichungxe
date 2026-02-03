@@ -42,12 +42,20 @@
     &__img {
         display: block;
         position: relative;
-        aspect-ratio: 4/4.5;
         overflow: hidden;
         border-radius: 1.2rem;
+        height: 20rem;
 
-        .img-gall-js {
-            height: 100%;
+        @include mq('md', min) {
+            height: 32.2rem;
+        }
+
+        .img-gall {
+            height: 20rem;
+
+            @include mq('md', min) {
+                height: 32.2rem;
+            }
         }
     }
 
@@ -80,10 +88,11 @@
             font-size: 1rem;
             font-weight: 600;
             padding: 0.4rem 1rem 0.4rem 2.7rem;
-            border-radius: 5rem;
+            border-radius: 0.5rem;
             background-repeat: no-repeat;
             background-position: 1rem center;
             background-size: 1.2rem;
+            height: 2.6rem;
 
             &.level {
                 background-image: url(../assets/images/ic_step.svg);
@@ -580,15 +589,17 @@
     justify-content: center;
     position: absolute;
     right: 1rem;
-    bottom: 2.5rem;
+    bottom: 1.5rem;
     background: #FFF;
-    padding: 0.3rem 2rem;
-    border-radius: 5rem;
+    padding: 0.4rem 1.4rem;
+    border-radius: 1rem;
     font-weight: 700;
     color: $primary;
-    // @include mq('md', min) {
-    //     gap: 1.5rem;
-    // }
+    text-transform: uppercase;
+
+    @include mq('md', min) {
+        bottom: 2.5rem;
+    }
 
     &.--code {
         align-items: flex-start;
@@ -748,8 +759,17 @@
 
     &-left {
         overflow: hidden;
-        border-radius: 1rem;
+
         position: relative;
+
+        @include mq('md') {
+            margin-left: -1rem;
+            margin-right: -1rem;
+        }
+
+        @include mq('md', min) {
+            border-radius: 1rem;
+        }
 
         .slick-counter {
             position: absolute;

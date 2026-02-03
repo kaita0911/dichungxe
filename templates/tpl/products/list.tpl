@@ -3,12 +3,15 @@
   <div class="product-item">
     <a class="product-item__img" href="{$path_url}/{$lang_prefix}{$item.unique_key}.html" title="{$item.name_detail}">
       <div class="img-gall-js">
-        <img src="{$item.img_thumb_vn}?width=700&height=1000&mode=cover"
+        <img src="{$item.img_thumb_vn}"
           alt="{$item.name_detail}"
-          class="img-cover"
+          class="img-cover img-gall"
           loading="lazy">
         {foreach from=$item.gallery item=img}
-        <img src="{$img}?width=700&height=1000&mode=cover" alt="{$item.name_detail}" class="img-cover"
+
+        <img src="{$img}"
+          alt="{$item.name_detail}"
+          class="img-cover img-gall"
           loading="lazy">
         {/foreach}
       </div>

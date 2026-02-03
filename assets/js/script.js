@@ -362,6 +362,15 @@ $slider.slick({
   infinite: true,
   speed: 500,
   autoplaySpeed: 3000,
+  responsive: [
+    {
+      breakpoint: 768, // Dưới 768px → 2 item
+      settings: {
+        arrows: false,
+        dots: true,
+      },
+    },
+  ],
 });
 $(".js-news").slick({
   slidesToShow: 3,
