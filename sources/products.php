@@ -169,7 +169,7 @@ switch ($act) {
             a.id,
             a.img_thumb_vn, a.difficulty,
             d.name AS name_detail,
-            d.unique_key AS link_detail,
+            d.unique_key,
             p.priceold,
             d.short_more,
             d.time,

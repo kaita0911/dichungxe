@@ -53,6 +53,8 @@
                            <div class="title">Mô tả chi tiết</div>
                            <textarea name="languages[{$lang.id}][content]" id="content_$lang.id}"></textarea>
                         </div>
+                        {/if}
+                        {if $tinhnang.id == 2}
                         <div class="item">
                            <div class="title">Mô tả nhỏ</div>
                            <div class="meta">
@@ -60,7 +62,6 @@
                            </div>
                         </div>
                         {/if}
-
                         {if $tinhnang.metatag == 1}
                         <div class="title">Meta Keywords</div>
                         <div class="tags-group" data-lang="{$lang.code}">

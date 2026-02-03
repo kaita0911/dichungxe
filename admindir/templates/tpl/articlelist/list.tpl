@@ -28,6 +28,7 @@
                   </button>
                </div>
             </div>
+            {if $smarty.request.comp == 2}
             <!-- ====== Bộ lọc tìm kiếm ====== -->
             <form method="get" action="index.php">
                <input type="hidden" name="do" value="articlelist">
@@ -46,6 +47,7 @@
                   <button type="submit" name="search" value="1" style="margin-left:10px;">Tìm kiếm</button>
                </div>
             </form>
+            {/if}
          </div>
 
          <div class="main-content">
@@ -120,7 +122,7 @@
                            {if $item.img_thumb_vn neq ""}
                            <div class="c-img {$item.comp}" data-comp="{$item.comp}" title="Làm mới">
                               <label class="img-change">
-                                 <img src="/{$item.img_thumb_vn}?width=80&height=80&mode=scale"
+                                 <img src="/{$item.img_thumb_vn}?width=80&height=80&mode=cover"
                                     class="preview-img" />
                                  <span class="img-overlay">
                                     <i class="fa fa-camera"></i>

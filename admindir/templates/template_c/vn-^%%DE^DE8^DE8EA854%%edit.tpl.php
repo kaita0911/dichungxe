@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-30 10:51:24
+<?php /* Smarty version 2.6.30, created on 2026-02-03 14:00:20
          compiled from articlelist/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 203, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 268, false),array('modifier', 'default', 'articlelist/edit.tpl', 309, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 337, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 204, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 269, false),array('modifier', 'default', 'articlelist/edit.tpl', 310, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 338, false),)), $this); ?>
 <div class="contentmain">
   <div class="main">
     <div class="left_sidebar padding10">
@@ -101,6 +101,8 @@ unset($_smarty_tpl_vars);
 </textarea>
                   </div>
                 </div>
+                <?php endif; ?>
+                <?php if ($this->_tpl_vars['tinhnang']['id'] == 2): ?>
                 <div class="item">
                   <div class="title">Mô tả nhỏ</div>
                   <div class="meta">
@@ -111,7 +113,6 @@ unset($_smarty_tpl_vars);
                   </div>
                 </div>
                 <?php endif; ?>
-
                 <?php if ($this->_tpl_vars['tinhnang']['metatag'] == 1): ?>
                 <div class="item">
                   <div class="title">Meta Keywords</div>

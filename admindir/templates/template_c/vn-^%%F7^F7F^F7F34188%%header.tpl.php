@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-11-21 09:45:56
+<?php /* Smarty version 2.6.30, created on 2026-02-03 13:58:06
          compiled from header.tpl */ ?>
 <!DOCTYPE html>
 <html lang="vi" xmlns="http://www.w3.org/1999/xhtml">
@@ -23,6 +23,42 @@
 
   <div class="popupqc"><img src="images/giahan.jpg" alt="Gia hạn" /></div>
   <div class="header">
+    <div class="box-time">
+      <p>Ngày hết hạn 05/02/2027</p>
+      <p id="demo"></p>
+
+      <?php echo '
+      <script>
+        // FIX TIMEZONE
+        var endTime = new Date("2027-02-05T11:00:00+07:00").getTime();
+
+        function updateCountdown() {
+          var now = Date.now();
+          var distance = Math.max(0, Math.floor((endTime - now) / 1000));
+
+          var days = Math.floor(distance / 86400);
+          var hours = Math.floor((distance % 86400) / 3600);
+          var minutes = Math.floor((distance % 3600) / 60);
+          var seconds = distance % 60;
+
+          document.getElementById("demo").innerHTML =
+            days + " Ngày " +
+            hours + " Giờ " +
+            minutes + " Phút " +
+            seconds + " Giây";
+
+          if (distance <= 0) {
+            clearInterval(timer);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+          }
+        }
+
+        updateCountdown();
+        var timer = setInterval(updateCountdown, 1000);
+      </script>
+      '; ?>
+
+    </div>
     <div class="box-cart">
       <?php if ($this->_tpl_vars['showcart']['open'] == 1): ?>
       <a class="c-cart" href="index.php?do=orders">

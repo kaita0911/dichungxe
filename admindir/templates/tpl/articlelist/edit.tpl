@@ -67,6 +67,8 @@
                     <textarea id="content_{$lang.id}" name="languages[{$lang.id}][content]">{$detail.content}</textarea>
                   </div>
                 </div>
+                {/if}
+                {if $tinhnang.id == 2}
                 <div class="item">
                   <div class="title">Mô tả nhỏ</div>
                   <div class="meta">
@@ -74,7 +76,6 @@
                   </div>
                 </div>
                 {/if}
-
                 {if $tinhnang.metatag == 1}
                 <div class="item">
                   <div class="title">Meta Keywords</div>

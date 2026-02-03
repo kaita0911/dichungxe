@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-30 10:18:01
+<?php /* Smarty version 2.6.30, created on 2026-02-03 14:01:08
          compiled from articlelist/create.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/create.tpl', 10, false),array('modifier', 'count', 'articlelist/create.tpl', 22, false),array('modifier', 'escape', 'articlelist/create.tpl', 121, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/create.tpl', 10, false),array('modifier', 'count', 'articlelist/create.tpl', 22, false),array('modifier', 'escape', 'articlelist/create.tpl', 122, false),)), $this); ?>
 <div class="contentmain">
    <div class="main">
       <div class="left_sidebar padding10">
@@ -79,6 +79,8 @@ unset($_smarty_tpl_vars);
                            <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
 ][content]" id="content_$lang.id}"></textarea>
                         </div>
+                        <?php endif; ?>
+                        <?php if ($this->_tpl_vars['tinhnang']['id'] == 2): ?>
                         <div class="item">
                            <div class="title">Mô tả nhỏ</div>
                            <div class="meta">
@@ -87,7 +89,6 @@ unset($_smarty_tpl_vars);
                            </div>
                         </div>
                         <?php endif; ?>
-
                         <?php if ($this->_tpl_vars['tinhnang']['metatag'] == 1): ?>
                         <div class="title">Meta Keywords</div>
                         <div class="tags-group" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>

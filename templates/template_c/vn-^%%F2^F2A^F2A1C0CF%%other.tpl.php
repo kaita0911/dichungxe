@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-02 15:01:41
+<?php /* Smarty version 2.6.30, created on 2026-02-03 10:17:57
          compiled from products/other.tpl */ ?>
 <?php $_from = $this->_tpl_vars['articles_related']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['item']):
@@ -11,30 +11,21 @@
 .html" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 ">
     <div class="img-gall-js">
-      <picture>
-        <source media="(max-width:767px)" srcset="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-?width=712&height=400&mode=cover">
-        <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-?width=700&height=1000&mode=cover"
-          alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+      <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
 "
-          class="img-cover"
-          loading="lazy">
-      </picture>
+        alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+"
+        class="img-cover img-gall"
+        loading="lazy">
       <?php $_from = $this->_tpl_vars['item']['gallery']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['img']):
 ?>
-
-      <picture>
-        <source media="(max-width:767px)" srcset="<?php echo $this->_tpl_vars['img']; ?>
-?width=712&height=400&mode=cover">
-        <img src="<?php echo $this->_tpl_vars['img']; ?>
-?width=700&height=1000&mode=cover"
-          alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+      <img src="<?php echo $this->_tpl_vars['img']; ?>
 "
-          class="img-cover"
-          loading="lazy">
-      </picture>
+        alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+"
+        class="img-cover img-gall"
+        loading="lazy">
       <?php endforeach; endif; unset($_from); ?>
     </div>
     <div class="product-item__ct">

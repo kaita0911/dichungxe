@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-30 11:02:11
+<?php /* Smarty version 2.6.30, created on 2026-02-03 14:03:05
          compiled from articlelist/list.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/list.tpl', 21, false),array('modifier', 'count', 'articlelist/list.tpl', 52, false),array('modifier', 'escape', 'articlelist/list.tpl', 153, false),array('modifier', 'date_format', 'articlelist/list.tpl', 172, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/list.tpl', 21, false),array('modifier', 'count', 'articlelist/list.tpl', 54, false),array('modifier', 'escape', 'articlelist/list.tpl', 155, false),array('modifier', 'date_format', 'articlelist/list.tpl', 174, false),)), $this); ?>
 <div class="contentmain">
    <div class="main">
       <div class="left_sidebar padding10">
@@ -39,6 +39,7 @@ unset($_smarty_tpl_vars);
                   </button>
                </div>
             </div>
+            <?php if ($_REQUEST['comp'] == 2): ?>
             <!-- ====== Bộ lọc tìm kiếm ====== -->
             <form method="get" action="index.php">
                <input type="hidden" name="do" value="articlelist">
@@ -65,6 +66,7 @@ unset($_smarty_tpl_vars);
                   <button type="submit" name="search" value="1" style="margin-left:10px;">Tìm kiếm</button>
                </div>
             </form>
+            <?php endif; ?>
          </div>
 
          <div class="main-content">
@@ -154,7 +156,7 @@ if ($this->_foreach['loop']['total'] > 0):
 " title="Làm mới">
                               <label class="img-change">
                                  <img src="/<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-?width=80&height=80&mode=scale"
+?width=80&height=80&mode=cover"
                                     class="preview-img" />
                                  <span class="img-overlay">
                                     <i class="fa fa-camera"></i>

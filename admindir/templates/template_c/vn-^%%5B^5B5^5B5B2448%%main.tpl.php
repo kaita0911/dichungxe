@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-11-21 09:52:29
+<?php /* Smarty version 2.6.30, created on 2026-02-03 13:58:06
          compiled from main/main.tpl */ ?>
 <div class="contentmain">
 	<div class="main">
@@ -51,7 +51,7 @@ unset($_smarty_tpl_vars);
 							</div>
 						</div>
 					</div>
-					<div class="box-browers">
+					<div class="box-browers scroll">
 						<h2>Thống kê truy cập theo</h2>
 
 						<div class="tk-item --head">
@@ -89,9 +89,12 @@ unset($_smarty_tpl_vars);
 							<tr>
 								<td align="center"><?php echo $this->_tpl_vars['i']+1; ?>
 </td>
-								<td align="left"><span class="url-cell" title="<?php echo $this->_tpl_vars['row']['url']; ?>
+								<td align="left">
+									<div class="url-cell" title="<?php echo $this->_tpl_vars['row']['url']; ?>
+"><a href="<?php echo $this->_tpl_vars['row']['url']; ?>
 "><?php echo $this->_tpl_vars['row']['url']; ?>
-</span></td>
+</a></div>
+								</td>
 								<td align="center"><span class="badge"><?php echo $this->_tpl_vars['row']['total']; ?>
 </span></td>
 							</tr>
