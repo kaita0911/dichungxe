@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-11-21 09:49:33
+<?php /* Smarty version 2.6.30, created on 2026-03-04 18:26:36
          compiled from articlelist/category_tree.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/category_tree.tpl', 6, false),array('modifier', 'is_array', 'articlelist/category_tree.tpl', 7, false),array('modifier', 'count', 'articlelist/category_tree.tpl', 12, false),)), $this); ?>

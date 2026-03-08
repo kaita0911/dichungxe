@@ -94,7 +94,8 @@
   width: 20%;
   flex-shrink: 0;
   height: 6rem;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 @media (min-width: 768px) {
   .related-articles__lst .related-item__img {
@@ -110,4 +111,4 @@
   .related-articles__lst .related-item__ttl {
     font-size: 1.6rem;
   }
-}
+}/*# sourceMappingURL=articles.css.map */

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-21 11:58:56
+<?php /* Smarty version 2.6.30, created on 2026-01-31 16:16:59
          compiled from change-password.tpl */ ?>
 <div class="form-container">
     <h2>Đổi mật khẩu</h2>

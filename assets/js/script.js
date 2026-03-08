@@ -1156,3 +1156,9 @@ $(document).ready(function () {
     });
   });
 });
+////DETAIL
+$(".pickup-header").on("click", function () {
+  var findElm = $(this).next(".pickup-body");
+  $(findElm).stop().slideToggle();
+  $(this).children(".pickup-arrow").stop().toggleClass("ic-minus");
+});

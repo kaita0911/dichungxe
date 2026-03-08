@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 13:58:06
+<?php /* Smarty version 2.6.30, created on 2026-03-04 18:26:30
          compiled from header.tpl */ ?>
 <!DOCTYPE html>
 <html lang="vi" xmlns="http://www.w3.org/1999/xhtml">
@@ -16,14 +16,14 @@
   <script src="js/chart.js"></script>
   <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
 
   <div class="popupqc"><img src="images/giahan.jpg" alt="Gia hạn" /></div>
   <div class="header">
-    <div class="box-time">
+  <div class="box-time">
       <p>Ngày hết hạn 05/02/2027</p>
       <p id="demo"></p>
 
@@ -61,9 +61,12 @@
     </div>
     <div class="box-cart">
       <?php if ($this->_tpl_vars['showcart']['open'] == 1): ?>
-      <a class="c-cart" href="index.php?do=orders">
+      <a class="c-cart fnc-bell" href="index.php?do=orders">
         <span><i class="fa fa-shopping-cart"></i></span>
         <label>Danh sách đơn hàng</label>
+        <?php if ($this->_tpl_vars['new_order_count'] > 0): ?>
+        <span class="icon-new"></span>
+        <?php endif; ?>
       </a>
       <?php endif; ?>
     </div>

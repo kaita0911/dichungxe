@@ -108,12 +108,12 @@
                            <div class="img-gall-js">
                               <img src="{$item.img_thumb_vn}"
                                  alt="{$item.name_detail}"
-                                 class="img-cover"
+                                 class="img-cover img-gall"
                                  loading="lazy">
                               {foreach from=$item.gallery item=img}
                               <img src="{$img}"
                                  alt="{$item.name_detail}"
-                                 class="img-cover"
+                                 class="img-cover img-gall"
                                  loading="lazy">
                               {/foreach}
                            </div>

@@ -207,6 +207,21 @@ $sql = "SELECT a.*, ad.name AS name_detail, ad.unique_key FROM
 
 $rs_consulting = $GLOBALS['sp']->getAll($sql);
 $smarty->assign('consulting', $rs_consulting);
+
+$sql = "SELECT a.*, ad.name AS name_detail, ad.unique_key FROM 
+        {$GLOBALS['db_sp']}.articlelist AS a
+    LEFT JOIN {$GLOBALS['db_sp']}.articlelist_detail AS ad 
+        ON a.id = ad.articlelist_id
+    WHERE 
+        ad.languageid = {$langid}
+        AND a.active = 1 and a.hot =1
+        AND a.comp = 72
+    ORDER BY 
+        a.num DESC
+";
+
+$rs_consulting_detail = $GLOBALS['sp']->getAll($sql);
+$smarty->assign('consulting_detail', $rs_consulting_detail);
 // /////////////////////////// Load Vouchers ///////////////////////////
 // $img_popup = $GLOBALS['sp']->getRow("SELECT * FROM {$GLOBALS['db_sp']}.articlelist WHERE id =2121");
 // $smarty->assign("img_popup", $img_popup);

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-11-28 09:47:08
+<?php /* Smarty version 2.6.30, created on 2026-02-03 17:11:18
          compiled from infos/edit_email.tpl */ ?>
 <div class="item">
     <div class="title">Email</div>

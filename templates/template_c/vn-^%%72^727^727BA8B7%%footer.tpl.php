@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-31 15:06:42
+<?php /* Smarty version 2.6.30, created on 2026-03-08 13:34:05
          compiled from ./footer.tpl */ ?>
 <footer class="p-footer">
   <div class="container">
@@ -22,11 +22,14 @@
 
         <ul class="social">
           <?php if ($this->_tpl_vars['faceShare']['facebook']): ?><li><a href="<?php echo $this->_tpl_vars['faceShare']['facebook']; ?>
-"><i class="fa-brands fa-facebook-f"></i></a></li><?php endif; ?>
+"><i class="fa-brands fa-facebook-f"></i></a></li>
+          <?php endif; ?>
           <?php if ($this->_tpl_vars['faceShare']['printest']): ?><li><a href="<?php echo $this->_tpl_vars['faceShare']['printest']; ?>
-"><i class="fa-brands fa-pinterest"></i></a></li><?php endif; ?>
+"><i class="fa-brands fa-pinterest"></i></a></li>
+          <?php endif; ?>
           <?php if ($this->_tpl_vars['faceShare']['instagram']): ?><li><a href="<?php echo $this->_tpl_vars['faceShare']['instagram']; ?>
-"><i class="fa-brands fa-instagram"></i></a></li><?php endif; ?>
+"><i class="fa-brands fa-instagram"></i></a></li>
+          <?php endif; ?>
           <?php if ($this->_tpl_vars['faceShare']['linkedin']): ?><li><a href="<?php echo $this->_tpl_vars['faceShare']['linkedin']; ?>
 "><i class="fa-brands fa-threads"></i></a></li><?php endif; ?>
           <?php if ($this->_tpl_vars['faceShare']['youtube']): ?><li><a href="<?php echo $this->_tpl_vars['faceShare']['youtube']; ?>
@@ -46,7 +49,8 @@
           <a class="services-item hover" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
-.html" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+.html"
+            title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 ">
             <i class="fa-solid fa-caret-right"></i> <?php echo $this->_tpl_vars['item']['name_detail']; ?>
 
@@ -60,9 +64,15 @@
         <div class="content-fb">
           <div class="fanpage">
             <div id="fb-root"></div>
-            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
-            <div class="fb-page" data-href="https://www.facebook.com/Dichungxetapluyenleonuimoituan" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
-              <blockquote cite="https://www.facebook.com/Dichungxetapluyenleonuimoituan" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/Dichungxetapluyenleonuimoituan">Đi chung xe - Tập luyện leo núi mỗi tuần</a></blockquote>
+            <script async defer crossorigin="anonymous"
+              src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v24.0&appId=APP_ID"></script>
+            <div class="fb-page" data-href="https://www.facebook.com/Dichungxetapluyenleonuimoituan" data-tabs=""
+              data-width="" data-height="" data-small-header="false" data-adapt-container-width="true"
+              data-hide-cover="false" data-show-facepile="true">
+              <blockquote cite="https://www.facebook.com/Dichungxetapluyenleonuimoituan" class="fb-xfbml-parse-ignore">
+                <a href="https://www.facebook.com/Dichungxetapluyenleonuimoituan">Đi chung xe - Tập luyện leo núi mỗi
+                  tuần</a>
+              </blockquote>
             </div>
           </div>
         </div>
@@ -76,11 +86,7 @@
       <circle cx="25" cy="25" r="20" fill="none" stroke="#e9eef6" stroke-width="4" />
       <g>
         <path d="M45 25a20 20 0 0 1-20 20" fill="none" stroke="#0b76ff" stroke-width="4" stroke-linecap="round" />
-        <animateTransform attributeName="transform"
-          type="rotate"
-          from="0 25 25"
-          to="360 25 25"
-          dur="1s"
+        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
           repeatCount="indefinite" />
       </g>
     </svg>
@@ -88,7 +94,7 @@
 </div>
 <a href="#" class="scrollup" id="backToTop"><span></span></a>
 <div class="bg-overlay"></div>
-<a class="btn-order" target="_blank" href="https://busdcx.com/">ĐẶT VÉ NHANH</a>
+<a class="btn-order" target="_blank" href="https://busdcx.com/"><i class="fa-solid fa-bolt icon"></i> ĐẶT VÉ NHANH</a>
 <a href="tel:<?php echo $this->_tpl_vars['hotline']['phone']; ?>
 " class="call-icon" rel="nofollow">
   <span><img src="<?php echo $this->_tpl_vars['path_url']; ?>

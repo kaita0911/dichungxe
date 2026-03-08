@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-08 11:24:44
+<?php /* Smarty version 2.6.30, created on 2026-02-02 17:18:32
          compiled from categories/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'categories/edit.tpl', 11, false),array('modifier', 'count', 'categories/edit.tpl', 25, false),array('modifier', 'escape', 'categories/edit.tpl', 44, false),)), $this); ?>

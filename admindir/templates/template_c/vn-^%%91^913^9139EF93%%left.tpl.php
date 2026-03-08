@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-01-31 15:53:16
+<?php /* Smarty version 2.6.30, created on 2026-03-04 18:26:31
          compiled from left.tpl */ ?>
 <a href="/" target="_blank" class="logo">
   <img src="/<?php echo $this->_tpl_vars['logoadmin']['img_thumb_vn']; ?>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-12-04 09:15:29
+<?php /* Smarty version 2.6.30, created on 2026-02-03 10:05:13
          compiled from footer/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'footer/edit.tpl', 20, false),array('modifier', 'escape', 'footer/edit.tpl', 38, false),)), $this); ?>

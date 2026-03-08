@@ -5,7 +5,22 @@
     const currentUrl = window.location.href;
 
     // ==================== CKEditor ====================
-    ["content", "short"].forEach(function (baseId) {
+    document.querySelectorAll(".extra-editor").forEach(function (el) {
+      CKEDITOR.replace(el, {
+        removePlugins: "exportpdf",
+        height: 120,
+        language: "vi",
+      });
+    });
+    [
+      "content",
+      "short",
+      "luuy",
+      "cungduong",
+      "haihoa",
+      "bolac",
+      "motathem",
+    ].forEach(function (baseId) {
       var textareas = document.querySelectorAll(
         "textarea[id^='" + baseId + "']"
       );
@@ -15,10 +30,31 @@
         CKEDITOR.replace(el.id, {
           language: langId === "2" ? "en" : "vi", // tùy theo lang_id
           removePlugins: "exportpdf",
-          height: 600,
+          height: 300,
         });
       });
     });
+    // ===== CKEditor cho trip_content (EDIT PAGE) =====
+    const tripTextareas = document.querySelectorAll(
+      'textarea[name="trip_content[]"]'
+    );
+
+    tripTextareas.forEach(function (el) {
+      // nếu chưa có instance thì mới replace
+      if (!CKEDITOR.instances[el.id]) {
+        // nếu chưa có id thì gán id tự động
+        if (!el.id) {
+          el.id = "trip_editor_edit_" + Math.random().toString(36).substr(2, 9);
+        }
+
+        CKEDITOR.replace(el.id, {
+          language: "vi",
+          removePlugins: "exportpdf",
+          height: 200,
+        });
+      }
+    });
+    // ===== CKEditor cho schedule_content =====
 
     // ==================== Slug ====================
     function slugify(str) {
@@ -1209,4 +1245,405 @@ document.addEventListener("change", function (e) {
     .then((r) => {
       if (!r.success) alert(r.message);
     });
+});
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted) {
+    // Trang Ä‘Æ°á»£c load tá»« BFCache
+    window.location.reload();
+  }
+});
+document.querySelectorAll(".month-tabs li").forEach(function (tab) {
+  tab.addEventListener("click", function () {
+    // bá» active háº¿t
+    document
+      .querySelectorAll(".month-tabs li")
+      .forEach((t) => t.classList.remove("active"));
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((c) => c.classList.remove("active"));
+
+    // active cÃ¡i Ä‘Æ°á»£c click
+    this.classList.add("active");
+    document.getElementById(this.dataset.tab).classList.add("active");
+  });
+});
+/////Thêm chuyến đi tour
+
+const addTripBtn = document.getElementById("addTripBtn");
+const tripList = document.getElementById("tripList");
+
+let editorCount = 0;
+
+if (addTripBtn && tripList) {
+  addTripBtn.addEventListener("click", function () {
+    editorCount++;
+
+    const tripItem = document.createElement("div");
+    tripItem.classList.add("trip-item");
+
+    const textareaId = "trip_editor_" + editorCount;
+
+    tripItem.innerHTML = `
+        <button type="button" class="remove-trip btn-del-more">Xoá</button>
+        <div class="flex-lt">
+        <input class="more-input time" type="text" name="trip_time[]" placeholder="Thời gian">
+        <input class="more-input" type="text" name="trip_title[]" placeholder="Tiêu đề"> 
+        </div>
+        <input class="more-input" type="text" name="trip_link[]" placeholder="Link map">
+        <input class="more-input" type="text" name="trip_location[]" placeholder="Định vị">
+        <input class="more-input" type="text" name="trip_content[]" placeholder="Nội dung"></input>
+       
+      `;
+
+    tripList.appendChild(tripItem);
+
+    // ✅ CKEditor 4
+    CKEDITOR.replace(textareaId, {
+      removePlugins: "exportpdf",
+      height: 200,
+      language: "vi",
+    });
+
+    // Xoá block + destroy editor
+    tripItem
+      .querySelector(".remove-trip")
+      .addEventListener("click", function () {
+        if (!confirm("Bạn có chắc muốn xoá không?")) return;
+
+        if (CKEDITOR.instances[textareaId]) {
+          CKEDITOR.instances[textareaId].destroy(true);
+        }
+
+        tripItem.remove();
+      });
+  });
+}
+const addScheduleBtn = document.getElementById("addScheduleBtn");
+const scheduleList = document.getElementById("scheduleList");
+
+let scheduleCount = 0;
+let extraEditorCount = 0;
+
+// ==========================
+// THÊM LỊCH TRÌNH
+// ==========================
+if (addScheduleBtn && scheduleList) {
+  addScheduleBtn.addEventListener("click", function () {
+    const scheduleIndex = scheduleCount++;
+
+    const scheduleItem = document.createElement("div");
+    scheduleItem.classList.add("schedule-item");
+    scheduleItem.dataset.index = scheduleIndex;
+
+    scheduleItem.innerHTML = `
+      <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+
+      <input class="more-input" type="text" 
+        name="schedule_time[]" placeholder="Thời gian">
+
+      <input class="more-input" type="text" 
+        name="schedule_content[]" placeholder="Nội dung">
+
+      <div class="extra-content-list"></div>
+
+      <button type="button" class="add-extra-content">
+        + Thêm nội dung (nếu có)
+      </button>
+    `;
+
+    scheduleList.appendChild(scheduleItem);
+  });
+}
+
+// ==========================
+// EVENT DELEGATION
+// ==========================
+document.addEventListener("click", function (e) {
+  // =========================
+  // THÊM NỘI DUNG PHỤ
+  // =========================
+  if (e.target.classList.contains("add-extra-content")) {
+    const scheduleItem = e.target.closest(".schedule-item");
+    const extraList = scheduleItem.querySelector(".extra-content-list");
+    const scheduleIndex = scheduleItem.dataset.index;
+
+    const textareaId = "trip_editor_" + ++extraEditorCount;
+
+    const extraItem = document.createElement("div");
+    extraItem.classList.add("extra-item");
+
+    extraItem.innerHTML = `
+      <textarea 
+        id="${textareaId}" 
+        name="schedule_extra_content[${scheduleIndex}][]" 
+        rows="3"
+        placeholder="Mô tả thêm"></textarea>
+
+      <button type="button" class="remove-extra">X</button>
+    `;
+
+    extraList.appendChild(extraItem);
+
+    CKEDITOR.replace(textareaId, {
+      removePlugins: "exportpdf",
+      height: 150,
+      language: "vi",
+    });
+  }
+
+  // =========================
+  // XOÁ NỘI DUNG PHỤ
+  // =========================
+  if (e.target.classList.contains("remove-extra")) {
+    if (!confirm("Bạn có chắc muốn xoá không?")) return;
+
+    const extraItem = e.target.closest(".extra-item");
+    const textarea = extraItem.querySelector("textarea");
+
+    if (CKEDITOR.instances[textarea.id]) {
+      CKEDITOR.instances[textarea.id].destroy(true);
+    }
+
+    extraItem.remove();
+  }
+
+  // =========================
+  // XOÁ SCHEDULE
+  // =========================
+  if (e.target.classList.contains("remove-schedule")) {
+    if (!confirm("Bạn có chắc muốn xoá không?")) return;
+
+    const scheduleItem = e.target.closest(".schedule-item");
+
+    scheduleItem.querySelectorAll("textarea").forEach(function (el) {
+      if (CKEDITOR.instances[el.id]) {
+        CKEDITOR.instances[el.id].destroy(true);
+      }
+    });
+
+    scheduleItem.remove();
+  }
+});
+///qua đêm
+let dayCount = $("#dayList .day-item").length;
+
+$("#addDayBtn").click(function () {
+  dayCount++;
+
+  $("#dayList").append(`
+
+    <div class="day-item">
+
+        <div class="day-header">
+            <strong>Ngày ${dayCount}</strong>
+            <button type="button" class="remove-day btn-del-more">Xoá ngày</button>
+        </div>
+
+        <input type="text"
+               class="more-input"
+               name="day_content[${dayCount}]"
+               placeholder="Ngày thứ ${dayCount}">
+
+        <div class="schedule-list"></div>
+
+        <button type="button"
+                class="add-schedule brn-add-more"
+                data-day="${dayCount}">
+            + Thêm nội dung
+        </button>
+
+    </div>
+
+  `);
+});
+$(document).on("click", ".add-schedule", function () {
+  let day = $(this).data("day");
+  let scheduleList = $(this).siblings(".schedule-list");
+
+  scheduleList.append(`
+      <div class="schedule-item">
+
+          <button type="button" class="remove-schedule-more btn-del-more">Xoá</button>
+
+          <input type="text"
+                 class="more-input"
+                 name="schedule_name_more[${day}][]"
+                 placeholder="Tên">
+
+          <input type="text"
+                 class="more-input"
+                 name="schedule_content_more[${day}][]"
+                 placeholder="Nội dung">
+
+      </div>
+  `);
+});
+$(document).on("click", ".remove-schedule-more", function () {
+  if (!confirm("Xoá nội dung này?")) return;
+
+  $(this).closest(".schedule-item").remove();
+});
+$(document).on("click", ".remove-day", function () {
+  if (!confirm("Xoá ngày này?")) return;
+
+  $(this).closest(".day-item").remove();
+});
+
+// ===== Xoá schedule khi vào EDIT =====
+document.querySelectorAll(".remove-trip").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    if (!confirm("Bạn có chắc muốn xoá không?")) return;
+
+    const scheduleItem = this.closest(".trip-item");
+    const textarea = scheduleItem.querySelector("textarea");
+
+    if (textarea && CKEDITOR.instances[textarea.id]) {
+      CKEDITOR.instances[textarea.id].destroy(true);
+    }
+
+    scheduleItem.remove();
+  });
+});
+document.querySelectorAll(".remove-schedule").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    if (!confirm("Bạn có chắc muốn xoá không?")) return;
+
+    const scheduleItem = this.closest(".schedule-item");
+    scheduleItem.remove();
+  });
+});
+// ==================== Toggle lịch trình trong ngày / qua đêm ====================
+document.addEventListener("DOMContentLoaded", function () {
+  const scheduleList = document.getElementById("scheduleList");
+  const dayList = document.getElementById("dayList");
+  const addScheduleBtn = document.getElementById("addScheduleBtn");
+  const addDayBtn = document.getElementById("addDayBtn");
+
+  if (!scheduleList || !dayList) return;
+
+  function checkLists() {
+    const hasSchedule = scheduleList.querySelector(".schedule-item");
+    const hasDay = dayList.querySelector(".day-item");
+
+    // Nếu có lịch trình trong ngày
+    if (hasSchedule) {
+      dayList.style.display = "none";
+      if (addDayBtn) addDayBtn.style.display = "none";
+    }
+
+    // Nếu có lịch trình qua đêm
+    else if (hasDay) {
+      scheduleList.style.display = "none";
+      if (addScheduleBtn) addScheduleBtn.style.display = "none";
+    }
+
+    // Nếu không có cái nào → hiện lại cả 2
+    else {
+      scheduleList.style.display = "";
+      dayList.style.display = "";
+      if (addScheduleBtn) addScheduleBtn.style.display = "";
+      if (addDayBtn) addDayBtn.style.display = "";
+    }
+  }
+
+  checkLists();
+
+  if (addScheduleBtn) {
+    addScheduleBtn.addEventListener("click", function () {
+      dayList.style.display = "none";
+      if (addDayBtn) addDayBtn.style.display = "none";
+    });
+  }
+
+  if (addDayBtn) {
+    addDayBtn.addEventListener("click", function () {
+      scheduleList.style.display = "none";
+      if (addScheduleBtn) addScheduleBtn.style.display = "none";
+    });
+  }
+});
+/////them ve
+let ticketEditorCount = 0;
+
+// ===== Khởi tạo editor cho ticket =====
+function initTicketEditor(textarea) {
+  if (!textarea.id) {
+    ticketEditorCount++;
+    textarea.id = "ticket_editor_" + ticketEditorCount;
+  }
+
+  if (!CKEDITOR.instances[textarea.id]) {
+    CKEDITOR.replace(textarea.id, {
+      removePlugins: "exportpdf",
+      height: 150,
+      language: "vi",
+    });
+  }
+}
+
+// ===== Khởi tạo ticket có sẵn (EDIT) =====
+function initExistingTickets() {
+  document.querySelectorAll("#ticket-list textarea").forEach(function (el) {
+    initTicketEditor(el);
+  });
+}
+
+// ===== Thêm ticket mới =====
+function addTicket() {
+  const ticketList = document.getElementById("ticket-list");
+
+  const div = document.createElement("div");
+  div.className = "ticket-item";
+
+  div.innerHTML = `
+    <button type="button" class="remove-ticket btn-del-more">Xoá</button>
+
+    <input class="more-input"
+           type="text"
+           name="ticket_name[]"
+           placeholder="Tên loại vé">
+
+    <textarea name="ticket_desc[]"
+              placeholder="Nội dung"></textarea>
+  `;
+
+  ticketList.appendChild(div);
+
+  const textarea = div.querySelector("textarea");
+
+  initTicketEditor(textarea);
+}
+
+// ===== Xóa ticket =====
+function removeTicket(btn) {
+  const item = btn.closest(".ticket-item");
+  const textarea = item.querySelector("textarea");
+
+  if (textarea && CKEDITOR.instances[textarea.id]) {
+    CKEDITOR.instances[textarea.id].destroy(true);
+  }
+
+  item.remove();
+}
+
+// ===== DOM READY =====
+document.addEventListener("DOMContentLoaded", function () {
+  // khởi tạo editor ticket cũ
+  initExistingTickets();
+
+  // thêm ticket
+  const addBtn = document.getElementById("add-ticket");
+
+  if (addBtn) {
+    addBtn.addEventListener("click", addTicket);
+  }
+});
+
+// ===== event delegation =====
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("remove-ticket")) {
+    if (!confirm("Bạn có chắc muốn xoá không?")) return;
+
+    removeTicket(e.target);
+  }
 });

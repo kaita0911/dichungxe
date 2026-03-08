@@ -265,6 +265,7 @@
 
         img {
             max-width: 2.7rem;
+            filter: brightness(0) invert(1);
             animation: phoneRing 1s infinite ease-in-out;
         }
     }

@@ -2,10 +2,14 @@
 @use "../common/variables" as *;
 
 .ttl01 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: 700;
     line-height: 1.4;
     color: $primary;
+
+    @include mq('md', min) {
+        font-size: 2rem;
+    }
 
     &.--intro {
         text-transform: uppercase;
@@ -13,6 +17,7 @@
 
     &.--detail {
         text-transform: uppercase;
+        font-family: $font-primary;
     }
 }
 

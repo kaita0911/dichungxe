@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 08:43:35
+<?php /* Smarty version 2.6.30, created on 2026-03-06 08:43:38
          compiled from main/main.tpl */ ?>
 <main class="home">
    <div class="container">
@@ -166,7 +166,7 @@ if ($this->_foreach['tab']['total'] > 0):
 "
                                  alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 "
-                                 class="img-cover"
+                                 class="img-cover img-gall"
                                  loading="lazy">
                               <?php $_from = $this->_tpl_vars['item']['gallery']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['img']):
@@ -175,7 +175,7 @@ if ($this->_foreach['tab']['total'] > 0):
 "
                                  alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 "
-                                 class="img-cover"
+                                 class="img-cover img-gall"
                                  loading="lazy">
                               <?php endforeach; endif; unset($_from); ?>
                            </div>

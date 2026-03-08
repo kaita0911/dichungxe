@@ -144,6 +144,120 @@ switch ($act) {
         exit;
 
     case 'edit':
+        $diemdons = $GLOBALS['sp']->getAll("
+            SELECT *
+            FROM {$GLOBALS['db_sp']}.articlelist_diemdon
+            WHERE articlelist_id = {$id}
+            ORDER BY id ASC
+        ");
+        $smarty->assign('diemdons', $diemdons);
+        /////trong ngày
+        $sql = "
+        SELECT 
+            lt.id,
+            lt.name,
+            lt.content,
+            mt.id AS mota_id,
+            mt.mota
+        FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh lt
+        LEFT JOIN {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota mt
+        ON lt.id = mt.lichtrinh_id
+        WHERE lt.articlelist_id = {$id}
+        ORDER BY lt.id ASC
+        ";
+        
+        $rs = $GLOBALS['sp']->Execute($sql);
+        
+        $lichtrinhtrongngay = [];
+        
+        while (!$rs->EOF) {
+        
+            $lid = $rs->fields['id'];
+        
+            if (!isset($lichtrinhtrongngay[$lid])) {
+        
+                $lichtrinhtrongngay[$lid] = [
+                    'id' => $lid,
+                    'name' => $rs->fields['name'],
+                    'content' => $rs->fields['content'],
+                    'extra' => []
+                ];
+            }
+        
+            if (!empty($rs->fields['mota'])) {
+                $lichtrinhtrongngay[$lid]['extra'][] = $rs->fields['mota'];
+            }
+        
+            $rs->MoveNext();
+        }
+        
+        $lichtrinhtrongngay = array_values($lichtrinhtrongngay);
+        
+        $smarty->assign('lichtrinhtrongngay', $lichtrinhtrongngay);
+        //////qua đêm
+        $lichtrinh = $GLOBALS['sp']->getAll("
+        SELECT *
+        FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
+        WHERE articlelist_id = {$id}
+        ORDER BY day ASC, id ASC
+        ");
+
+        $days = [];
+
+        foreach ($lichtrinh as $row) {
+
+            $day = $row['day'];
+
+            if (!isset($days[$day])) {
+                $days[$day] = [
+                    'day_content' => $row['day_content'],
+                    'items' => []
+                ];
+            }
+
+            $days[$day]['items'][] = $row;
+        }
+
+        $smarty->assign('days', $days);
+
+        $cungduong = $GLOBALS['sp']->GetRow(
+            "SELECT * 
+             FROM {$GLOBALS['db_sp']}.articlelist_thongtin 
+             WHERE articlelist_id = ? 
+             LIMIT 1",
+            [$id]
+        );
+        $smarty->assign('cungduong', $cungduong);
+
+        $haihoa = $GLOBALS['sp']->GetRow(
+            "SELECT * 
+             FROM {$GLOBALS['db_sp']}.articlelist_haihoa
+             WHERE articlelist_id = ? 
+             LIMIT 1",
+            [$id]
+        );
+        $smarty->assign('haihoa', $haihoa);
+
+        $bolac = $GLOBALS['sp']->GetRow(
+            "SELECT * 
+             FROM {$GLOBALS['db_sp']}.articlelist_bolac
+             WHERE articlelist_id = ? 
+             LIMIT 1",
+            [$id]
+        );
+        $smarty->assign('bolac', $bolac);
+        ////
+        $sql_ticket = "
+            SELECT *
+            FROM {$GLOBALS['db_sp']}.articlelist_bolac_2
+            WHERE articlelist_id = {$id}
+            ORDER BY id ASC
+        ";
+
+        $tickets = $GLOBALS['sp']->getAll($sql_ticket);
+
+        $smarty->assign("tickets", $tickets);
+        ////
         $sql_attr = "
         SELECT *
         FROM {$GLOBALS['db_sp']}.articlelist_attributes a
@@ -269,7 +383,11 @@ switch ($act) {
             $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_size WHERE articlelist_id IN ($idList)");
             $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_color WHERE articlelist_id IN ($idList)");
             $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_codes WHERE articlelist_id IN ($idList)");
-
+            $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_diemdon WHERE articlelist_id IN ($idList)");
+            $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh WHERE articlelist_id IN ($idList)");
+            $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_thongtin WHERE articlelist_id IN ($idList)");
+            $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_bolac WHERE articlelist_id IN ($idList)");
+            $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.articlelist_haihoa WHERE articlelist_id IN ($idList)");
             // Xóa hình ảnh liên quan
             $images = $GLOBALS["sp"]->getCol("SELECT img_vn FROM {$GLOBALS['db_sp']}.gallery_sp WHERE articlelist_id IN ($idList)");
             foreach ($images as $img) {
@@ -906,6 +1024,7 @@ function saveArticle()
         $short   = isset($data['short']) ? trim($data['short']) : '';
         $short_more   = isset($data['short_more']) ? trim($data['short_more']) : '';
         $content = isset($data['content']) ? trim($data['content']) : '';
+        $luuy = isset($data['luuy']) ? trim($data['luuy']) : '';
         $des     = isset($data['des']) ? trim($data['des']) : '';
         $time     = isset($data['time']) ? trim($data['time']) : '';
         // Lấy tags JSON cho ngôn ngữ hiện tại
@@ -938,6 +1057,7 @@ function saveArticle()
             'short'          => $short,
             'short_more'          => $short_more,
             'content'        => $content,
+            'luuy'        => $luuy,
             'time'            => $time,
             'content_nosign' => remove_vn($content),
             'keyword'        => implode(',', $tags),
@@ -1147,5 +1267,239 @@ function saveArticle()
                 }
             }
         }
+    }
+    // ============================
+    // 💾 LƯU DANH SÁCH ĐIỂM ĐÓN (articlelist_diemdon)
+    // ============================
+
+    $titles    = isset($_POST['trip_title']) ? $_POST['trip_title'] : [];
+    $times    = isset($_POST['trip_time']) ? $_POST['trip_time'] : [];
+    $contents  = isset($_POST['trip_content']) ? $_POST['trip_content'] : [];
+    $links     = isset($_POST['trip_link']) ? $_POST['trip_link'] : [];
+    $locations = isset($_POST['trip_location']) ? $_POST['trip_location'] : [];
+
+    // 🔥 Nếu edit → xoá toàn bộ điểm đón cũ
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_diemdon WHERE articlelist_id = ?",
+        [$id]
+    );
+
+    if (!empty($titles)) {
+
+        foreach ($titles as $key => $title) {
+
+            $title    = trim($title);
+            $time  = isset($times[$key]) ? $times[$key] : '';
+            $content  = isset($contents[$key]) ? $contents[$key] : '';
+            $link     = isset($links[$key]) ? trim($links[$key]) : '';
+            $location = isset($locations[$key]) ? trim($locations[$key]) : '';
+
+            if ($title === '') continue;
+            
+            // 🔹 Nếu link không có http hoặc https thì thêm https
+            if ($link != '' && !preg_match('#^https?://#i', $link)) {
+                $link = 'https://' . $link;
+            }
+
+            // 🔹 Nếu location không có http hoặc https thì thêm https
+            if ($location != '' && !preg_match('#^https?://#i', $location)) {
+                $location = 'https://' . $location;
+            }
+            $GLOBALS['sp']->Execute(
+                "INSERT INTO {$GLOBALS['db_sp']}.articlelist_diemdon
+                (articlelist_id, name, content,time, link, location, languageid)
+                VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [$id, $title, $content,$time, $link, $location, 1]
+            );
+        }
+    }
+    // ============================
+    // 💾 LƯU DANH SÁCH LỊCH TRÌNH] trong ngày
+    // ============================
+    $schedule_time    = isset($_POST['schedule_time']) ? $_POST['schedule_time'] : [];
+    $schedule_content  = isset($_POST['schedule_content']) ? $_POST['schedule_content'] : [];
+    $schedule_extra    = isset($_POST['schedule_extra_content']) ? $_POST['schedule_extra_content'] : [];
+
+    // 🔥 xoá mô tả trước
+    $GLOBALS['sp']->Execute(
+        "DELETE mt FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota mt
+        INNER JOIN {$GLOBALS['db_sp']}.articlelist_lichtrinh lt
+        ON mt.lichtrinh_id = lt.id
+        WHERE lt.articlelist_id = ?",
+        [$id]
+    );
+
+    // 🔥 xoá lịch trình
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh WHERE articlelist_id = ?",
+        [$id]
+    );
+    if (!empty($schedule_time)) {
+
+        foreach ($schedule_time as $key => $time_lichtrinh) {
+    
+            $time_lichtrinh = trim($time_lichtrinh);
+            $content_lichtrinh = isset($schedule_content[$key]) ? $schedule_content[$key] : '';
+    
+            if ($time_lichtrinh === '') continue;
+    
+            // lưu lịch trình
+            $GLOBALS['sp']->Execute(
+                "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh
+                (articlelist_id, name, content, languageid)
+                VALUES (?, ?, ?, ?)",
+                [$id, $time_lichtrinh, $content_lichtrinh, 1]
+            );
+    
+            $lichtrinh_id = $GLOBALS['sp']->Insert_ID();
+    
+            // 🔥 lưu mô tả thêm
+            if (!empty($schedule_extra[$key])) {
+    
+                foreach ($schedule_extra[$key] as $num => $mota) {
+    
+                    $mota = trim($mota);
+                    if ($mota == '') continue;
+    
+                    $GLOBALS['sp']->Execute(
+                        "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
+                        (lichtrinh_id, mota)
+                        VALUES (?, ?)",
+                        [$lichtrinh_id, $mota]
+                    );
+    
+                }
+    
+            }
+    
+        }
+    
+    }
+     // ============================
+    // 💾 LƯU DANH SÁCH LỊCH TRÌNH] qua đêm
+    // ============================
+
+    $schedule_time_more    = isset($_POST['schedule_name_more']) ? $_POST['schedule_name_more'] : [];
+    $schedule_content_more = isset($_POST['schedule_content_more']) ? $_POST['schedule_content_more'] : [];
+    $day_content           = isset($_POST['day_content']) ? $_POST['day_content'] : [];
+    
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem WHERE articlelist_id = ?",
+        [$id]
+    );
+    
+    foreach ($schedule_time_more as $day => $names) {
+    
+        $content_day = isset($day_content[$day]) ? trim($day_content[$day]) : '';
+    
+        foreach ($names as $key => $name) {
+    
+            $name = trim($name);
+    
+            $content = isset($schedule_content_more[$day][$key])
+                ? trim($schedule_content_more[$day][$key])
+                : '';
+    
+            if ($name == '' && $content == '' && $content_day == '') continue;
+    
+            $GLOBALS['sp']->Execute(
+                "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
+                (articlelist_id, day, day_content, name, content, languageid)
+                VALUES (?, ?, ?, ?, ?, ?)",
+                [$id, $day, $content_day, $name, $content, 1]
+            );
+        }
+    }
+    // ============================
+    // 💾 LƯU các loại vé
+    // ============================
+    $ticket_names    = isset($_POST['ticket_name']) ? $_POST['ticket_name'] : [];
+    $ticket_contents = isset($_POST['ticket_desc']) ? $_POST['ticket_desc'] : [];
+    // 🔥 Nếu edit → xoá vé cũ
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_bolac_2 WHERE articlelist_id = ?",
+        [$id]
+    );
+    if (!empty($ticket_names)) {
+
+        foreach ($ticket_names as $key => $name) {
+    
+            $name = trim($name);
+            $content = isset($ticket_contents[$key]) ? trim($ticket_contents[$key]) : '';
+    
+            if ($name == '' && $content == '') continue;
+    
+            $GLOBALS['sp']->Execute(
+                "INSERT INTO {$GLOBALS['db_sp']}.articlelist_bolac_2
+                (articlelist_id, name, content, languageid)
+                VALUES (?, ?, ?, ?)",
+                [$id, $name, $content, 1]
+            );
+        }
+    
+    }
+    // ============================
+    // 💾 LƯU VÉ HÁI HOA
+    // ============================
+
+    $name_haihoa    = isset($_POST['name_haihoa']) ? $_POST['name_haihoa'] : '';
+    $haihoa  = isset($_POST['haihoa']) ? $_POST['haihoa'] : '';
+    // 🔥 Nếu edit → xoá toàn bộ điểm đón cũ
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_haihoa WHERE articlelist_id = ?",
+        [$id]
+    );
+
+    if (!empty($name_haihoa)) {
+
+        $GLOBALS['sp']->Execute(
+            "INSERT INTO {$GLOBALS['db_sp']}.articlelist_haihoa
+            (articlelist_id, name, content, languageid)
+            VALUES (?, ?, ?, ?)",
+            [$id, $name_haihoa, $haihoa, 1]
+        );
+    }
+    // ============================
+    // 💾 LƯU VÉ bò lạc
+    // ============================
+
+    $name_bolac    = isset($_POST['name_bolac']) ? $_POST['name_bolac'] : '';
+    $bolac  = isset($_POST['bolac']) ? $_POST['bolac'] : '';
+    // 🔥 Nếu edit → xoá toàn bộ điểm đón cũ
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_bolac WHERE articlelist_id = ?",
+        [$id]
+    );
+
+    if (!empty($name_bolac)) {
+
+        $GLOBALS['sp']->Execute(
+            "INSERT INTO {$GLOBALS['db_sp']}.articlelist_bolac
+            (articlelist_id, name, content, languageid)
+            VALUES (?, ?, ?, ?)",
+            [$id, $name_bolac, $bolac, 1]
+        );
+    }  
+    // ============================
+    // 💾 LƯU cung duong
+    // ============================
+
+    $name_cungduong = isset($_POST['name_cungduong']) ? trim($_POST['name_cungduong']) : '';
+    $cungduong      = isset($_POST['cungduong']) ? trim($_POST['cungduong']) : '';
+    // 🔥 Nếu edit → xoá toàn bộ điểm đón cũ
+   // xoá dữ liệu cũ
+    $GLOBALS['sp']->Execute(
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_thongtin WHERE articlelist_id = ?",
+        [$id]
+    );
+
+    if ($name_cungduong != '' || $cungduong != '') {
+
+        $GLOBALS['sp']->Execute(
+            "INSERT INTO {$GLOBALS['db_sp']}.articlelist_thongtin
+            (articlelist_id, name, content, languageid)
+            VALUES (?, ?, ?, ?)",
+            [$id, $name_cungduong, $cungduong, 1]
+        );
     }
 }

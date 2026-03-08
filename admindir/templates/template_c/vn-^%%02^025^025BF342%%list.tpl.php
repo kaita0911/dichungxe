@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 14:03:05
+<?php /* Smarty version 2.6.30, created on 2026-02-03 14:03:39
          compiled from articlelist/list.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/list.tpl', 21, false),array('modifier', 'count', 'articlelist/list.tpl', 54, false),array('modifier', 'escape', 'articlelist/list.tpl', 155, false),array('modifier', 'date_format', 'articlelist/list.tpl', 174, false),)), $this); ?>

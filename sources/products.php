@@ -1,6 +1,7 @@
 <?php
 switch ($act) {
     case "detail":
+        
         // ==============================
         // 1️⃣ CHI TIẾT SẢN PHẨM
         // ==============================
@@ -14,6 +15,136 @@ switch ($act) {
             WHERE d.unique_key = '{$unique_key}'
         ";
         $rs = $GLOBALS["sp"]->getRow($sql);
+
+        // ✅ ID sản phẩm
+        $rs_id = $GLOBALS['sp']->getRow("
+            SELECT articlelist_id 
+            FROM {$GLOBALS['db_sp']}.articlelist_detail 
+            WHERE unique_key = '{$unique_key}' AND languageid = {$langid}
+        ");
+        $article_id = isset($rs_id['articlelist_id']) ? (int)$rs_id['articlelist_id'] : 0;
+
+        ////lấy điểm đón định vị
+       
+        $sql_diemdon = "
+                SELECT *
+                FROM {$GLOBALS['db_sp']}.articlelist_diemdon
+                WHERE articlelist_id = {$article_id}
+                AND languageid = {$langid}
+                ORDER BY id ASC
+            ";
+    
+        $diemdon = $GLOBALS['sp']->getAll($sql_diemdon);
+        $smarty->assign("diemdon", $diemdon);
+        //lịch trình
+    
+        $sql_lichtrinh = "
+        SELECT *
+        FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh
+        WHERE articlelist_id = {$article_id}
+        AND languageid = {$langid}
+        ORDER BY id ASC
+        ";
+        $lichtrinh = $GLOBALS['sp']->getAll($sql_lichtrinh);
+        // 🔥 Lấy mô tả cho từng lịch trình
+        if (!empty($lichtrinh)) {
+        
+            foreach ($lichtrinh as $k => $lt) {
+        
+                $sql_mota = "
+                SELECT mota
+                FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
+                WHERE lichtrinh_id = {$lt['id']}
+                ORDER BY id ASC
+                ";
+        
+                $mota = $GLOBALS['sp']->getAll($sql_mota);
+        
+                $lichtrinh[$k]['extra'] = array_column($mota, 'mota');
+            }
+        }
+        
+        $smarty->assign("lichtrinhtrongngay", $lichtrinh);
+
+       ////
+        $sql_lichtrinh_quadem = "
+        SELECT *
+        FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
+        WHERE articlelist_id = {$article_id}
+        AND languageid = {$langid}
+        ORDER BY day ASC, id ASC
+        ";
+
+        $rows = $GLOBALS['sp']->getAll($sql_lichtrinh_quadem);
+
+        $days = [];
+
+        foreach ($rows as $row) {
+            $day = $row['day'];
+
+            if (!isset($days[$day])) {
+                $days[$day] = [
+                    'day_content' => $row['day_content'],
+                    'items' => []
+                ];
+            }
+
+            $days[$day]['items'][] = [
+                'name' => $row['name'],
+                'content' => $row['content']
+            ];
+        }
+
+        $smarty->assign("days", $days);
+        ////cung đường
+        $sql_cungduong = "
+        SELECT *
+        FROM {$GLOBALS['db_sp']}.articlelist_thongtin
+        WHERE articlelist_id = {$article_id}
+        AND languageid = {$langid}
+        ORDER BY id ASC
+        LIMIT 1
+        ";
+        
+        $cungduong = $GLOBALS['sp']->getRow($sql_cungduong);
+        $smarty->assign("cungduong", $cungduong);
+        //haihoa
+         $sql_haihoa = "
+         SELECT *
+         FROM {$GLOBALS['db_sp']}.articlelist_haihoa
+         WHERE articlelist_id = {$article_id}
+         AND languageid = {$langid}
+         ORDER BY id ASC
+         LIMIT 1
+         ";
+         
+         $haihoa = $GLOBALS['sp']->getRow($sql_haihoa);
+         $smarty->assign("haihoa", $haihoa);
+         //BOLAC
+         $sql_bolac = "
+         SELECT *
+         FROM {$GLOBALS['db_sp']}.articlelist_bolac
+         WHERE articlelist_id = {$article_id}
+         AND languageid = {$langid}
+         ORDER BY id ASC
+         LIMIT 1
+         ";
+         $bolac = $GLOBALS['sp']->getRow($sql_bolac);
+         $smarty->assign("bolac", $bolac);
+        // ===== LẤY DANH SÁCH VÉ =====
+        $sql_ticket = "
+        SELECT *
+        FROM {$GLOBALS['db_sp']}.articlelist_bolac_2
+        WHERE articlelist_id = {$article_id}
+        AND languageid = {$langid}
+        ORDER BY id ASC
+        ";
+
+        $tickets = $GLOBALS['sp']->getAll($sql_ticket);
+
+        $smarty->assign("tickets", $tickets);
+        // ====== LỊCH TRÌNH ======
+      
         // Lấy nội dung bài viết
         $content = $rs['content'];
         // Gọi hàm tạo mục lục
@@ -40,13 +171,7 @@ switch ($act) {
             $smarty->assign("c_ttl", $rs['name']);
         }
 
-        // ✅ ID sản phẩm
-        $rs_id = $GLOBALS['sp']->getRow("
-            SELECT articlelist_id 
-            FROM {$GLOBALS['db_sp']}.articlelist_detail 
-            WHERE unique_key = '{$unique_key}' AND languageid = {$langid}
-        ");
-        $article_id = isset($rs_id['articlelist_id']) ? (int)$rs_id['articlelist_id'] : 0;
+        
         //$smarty->assign('article_id', $article_id);
         //$smarty->assign('total_images', $article_id);
         // lấy mã sản phẩm
@@ -102,30 +227,12 @@ switch ($act) {
 
         $smarty->assign('product_codes', $valid_codes);
 
-        // // ✅ Màu sắc
-        // $sql = "
-        //     SELECT d.name, d.code, d.id
-        //     FROM {$GLOBALS['db_sp']}.articlelist_color AS a
-        //     LEFT JOIN {$GLOBALS['db_sp']}.colors AS d ON d.id = a.color_id
-        //     WHERE a.articlelist_id = {$article_id}
-        // ";
-        // $smarty->assign('colors', $GLOBALS["sp"]->GetAll($sql));
-
-        // // ✅ Kích thước
-        // $sql = "
-        //     SELECT d.name, d.id
-        //     FROM {$GLOBALS['db_sp']}.articlelist_size AS a
-        //     LEFT JOIN {$GLOBALS['db_sp']}.size AS d ON d.id = a.size_id
-        //     WHERE a.articlelist_id = {$article_id}
-        // ";
-        // $smarty->assign('sizes', $GLOBALS["sp"]->GetAll($sql));
-
         // ✅ Hình ảnh
         $sqlCount = "
-    SELECT COUNT(*) 
-    FROM {$GLOBALS['db_sp']}.gallery_sp
-    WHERE articlelist_id = {$article_id}
-";
+            SELECT COUNT(*) 
+            FROM {$GLOBALS['db_sp']}.gallery_sp
+            WHERE articlelist_id = {$article_id}
+        ";
         $totalImages = (int)$GLOBALS['sp']->getOne($sqlCount);
 
         $smarty->assign('total_images', $totalImages);

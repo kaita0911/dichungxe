@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-12-04 11:41:01
+<?php /* Smarty version 2.6.30, created on 2026-02-03 17:13:59
          compiled from infos/edit_default.tpl */ ?>
 <div class="item">
     <div class="title">Nội dung</div>

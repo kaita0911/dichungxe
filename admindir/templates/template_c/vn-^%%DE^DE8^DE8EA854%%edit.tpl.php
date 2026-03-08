@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 14:00:20
+<?php /* Smarty version 2.6.30, created on 2026-03-07 11:07:00
          compiled from articlelist/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 204, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 269, false),array('modifier', 'default', 'articlelist/edit.tpl', 310, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 338, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 365, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 423, false),array('modifier', 'default', 'articlelist/edit.tpl', 461, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 480, false),)), $this); ?>
 <div class="contentmain">
   <div class="main">
     <div class="left_sidebar padding10">
@@ -62,10 +62,11 @@ unset($_smarty_tpl_vars);
                   <div class="info-title">
                     <input type="text" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
 ][name]" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
-" id="title_<?php echo $this->_tpl_vars['lang']['code']; ?>
-" class="InputText title-input"
-                      value="<?php echo ((is_array($_tmp=$this->_tpl_vars['detail']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
-" <?php if ($this->_tpl_vars['lang']['code'] == 'vi'): ?>required<?php endif; ?> />
+"
+                      id="title_<?php echo $this->_tpl_vars['lang']['code']; ?>
+" class="InputText title-input" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['detail']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
+"
+                      <?php if ($this->_tpl_vars['lang']['code'] == 'vi'): ?>required<?php endif; ?> />
                   </div>
                 </div>
                 <div class="item">
@@ -73,13 +74,224 @@ unset($_smarty_tpl_vars);
                   <div class="info-title">
                     <input type="text" id="slug_<?php echo $this->_tpl_vars['lang']['code']; ?>
 " name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][unique_key]" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
-"
-                      value="<?php echo $this->_tpl_vars['detail']['unique_key']; ?>
-"
-                      class="InputText slug-input" />
+][unique_key]"
+                      data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
+" value="<?php echo $this->_tpl_vars['detail']['unique_key']; ?>
+" class="InputText slug-input" />
                   </div>
                 </div>
+                <?php if ($this->_tpl_vars['tinhnang']['id'] == 2): ?>
+                <div class="item">
+                  <div class="title --cuz">Điểm đón / Định vị </div>
+
+                  <div id="tripList" class="trip-list">
+
+                    <?php $_from = $this->_tpl_vars['diemdons']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['loop'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['loop']['total'] > 0):
+    foreach ($_from as $this->_tpl_vars['trip']):
+        $this->_foreach['loop']['iteration']++;
+?>
+                    <div class="trip-item">
+                      <button type="button" class="remove-trip btn-del-more">Xoá</button>
+                      <div class="flex-lt">
+                        <input type="text" class="more-input time" name="trip_time[]" value="<?php echo $this->_tpl_vars['trip']['time']; ?>
+"
+                          placeholder="Thời gian">
+                        <input type="text" class="more-input" name="trip_title[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['trip']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+"
+                          placeholder="Tiêu đề">
+                      </div>
+
+                      <input type="text" class="more-input" name="trip_link[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['trip']['link'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+"
+                        placeholder="Link">
+                      <input type="text" class="more-input" name="trip_location[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['trip']['location'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+"
+                        placeholder="Định vị">
+                      <input type="text" class="more-input" name="trip_content[]" value="<?php echo $this->_tpl_vars['trip']['content']; ?>
+"
+                        placeholder="Nội dung">
+                      <!-- <textarea class="trip-editor" name="trip_content[]" rows="3"><?php echo $this->_tpl_vars['trip']['content']; ?>
+</textarea> -->
+
+                    </div>
+                    <?php endforeach; endif; unset($_from); ?>
+                  </div>
+                  <div id="addTripBtn" class="brn-add-more">+ Add mốc thời gian</div>
+                </div>
+                <div class="item">
+                  <div class="title --cuz">Lịch trình dự kiến </div>
+                  <div id="scheduleList" class="trip-list">
+                    <?php $_from = $this->_tpl_vars['lichtrinhtrongngay']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['k'] => $this->_tpl_vars['schedule']):
+?>
+                    <div class="schedule-item" data-index="<?php echo $this->_tpl_vars['k']; ?>
+">
+                      <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+                      <input type="text" class="more-input" name="schedule_time[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['schedule']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+"
+                        placeholder="Thời gian">
+                      <input type="text" class="more-input" name="schedule_content[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['schedule']['content'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+"
+                        placeholder="Nội dung">
+                      <div class="extra-content-list">
+                        <?php $_from = $this->_tpl_vars['schedule']['extra']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['extra']):
+?>
+                        <div class="extra-item">
+                          <textarea class="extra-editor" name="schedule_extra_content[<?php echo $this->_tpl_vars['k']; ?>
+][]"
+                            rows="3"><?php echo ((is_array($_tmp=$this->_tpl_vars['extra'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</textarea>
+                          <button type="button" class="remove-extra">X</button>
+                        </div>
+                        <?php endforeach; endif; unset($_from); ?>
+                      </div>
+                      <button type="button" class="add-extra-content">
+                        + Thêm nội dung (nếu có)
+                      </button>
+                    </div>
+                    <?php endforeach; endif; unset($_from); ?>
+                  </div>
+                  <div id="dayList">
+                    <?php $_from = $this->_tpl_vars['days']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['day'] => $this->_tpl_vars['data']):
+?>
+
+                    <div class="day-item">
+
+                      <div class="day-header">
+                        <strong>Ngày <?php echo $this->_tpl_vars['day']; ?>
+</strong>
+                        <button type="button" class="remove-day">Xoá ngày</button>
+                      </div>
+
+                      <input type="text" class="more-input" name="day_content[<?php echo $this->_tpl_vars['day']; ?>
+]"
+                        value="<?php echo ((is_array($_tmp=$this->_tpl_vars['data']['day_content'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" placeholder="Nội dung ngày">
+
+                      <div class="schedule-list">
+
+                        <?php $_from = $this->_tpl_vars['data']['items']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['i'] => $this->_tpl_vars['row']):
+?>
+
+                        <div class="schedule-item">
+
+                          <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+
+                          <input type="text" class="more-input" name="schedule_name_more[<?php echo $this->_tpl_vars['day']; ?>
+][<?php echo $this->_tpl_vars['i']; ?>
+]"
+                            value="<?php echo ((is_array($_tmp=$this->_tpl_vars['row']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" placeholder="Tên">
+
+                          <input type="text" class="more-input" name="schedule_content_more[<?php echo $this->_tpl_vars['day']; ?>
+][<?php echo $this->_tpl_vars['i']; ?>
+]"
+                            value="<?php echo ((is_array($_tmp=$this->_tpl_vars['row']['content'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" placeholder="Nội dung">
+
+                        </div>
+
+                        <?php endforeach; endif; unset($_from); ?>
+
+                      </div>
+
+                      <button type="button" class="add-schedule brn-add-more" data-day="<?php echo $this->_tpl_vars['day']; ?>
+">
+                        + Thêm nội dung
+                      </button>
+
+                    </div>
+                    <?php endforeach; endif; unset($_from); ?>
+                  </div>
+                </div>
+                <div id="addScheduleBtn" class="brn-add-more">+ Thêm lịch trình (trong ngày)</div>
+                <div id="addDayBtn" class="brn-add-more">+ Thêm lịch trình (qua đêm)</div>
+
+                <div class="item">
+                  <div class="title">Mô tả cung đường</div>
+                  <div class="meta">
+                    <textarea id="short_<?php echo $this->_tpl_vars['lang']['id']; ?>
+" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][short]"><?php echo $this->_tpl_vars['detail']['short']; ?>
+</textarea>
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="title --cuz">Thông tin cung đường</div>
+
+                  <div class="trip-item">
+                    <input type="text" name="name_cungduong" class="InputText more-input" value="<?php echo $this->_tpl_vars['cungduong']['name']; ?>
+" />
+                    <textarea class="trip-editor" id="cungduong" name="cungduong"
+                      rows="3"><?php echo $this->_tpl_vars['cungduong']['content']; ?>
+</textarea>
+                  </div>
+
+                </div>
+                <div class="item">
+                  <div class="title --cuz">Các loại vé</div>
+                  <div class="trip-item">
+                    <input type="text" name="name_haihoa" class="more-input" value='<?php echo $this->_tpl_vars['haihoa']['name']; ?>
+' />
+                    <textarea class="trip-editor" id="haihoa" name="haihoa" rows="3"><?php echo $this->_tpl_vars['haihoa']['content']; ?>
+</textarea>
+                  </div>
+                  <div class="trip-item">
+                    <input type="text" name="name_bolac" class="more-input" value='<?php echo $this->_tpl_vars['bolac']['name']; ?>
+' />
+                    <textarea class="trip-editor" id="bolac" name="bolac" rows="3"><?php echo $this->_tpl_vars['bolac']['content']; ?>
+</textarea>
+                  </div>
+                  <div id="ticket-list">
+                    <?php $_from = $this->_tpl_vars['tickets']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['ticket']):
+?>
+                    <div class="ticket-item">
+                      <button type="button" class="remove-ticket btn-del-more">Xoá</button>
+                      <input class="more-input" type="text" name="ticket_name[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['ticket']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+"
+                        placeholder="Tên loại vé">
+                      <textarea class="ticket-editor" name="ticket_desc[]"><?php echo ((is_array($_tmp=$this->_tpl_vars['ticket']['content'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</textarea>
+                    </div>
+                    <?php endforeach; endif; unset($_from); ?>
+                  </div>
+                  <div id="add-ticket" class="brn-add-more">
+                    + Thêm loại vé
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="title --cuz">Cần chuẩn bị</div>
+                  <div class="meta">
+                    <textarea id="content_<?php echo $this->_tpl_vars['lang']['id']; ?>
+" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][content]"><?php echo $this->_tpl_vars['detail']['content']; ?>
+</textarea>
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="title --cuz">Lưu ý quan trọng</div>
+                  <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][luuy]" id="luuy_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"><?php echo $this->_tpl_vars['detail']['luuy']; ?>
+</textarea>
+                </div>
+
+                <div class="item">
+                  <div class="title">Mô tả nhỏ</div>
+                  <div class="meta">
+                    <textarea id="shortmore_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"
+                      name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][short_more]"><?php echo $this->_tpl_vars['detail']['short_more']; ?>
+</textarea>
+                  </div>
+                </div>
+                <?php else: ?>
                 <?php if ($this->_tpl_vars['tinhnang']['short'] == 1): ?>
                 <div class="item">
                   <div class="title">Mô tả ngắn</div>
@@ -102,16 +314,6 @@ unset($_smarty_tpl_vars);
                   </div>
                 </div>
                 <?php endif; ?>
-                <?php if ($this->_tpl_vars['tinhnang']['id'] == 2): ?>
-                <div class="item">
-                  <div class="title">Mô tả nhỏ</div>
-                  <div class="meta">
-                    <textarea id="shortmore_<?php echo $this->_tpl_vars['lang']['id']; ?>
-" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][short_more]"><?php echo $this->_tpl_vars['detail']['short_more']; ?>
-</textarea>
-                  </div>
-                </div>
                 <?php endif; ?>
                 <?php if ($this->_tpl_vars['tinhnang']['metatag'] == 1): ?>
                 <div class="item">
@@ -120,7 +322,8 @@ unset($_smarty_tpl_vars);
 ">
                     <input type="hidden" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
 ][tags]" class="tagsInput" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
-" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['detail']['tagsJson'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html') : smarty_modifier_escape($_tmp, 'html')); ?>
+"
+                      value="<?php echo ((is_array($_tmp=$this->_tpl_vars['detail']['tagsJson'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html') : smarty_modifier_escape($_tmp, 'html')); ?>
 ">
                     <div class="tagContainer" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
 ">
@@ -135,7 +338,8 @@ unset($_smarty_tpl_vars);
                   <div class="title">Meta Descriptions</div>
                   <div class="meta">
                     <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][des]" class="InputTextarea" id="inputDesc"><?php echo $this->_tpl_vars['detail']['des']; ?>
+][des]" class="InputTextarea"
+                      id="inputDesc"><?php echo $this->_tpl_vars['detail']['des']; ?>
 </textarea>
                     <span id="showNumDesc" style="color:#ed1b24;">0</span>
                   </div>
@@ -143,6 +347,16 @@ unset($_smarty_tpl_vars);
                 <?php endif; ?>
               </div>
               <?php endforeach; endif; unset($_from); ?>
+              <div class="divright" style="padding: 0;">
+                <div class="acti2">
+                  <button type="submit" class="add">
+                    <i class="fa fa-save"></i> Save
+                  </button>
+                </div>
+                <div class="acti2">
+                  <a class="add" href="javascript:history.go(-1)"><i class="fa fa-mail-reply"></i> Trở về</a>
+                </div>
+              </div>
             </div>
             <div class="right100">
 
@@ -178,8 +392,7 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['node']):
 ?>
                     <label> <input type="radio" name="brand_id" value="<?php echo $this->_tpl_vars['node']['id']; ?>
-"
-                        <?php if ($this->_tpl_vars['node']['id'] == $this->_tpl_vars['selectedBrandId']): ?>checked<?php endif; ?>>
+" <?php if ($this->_tpl_vars['node']['id'] == $this->_tpl_vars['selectedBrandId']): ?>checked<?php endif; ?>>
                       <?php echo ((is_array($_tmp=$this->_tpl_vars['node']['detail_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
 </label>
                     <?php endforeach; endif; unset($_from); ?>
@@ -213,16 +426,15 @@ unset($_smarty_tpl_vars);
                   <?php if ($this->_tpl_vars['articlelist']['img_thumb_vn'] != ""): ?>
                   <!-- Ảnh cũ -->
                   <img id="current-img" src="/<?php echo $this->_tpl_vars['articlelist']['img_thumb_vn']; ?>
-?width=100&height=100&mode=cover" height="60" style="display:block; margin-bottom:8px;">
+" height="60"
+                    style="display:block; margin-bottom:8px;">
                   <?php endif; ?>
 
                   <label for="img_thumb_vn" class="custom-upload">
                     <i class="fa fa-upload"></i> Upload image
                   </label>
                   <!-- Input chọn ảnh -->
-                  <input type="file"
-                    accept="image/png,image/gif,image/jpeg,image/jpg"
-                    name="img_thumb_vn"
+                  <input type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="img_thumb_vn"
                     id="img_thumb_vn" class="img-thumb-input">
 
                   <!-- Preview ảnh mới -->
@@ -239,7 +451,8 @@ unset($_smarty_tpl_vars);
                   <label for="multiimages" class="custom-upload">
                     <i class="fa fa-upload"></i> Upload multi images
                   </label>
-                  <input type="file" name="multiimages[]" id="multiimages" accept="image/png, image/jpeg, image/jpg, image/gif" multiple>
+                  <input type="file" name="multiimages[]" id="multiimages"
+                    accept="image/png, image/jpeg, image/jpg, image/gif" multiple>
                   <div class="preview-gallery">
                     <?php $_from = $this->_tpl_vars['multiimages']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['img']):
@@ -248,7 +461,7 @@ unset($_smarty_tpl_vars);
 " data-num="<?php echo $this->_tpl_vars['img']['num']; ?>
 ">
                       <img src="/<?php echo $this->_tpl_vars['img']['img_vn']; ?>
-?width=100&height=100&mode=cover" />
+" />
                       <div class="overlay">
                         <button type="button" class="remove-image" data-id="<?php echo $this->_tpl_vars['img']['id']; ?>
 ">&times;</button>
@@ -269,13 +482,10 @@ unset($_smarty_tpl_vars);
                     Ảnh màu <?php echo $this->_tpl_vars['attr']['color_name']; ?>
 
                   </h4>
-                  <input type="file"
-                    name="images[<?php echo ((is_array($_tmp=$this->_tpl_vars['attr']['color_code'])) ? $this->_run_mod_handler('replace', true, $_tmp, '#', '') : smarty_modifier_replace($_tmp, '#', '')); ?>
+                  <input type="file" name="images[<?php echo ((is_array($_tmp=$this->_tpl_vars['attr']['color_code'])) ? $this->_run_mod_handler('replace', true, $_tmp, '#', '') : smarty_modifier_replace($_tmp, '#', '')); ?>
 ][]"
                     data-color-code="<?php echo $this->_tpl_vars['attr']['color_code']; ?>
-"
-                    multiple
-                    accept="image/*">
+" multiple accept="image/*">
                 </div>
                 <!-- ảnh đã upload -->
                 <div class="preview-gallery">
@@ -287,9 +497,7 @@ unset($_smarty_tpl_vars);
 ">
                     <img src="/<?php echo $this->_tpl_vars['img']['img_vn']; ?>
 ?width=100&height=100&mode=contain" />
-                    <button type="button"
-                      class="btn-delete-image remove-image"
-                      data-id="<?php echo $this->_tpl_vars['img']['id']; ?>
+                    <button type="button" class="btn-delete-image remove-image" data-id="<?php echo $this->_tpl_vars['img']['id']; ?>
 ">
                       ✖
                     </button>
@@ -347,11 +555,8 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                     <li><label>
-                        <input type="checkbox"
-                          name="colorids[]"
-                          value="<?php echo $this->_tpl_vars['item']['id']; ?>
-"
-                          <?php if (is_array($this->_tpl_vars['selected_color']) && in_array ( $this->_tpl_vars['item']['id'] , $this->_tpl_vars['selected_color'] )): ?>checked="checked" <?php endif; ?>>
+                        <input type="checkbox" name="colorids[]" value="<?php echo $this->_tpl_vars['item']['id']; ?>
+" <?php if (is_array($this->_tpl_vars['selected_color']) && in_array ( $this->_tpl_vars['item']['id'] , $this->_tpl_vars['selected_color'] )): ?>checked="checked" <?php endif; ?>>
                         <?php echo $this->_tpl_vars['item']['name']; ?>
 
                       </label></li>
@@ -369,11 +574,8 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                     <li><label>
-                        <input type="checkbox"
-                          name="sizeids[]"
-                          value="<?php echo $this->_tpl_vars['item']['id']; ?>
-"
-                          <?php if (is_array($this->_tpl_vars['selected_size']) && in_array ( $this->_tpl_vars['item']['id'] , $this->_tpl_vars['selected_size'] )): ?>checked="checked" <?php endif; ?>>
+                        <input type="checkbox" name="sizeids[]" value="<?php echo $this->_tpl_vars['item']['id']; ?>
+" <?php if (is_array($this->_tpl_vars['selected_size']) && in_array ( $this->_tpl_vars['item']['id'] , $this->_tpl_vars['selected_size'] )): ?>checked="checked" <?php endif; ?>>
                         <?php echo $this->_tpl_vars['item']['name']; ?>
 
                       </label></li>
@@ -397,23 +599,17 @@ unset($_smarty_tpl_vars);
                   <div class="product-code" data-index="<?php echo $this->_tpl_vars['productIndex']; ?>
 ">
                     <div class="product-handle" draggable="true">⇅</div>
-                    <input type="hidden"
-                      class="code-sort"
-                      name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
+                    <input type="hidden" class="code-sort" name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
 ][sort_order]"
                       value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['pc']['sort_order'])) ? $this->_run_mod_handler('default', true, $_tmp, 0) : smarty_modifier_default($_tmp, 0)); ?>
 " />
 
                     <div class="product-code-top">
                       <label>Mã sản phẩm:</label>
-                      <input type="text"
-                        name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
-][code]"
-                        value="<?php echo $this->_tpl_vars['pc']['code']; ?>
+                      <input type="text" name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
+][code]" value="<?php echo $this->_tpl_vars['pc']['code']; ?>
 " />
-                      <div
-                        class="remove-product"
-                        title="Xoá mã sản phẩm">❌</div>
+                      <div class="remove-product" title="Xoá mã sản phẩm">❌</div>
                     </div>
                     <button type="button" class="add-variant">➕ Thêm màu</button>
                     <div class="variant-wrapper">
@@ -423,51 +619,38 @@ unset($_smarty_tpl_vars);
                       <div class="variant-item">
                         <div class="variant-handle" draggable="true">⇅</div>
                         <div class="variant-item-flex">
-                          <input type="hidden"
-                            class="variant-sort"
+                          <input type="hidden" class="variant-sort"
                             name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
 ][variants][<?php echo $this->_tpl_vars['k']; ?>
 ][sort_order]"
                             value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['v']['sort_order'])) ? $this->_run_mod_handler('default', true, $_tmp, @$this->_tpl_vars['k']) : smarty_modifier_default($_tmp, @$this->_tpl_vars['k'])); ?>
 " />
-                          <input type="text"
-                            name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
+                          <input type="text" name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
 ][variants][<?php echo $this->_tpl_vars['k']; ?>
 ][color_name]"
                             value="<?php echo $this->_tpl_vars['v']['color_name']; ?>
-"
-                            placeholder="Tên màu" />
-                          <input type="text"
-                            class="price-input"
-                            name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
+" placeholder="Tên màu" />
+                          <input type="text" class="price-input" name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
 ][variants][<?php echo $this->_tpl_vars['k']; ?>
 ][price]"
                             value="<?php echo ((is_array($_tmp=$this->_tpl_vars['v']['price'])) ? $this->_run_mod_handler('number_format', true, $_tmp, 0, ',', '.') : number_format($_tmp, 0, ',', '.')); ?>
-"
-                            placeholder="Giá" />
+" placeholder="Giá" />
                           <div class="remove-variant">✖ </div>
                         </div>
                         <div class="variant-item-flex">
-                          <input type="color"
-                            class="color-picker"
+                          <input type="color" class="color-picker"
                             name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
 ][variants][<?php echo $this->_tpl_vars['k']; ?>
-][color_code]"
-                            value="<?php echo $this->_tpl_vars['v']['color_code']; ?>
+][color_code]" value="<?php echo $this->_tpl_vars['v']['color_code']; ?>
 " />
 
-                          <input type="text"
-                            class="color-code-text"
-                            value="<?php echo $this->_tpl_vars['v']['color_code']; ?>
-"
-                            style="width:90px" />
+                          <input type="text" class="color-code-text" value="<?php echo $this->_tpl_vars['v']['color_code']; ?>
+" style="width:90px" />
                           <!-- 🔑 LƯU MÀU CŨ -->
-                          <input type="hidden"
-                            class="old-color"
+                          <input type="hidden" class="old-color"
                             name="products[<?php echo $this->_tpl_vars['productIndex']; ?>
 ][variants][<?php echo $this->_tpl_vars['k']; ?>
-][old_color]"
-                            value="<?php echo $this->_tpl_vars['v']['color_code']; ?>
+][old_color]" value="<?php echo $this->_tpl_vars['v']['color_code']; ?>
 " />
                         </div>
                       </div>
@@ -518,8 +701,6 @@ unset($_smarty_tpl_vars);
               </div>
             </div>
           </div>
-        </div>
-
       </form>
     </div>
   </div>

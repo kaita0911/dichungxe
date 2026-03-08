@@ -31,44 +31,106 @@
                         <div class="item {$lang.code}">
                            <div class="title">Tiêu đề</div>
                            <div class="info-title">
-                              <input type="text" name="languages[{$lang.id}][name]" data-lang="{$lang.code}" id="title_{$lang.code}"
-                                 class="InputText title-input" {if $lang.code=='vi' }required{/if} />
+                              <input type="text" name="languages[{$lang.id}][name]" data-lang="{$lang.code}"
+                                 id="title_{$lang.code}" class="InputText title-input" {if $lang.code=='vi'
+                                 }required{/if} />
                            </div>
                         </div>
                         <div class="item">
                            <div class="title">URL</div>
                            <div class="info-title">
-                              <input type="text" id="slug_{$lang.code}" name="languages[{$lang.id}][unique_key]" data-lang="{$lang.code}"
-                                 class="InputText slug-input" />
+                              <input type="text" id="slug_{$lang.code}" name="languages[{$lang.id}][unique_key]"
+                                 data-lang="{$lang.code}" class="InputText slug-input" />
                            </div>
-                        </div> {if $tinhnang.short == 1}
+                        </div>
+                        {if $tinhnang.id == 2}
+                        <div class="item">
+                           <div class="title --cuz">Điểm đón / Định vị </div>
+
+                           <div id="tripList" class="trip-list"></div>
+                           <div id="addTripBtn" class="brn-add-more">+ Thêm mốc thời gian</div>
+
+                        </div>
+                        <div class="item">
+                           <div class="title --cuz">Lịch trình dự kiến </div>
+
+                           <div id="scheduleList" class="trip-list"></div>
+                           <div id="dayList" class="trip-list"></div>
+                           <div id="addScheduleBtn" class="brn-add-more">+ Thêm lịch trình (trong ngày)</div>
+
+                           <div id="addDayBtn" class="brn-add-more">+ Thêm ngày (qua đêm)</div>
+                        </div>
+
+                        <div class="item">
+                           <div class="title --cuz">Mô tả cung đường</div>
+                           <textarea name="languages[{$lang.id}][short]" id="short_{$lang.id}"></textarea>
+                        </div>
+                        <!-- <div class="item">
+                           <div class="title --cuz">Thông tin cung đường</div>
+                           <div class="trip-item">
+                              <input type="text" name="name_cungduong" class="InputText more-input"
+                                 placeholder="Tiêu đề" />
+                              <textarea name="cungduong" id="cungduong"></textarea>
+                           </div>
+                        </div> -->
+                        <div class="item">
+                           <div class="title --cuz">Các loại vé</div>
+                           <div class="trip-item">
+                              <input type="text" name="name_haihoa" class="more-input" placeholder="Tên loại vé" />
+                              <textarea name="haihoa" id="haihoa"></textarea>
+                           </div>
+                           <div class="trip-item">
+                              <input type="text" name="name_bolac" class="more-input" placeholder="Tên loại vé" />
+                              <textarea name="bolac" id="bolac"></textarea>
+                           </div>
+                           <div class="ticket-wrapper">
+                              <div id="ticket-list">
+                              </div>
+                              <div id="add-ticket" class="brn-add-more">+ Thêm loại vé</div>
+                           </div>
+                        </div>
+
+
+                        <div class="item">
+                           <div class="title --cuz">Cần chuẩn bị</div>
+                           <textarea name="languages[{$lang.id}][content]" id="content_{$lang.id}"></textarea>
+                        </div>
+                        <div class="item">
+                           <div class="title --cuz">Lưu ý quan trọng</div>
+                           <textarea name="languages[{$lang.id}][luuy]" id="luuy_{$lang.id}"></textarea>
+                        </div>
+                        <div class="item">
+                           <div class="title">Mô tả nhỏ</div>
+                           <div class="meta">
+                              <textarea name="languages[{$lang.id}][short_more]" id="short_more_{$lang.id}"></textarea>
+                           </div>
+                        </div>
+                        {else}
+                        {if $tinhnang.short == 1}
                         <div class="item">
                            <div class="title">Mô tả ngắn</div>
-                           <textarea name="languages[{$lang.id}][short]" id="short_$lang.id}"></textarea>
+                           <textarea name="languages[{$lang.id}][short]" id="short_{$lang.id}"></textarea>
                         </div>
                         {/if}
 
                         {if $tinhnang.des == 1}
                         <div class="item">
                            <div class="title">Mô tả chi tiết</div>
-                           <textarea name="languages[{$lang.id}][content]" id="content_$lang.id}"></textarea>
+                           <textarea name="languages[{$lang.id}][content]" id="content_{$lang.id}"></textarea>
                         </div>
                         {/if}
-                        {if $tinhnang.id == 2}
-                        <div class="item">
-                           <div class="title">Mô tả nhỏ</div>
-                           <div class="meta">
-                              <textarea name="languages[{$lang.id}][short_more]" id="short_more_$lang.id}"></textarea>
-                           </div>
-                        </div>
                         {/if}
+
+
                         {if $tinhnang.metatag == 1}
                         <div class="title">Meta Keywords</div>
                         <div class="tags-group" data-lang="{$lang.code}">
-                           <input type="hidden" name="languages[{$lang.id}][tags]" class="tagsInput" data-lang="{$lang.code}" value='[]'>
+                           <input type="hidden" name="languages[{$lang.id}][tags]" class="tagsInput"
+                              data-lang="{$lang.code}" value='[]'>
                            <div class="tagContainer" data-lang="{$lang.code}">
                               <div class="tagsWrapper" data-lang="{$lang.code}"></div>
-                              <input type="text" class="tagInput InputText" data-lang="{$lang.code}" placeholder="Nhập tag...">
+                              <input type="text" class="tagInput InputText" data-lang="{$lang.code}"
+                                 placeholder="Nhập tag...">
                            </div>
                         </div>
                         <div class="item">
@@ -79,6 +141,14 @@
                         {/if}
                      </div>
                      {/foreach}
+                     <div class="divright" style="padding: 0;">
+                        <div class="acti2">
+                           <button class="add" type="submit"><i class="fa fa-save"></i> Save</button>
+                        </div>
+                        <div class="acti2">
+                           <a class="add" href="javascript:history.go(-1)"><i class="fa fa-mail-reply"></i> Trở về</a>
+                        </div>
+                     </div>
                   </div>
                   <div class="right100">
 
@@ -117,8 +187,8 @@
                         <div class="selectlist">
                            <ul class="category-tree">
                               {foreach from=$brands item=node}
-                              <label> <input type="radio" name="brand_id" value="{$node.id}"
-                                    {if $node.id==$selectedBrandId}checked{/if}>
+                              <label> <input type="radio" name="brand_id" value="{$node.id}" {if
+                                    $node.id==$selectedBrandId}checked{/if}>
                                  {$node.detail_name|escape:'html':'UTF-8'}</label>
                               {/foreach}
                            </ul>
@@ -144,16 +214,15 @@
                         <div class="info-title">
                            {if $edit.img_thumb_vn neq ""}
                            <!-- Ảnh cũ -->
-                           <img id="current-img" src="../{$edit.img_thumb_vn}" height="60" style="display:block; margin-bottom:8px;">
+                           <img id="current-img" src="../{$edit.img_thumb_vn}" height="60"
+                              style="display:block; margin-bottom:8px;">
                            {/if}
 
                            <label for="img_thumb_vn" class="custom-upload">
                               <i class="fa fa-upload"></i> Upload image
                            </label>
                            <!-- Input chọn ảnh -->
-                           <input type="file"
-                              accept="image/png,image/gif,image/jpeg,image/jpg"
-                              name="img_thumb_vn"
+                           <input type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="img_thumb_vn"
                               id="img_thumb_vn" class="img-thumb-input">
 
                            <!-- Preview ảnh mới -->
@@ -214,9 +283,7 @@
                            <ul class="category-tree">
                               {foreach from=$colors item=item}
                               <li><label>
-                                    <input type="checkbox"
-                                       name="colorids[]"
-                                       value="{$item.id}">
+                                    <input type="checkbox" name="colorids[]" value="{$item.id}">
                                     {$item.name}
                                  </label></li>
                               {/foreach}
@@ -231,9 +298,7 @@
                            <ul class="category-tree">
                               {foreach from=$sizes item=item}
                               <li><label>
-                                    <input type="checkbox"
-                                       name="sizeids[]"
-                                       value="{$item.id}">
+                                    <input type="checkbox" name="sizeids[]" value="{$item.id}">
                                     {$item.name}
                                  </label></li>
                               {/foreach}
@@ -271,7 +336,8 @@
                      {/if}
                      <div class="item">
                         <div class="title">Show</div>
-                        <input type="checkbox" name="active" value="active" {if $edit.active eq 1 || $smarty.request.act eq 'add' }checked{/if}>
+                        <input type="checkbox" name="active" value="active" {if $edit.active eq 1 || $smarty.request.act
+                           eq 'add' }checked{/if}>
                      </div>
                   </div>
                </div>

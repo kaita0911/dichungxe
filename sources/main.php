@@ -164,7 +164,6 @@ if (!empty($categories)) {
           AND a.comp = 2
 
         ORDER BY a.num DESC
-        LIMIT 10
         ";
 
         $products = $GLOBALS['sp']->getAll($sqlProduct);

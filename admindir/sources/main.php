@@ -69,16 +69,65 @@ $smarty->assign('week_visits', $week);
 $smarty->assign('month_visits', $month);
 ////////////Thong ke link truy cap nhieu
 
-$top_urls = $GLOBALS['sp']->getAll("
-    SELECT url, COUNT(*) AS total
-    FROM {$GLOBALS['db_sp']}.visit_logs
-    GROUP BY url
-    ORDER BY total DESC
-    LIMIT 15
-");
-$smarty->assign('top_links', $top_urls);
-/////
+///thong ke truy cap theo tháng
 
+$rows = $GLOBALS['sp']->getAll("
+    SELECT 
+        MONTH(created_at) AS month,
+        url,
+        COUNT(*) AS total
+    FROM {$GLOBALS['db_sp']}.visit_logs
+    WHERE YEAR(created_at) = YEAR(CURDATE())
+    GROUP BY MONTH(created_at), url
+    ORDER BY month ASC, total DESC
+");
+/////
+$topByMonth = [];
+
+// tạo sẵn tháng 1 → 12
+for ($m = 1; $m <= 12; $m++) {
+    $topByMonth[$m] = [];
+}
+
+foreach ($rows as $row) {
+    $month = (int)$row['month'];
+
+    // mỗi tháng chỉ lấy 20 link đầu
+    if (count($topByMonth[$month]) < 20) {
+        $topByMonth[$month][] = $row;
+    }
+}
+
+$smarty->assign('topByMonth', $topByMonth);
+//$smarty->assign('year', date('Y'));
+
+// === Thống kê truy cập theo tháng (12 tháng) ===
+$months = array_fill(0, 12, 0);
+
+$rows = $GLOBALS['sp']->getAll("
+    SELECT MONTH(created_at) AS m, COUNT(*) AS total
+    FROM {$GLOBALS['db_sp']}.visit_logs
+    WHERE YEAR(created_at) = YEAR(CURDATE())
+    GROUP BY MONTH(created_at)
+");
+
+foreach ($rows as $row) {
+    $months[$row['m'] - 1] = (int)$row['total'];
+}
+
+$smarty->assign('months_json', json_encode($months));
+
+// Năm được chọn (GET), mặc định năm hiện tại
+$year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
+$years = $GLOBALS['sp']->getAll("
+    SELECT DISTINCT YEAR(created_at) AS y
+    FROM {$GLOBALS['db_sp']}.visit_logs
+    ORDER BY y DESC
+");
+
+$smarty->assign('years', $years);
+$smarty->assign('year', $year);
+/////////
 // === Thống kê theo tỉnh/thành phố Việt Nam ===
 $region_stats = $GLOBALS['sp']->GetAll("
     SELECT region, COUNT(*) AS total

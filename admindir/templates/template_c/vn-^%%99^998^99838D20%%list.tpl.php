@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2025-11-21 09:48:38
+<?php /* Smarty version 2.6.30, created on 2026-02-03 14:06:14
          compiled from language/list.tpl */ ?>
 <div class="contentmain">
    <div class="main">

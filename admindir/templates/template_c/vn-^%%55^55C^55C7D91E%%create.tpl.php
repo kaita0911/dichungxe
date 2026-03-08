@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 14:01:08
+<?php /* Smarty version 2.6.30, created on 2026-03-07 11:04:03
          compiled from articlelist/create.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/create.tpl', 10, false),array('modifier', 'count', 'articlelist/create.tpl', 22, false),array('modifier', 'escape', 'articlelist/create.tpl', 122, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/create.tpl', 10, false),array('modifier', 'count', 'articlelist/create.tpl', 22, false),array('modifier', 'escape', 'articlelist/create.tpl', 191, false),)), $this); ?>
 <div class="contentmain">
    <div class="main">
       <div class="left_sidebar padding10">
@@ -51,9 +51,9 @@ unset($_smarty_tpl_vars);
                            <div class="info-title">
                               <input type="text" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
 ][name]" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
-" id="title_<?php echo $this->_tpl_vars['lang']['code']; ?>
 "
-                                 class="InputText title-input" <?php if ($this->_tpl_vars['lang']['code'] == 'vi'): ?>required<?php endif; ?> />
+                                 id="title_<?php echo $this->_tpl_vars['lang']['code']; ?>
+" class="InputText title-input" <?php if ($this->_tpl_vars['lang']['code'] == 'vi'): ?>required<?php endif; ?> />
                            </div>
                         </div>
                         <div class="item">
@@ -61,15 +61,88 @@ unset($_smarty_tpl_vars);
                            <div class="info-title">
                               <input type="text" id="slug_<?php echo $this->_tpl_vars['lang']['code']; ?>
 " name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][unique_key]" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
-"
-                                 class="InputText slug-input" />
+][unique_key]"
+                                 data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
+" class="InputText slug-input" />
                            </div>
-                        </div> <?php if ($this->_tpl_vars['tinhnang']['short'] == 1): ?>
+                        </div>
+                        <?php if ($this->_tpl_vars['tinhnang']['id'] == 2): ?>
+                        <div class="item">
+                           <div class="title --cuz">Điểm đón / Định vị </div>
+
+                           <div id="tripList" class="trip-list"></div>
+                           <div id="addTripBtn" class="brn-add-more">+ Thêm mốc thời gian</div>
+
+                        </div>
+                        <div class="item">
+                           <div class="title --cuz">Lịch trình dự kiến </div>
+
+                           <div id="scheduleList" class="trip-list"></div>
+                           <div id="dayList" class="trip-list"></div>
+                           <div id="addScheduleBtn" class="brn-add-more">+ Thêm lịch trình (trong ngày)</div>
+
+                           <div id="addDayBtn" class="brn-add-more">+ Thêm ngày (qua đêm)</div>
+                        </div>
+
+                        <div class="item">
+                           <div class="title --cuz">Mô tả cung đường</div>
+                           <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][short]" id="short_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"></textarea>
+                        </div>
+                        <div class="item">
+                           <div class="title --cuz">Thông tin cung đường</div>
+                           <div class="trip-item">
+                              <input type="text" name="name_cungduong" class="InputText more-input"
+                                 placeholder="Tiêu đề" />
+                              <textarea name="cungduong" id="cungduong"></textarea>
+                           </div>
+                        </div>
+                        <div class="item">
+                           <div class="title --cuz">Các loại vé</div>
+                           <div class="trip-item">
+                              <input type="text" name="name_haihoa" class="more-input" placeholder="Tên loại vé" />
+                              <textarea name="haihoa" id="haihoa"></textarea>
+                           </div>
+                           <div class="trip-item">
+                              <input type="text" name="name_bolac" class="more-input" placeholder="Tên loại vé" />
+                              <textarea name="bolac" id="bolac"></textarea>
+                           </div>
+                           <div class="ticket-wrapper">
+                              <div id="ticket-list">
+                              </div>
+                              <div id="add-ticket" class="brn-add-more">+ Thêm loại vé</div>
+                           </div>
+                        </div>
+
+
+                        <div class="item">
+                           <div class="title --cuz">Cần chuẩn bị</div>
+                           <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][content]" id="content_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"></textarea>
+                        </div>
+                        <div class="item">
+                           <div class="title --cuz">Lưu ý quan trọng</div>
+                           <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][luuy]" id="luuy_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"></textarea>
+                        </div>
+                        <div class="item">
+                           <div class="title">Mô tả nhỏ</div>
+                           <div class="meta">
+                              <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
+][short_more]" id="short_more_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"></textarea>
+                           </div>
+                        </div>
+                        <?php else: ?>
+                        <?php if ($this->_tpl_vars['tinhnang']['short'] == 1): ?>
                         <div class="item">
                            <div class="title">Mô tả ngắn</div>
                            <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][short]" id="short_$lang.id}"></textarea>
+][short]" id="short_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"></textarea>
                         </div>
                         <?php endif; ?>
 
@@ -77,31 +150,28 @@ unset($_smarty_tpl_vars);
                         <div class="item">
                            <div class="title">Mô tả chi tiết</div>
                            <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][content]" id="content_$lang.id}"></textarea>
+][content]" id="content_<?php echo $this->_tpl_vars['lang']['id']; ?>
+"></textarea>
                         </div>
                         <?php endif; ?>
-                        <?php if ($this->_tpl_vars['tinhnang']['id'] == 2): ?>
-                        <div class="item">
-                           <div class="title">Mô tả nhỏ</div>
-                           <div class="meta">
-                              <textarea name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][short_more]" id="short_more_$lang.id}"></textarea>
-                           </div>
-                        </div>
                         <?php endif; ?>
+
+
                         <?php if ($this->_tpl_vars['tinhnang']['metatag'] == 1): ?>
                         <div class="title">Meta Keywords</div>
                         <div class="tags-group" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
 ">
                            <input type="hidden" name="languages[<?php echo $this->_tpl_vars['lang']['id']; ?>
-][tags]" class="tagsInput" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
+][tags]" class="tagsInput"
+                              data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
 " value='[]'>
                            <div class="tagContainer" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
 ">
                               <div class="tagsWrapper" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
 "></div>
                               <input type="text" class="tagInput InputText" data-lang="<?php echo $this->_tpl_vars['lang']['code']; ?>
-" placeholder="Nhập tag...">
+"
+                                 placeholder="Nhập tag...">
                            </div>
                         </div>
                         <div class="item">
@@ -113,6 +183,14 @@ unset($_smarty_tpl_vars);
                         <?php endif; ?>
                      </div>
                      <?php endforeach; endif; unset($_from); ?>
+                     <div class="divright" style="padding: 0;">
+                        <div class="acti2">
+                           <button class="add" type="submit"><i class="fa fa-save"></i> Save</button>
+                        </div>
+                        <div class="acti2">
+                           <a class="add" href="javascript:history.go(-1)"><i class="fa fa-mail-reply"></i> Trở về</a>
+                        </div>
+                     </div>
                   </div>
                   <div class="right100">
 
@@ -168,8 +246,7 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['node']):
 ?>
                               <label> <input type="radio" name="brand_id" value="<?php echo $this->_tpl_vars['node']['id']; ?>
-"
-                                    <?php if ($this->_tpl_vars['node']['id'] == $this->_tpl_vars['selectedBrandId']): ?>checked<?php endif; ?>>
+" <?php if ($this->_tpl_vars['node']['id'] == $this->_tpl_vars['selectedBrandId']): ?>checked<?php endif; ?>>
                                  <?php echo ((is_array($_tmp=$this->_tpl_vars['node']['detail_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
 </label>
                               <?php endforeach; endif; unset($_from); ?>
@@ -197,16 +274,15 @@ unset($_smarty_tpl_vars);
                            <?php if ($this->_tpl_vars['edit']['img_thumb_vn'] != ""): ?>
                            <!-- Ảnh cũ -->
                            <img id="current-img" src="../<?php echo $this->_tpl_vars['edit']['img_thumb_vn']; ?>
-" height="60" style="display:block; margin-bottom:8px;">
+" height="60"
+                              style="display:block; margin-bottom:8px;">
                            <?php endif; ?>
 
                            <label for="img_thumb_vn" class="custom-upload">
                               <i class="fa fa-upload"></i> Upload image
                            </label>
                            <!-- Input chọn ảnh -->
-                           <input type="file"
-                              accept="image/png,image/gif,image/jpeg,image/jpg"
-                              name="img_thumb_vn"
+                           <input type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="img_thumb_vn"
                               id="img_thumb_vn" class="img-thumb-input">
 
                            <!-- Preview ảnh mới -->
@@ -269,9 +345,7 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                               <li><label>
-                                    <input type="checkbox"
-                                       name="colorids[]"
-                                       value="<?php echo $this->_tpl_vars['item']['id']; ?>
+                                    <input type="checkbox" name="colorids[]" value="<?php echo $this->_tpl_vars['item']['id']; ?>
 ">
                                     <?php echo $this->_tpl_vars['item']['name']; ?>
 
@@ -290,9 +364,7 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                               <li><label>
-                                    <input type="checkbox"
-                                       name="sizeids[]"
-                                       value="<?php echo $this->_tpl_vars['item']['id']; ?>
+                                    <input type="checkbox" name="sizeids[]" value="<?php echo $this->_tpl_vars['item']['id']; ?>
 ">
                                     <?php echo $this->_tpl_vars['item']['name']; ?>
 
