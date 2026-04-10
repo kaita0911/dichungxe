@@ -410,6 +410,44 @@ $(".js-news").slick({
     },
   ],
 });
+$(".js-video").slick({
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  arrows: false,
+  dots: true,
+  infinite: true,
+  speed: 500,
+  autoplaySpeed: 3000,
+  responsive: [
+    {
+      breakpoint: 1200, // Dưới 1200px → 4 item
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+    {
+      breakpoint: 992, // Dưới 992px → 3 item
+      settings: {
+        slidesToShow: 3,
+      },
+    },
+    {
+      breakpoint: 768, // Dưới 768px → 2 item
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+    {
+      breakpoint: 480, // Dưới 480px → 1 item
+      settings: {
+        slidesToShow: 1,
+        arrows: false,
+        autoplay: true, // Bật tự chạy
+        autoplaySpeed: 5000, // 5000ms = 5 giây
+      },
+    },
+  ],
+});
 /////////////
 $(".js-mv").on("init", function (event, slick) {
   // Slide đầu tiên zoom ngay khi load

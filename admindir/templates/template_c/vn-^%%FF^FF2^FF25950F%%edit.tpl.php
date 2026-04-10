@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 17:11:18
+<?php /* Smarty version 2.6.30, created on 2026-03-27 14:38:26
          compiled from infos/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'infos/edit.tpl', 23, false),)), $this); ?>

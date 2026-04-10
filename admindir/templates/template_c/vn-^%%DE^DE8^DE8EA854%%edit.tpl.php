@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-03-07 11:07:00
+<?php /* Smarty version 2.6.30, created on 2026-04-09 08:24:12
          compiled from articlelist/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 365, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 423, false),array('modifier', 'default', 'articlelist/edit.tpl', 461, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 480, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 389, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 447, false),array('modifier', 'default', 'articlelist/edit.tpl', 485, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 504, false),)), $this); ?>
 <div class="contentmain">
   <div class="main">
     <div class="left_sidebar padding10">
@@ -220,6 +220,7 @@ if ($this->_foreach['loop']['total'] > 0):
 </textarea>
                   </div>
                 </div>
+                <!--
                 <div class="item">
                   <div class="title --cuz">Thông tin cung đường</div>
 
@@ -232,6 +233,7 @@ if ($this->_foreach['loop']['total'] > 0):
                   </div>
 
                 </div>
+-->
                 <div class="item">
                   <div class="title --cuz">Các loại vé</div>
                   <div class="trip-item">
@@ -415,6 +417,29 @@ unset($_smarty_tpl_vars);
                 <div class="info-title">
                   <input type="text" name="link_out" id="link_out" class="InputText" value="<?php echo $this->_tpl_vars['articlelist']['link_out']; ?>
 " />
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Video</div>
+                <div class="info-title">
+
+                  <?php if ($this->_tpl_vars['articlelist']['video'] != ""): ?>
+                  <video width="120" controls style="margin-bottom:10px;">
+                    <source src="../<?php echo $this->_tpl_vars['articlelist']['video']; ?>
+" type="video/mp4">
+                  </video>
+                  <?php endif; ?>
+
+                  <!-- Upload video -->
+                  <label for="video_file" class="custom-upload">
+                    <i class="fa fa-upload"></i> Upload video
+                  </label>
+
+                  <input type="file" name="video_file" id="video_file" accept="video/mp4,video/mov,video/avi">
+
+                  <!-- Preview video -->
+                  <video id="preview-video" width="250" controls style="display:none; margin-top:10px;"></video>
+
                 </div>
               </div>
               <?php endif; ?>

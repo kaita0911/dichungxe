@@ -369,6 +369,10 @@ span.subconten a {
   z-index: 1000;
   transition: transform 0.3s ease;
 }
+.divright.pad-0 {
+  padding: 0;
+  margin-bottom: 10px;
+}
 .divright.divseo input {
   background: #0089ff;
   border: none;
@@ -1086,8 +1090,7 @@ td.titles.paleft.brbottom.brleft {
   margin-bottom: 5px;
 }
 .left_sidebar .nav-item .nav-toggle, .nav-normal {
-  color: #fff;
-  font-size: 14px;
+  color: #eee;
   padding: 6px 8px 6px 10px;
   align-items: center;
   overflow: hidden;
@@ -1130,7 +1133,6 @@ td.titles.paleft.brbottom.brleft {
 .list-sidebar a {
   font-size: 13px;
   background: transparent;
-  \: 5px;
   border-radius: 30px;
   color: #fff;
   padding: 5px 10px;
@@ -1966,6 +1968,27 @@ th.width-ttl {
   transition: background 0.2s;
   cursor: pointer;
 }
+.delete-all {
+    background: #ff4d4f;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.delete-all:hover {
+    background: #d9363e;
+}
+
+/* trạng thái disable */
+.delete-all:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: #666;
+}
 .acti2 .add:hover {
   background-color: #0056b3;
 }
@@ -2489,7 +2512,7 @@ ul.category-tree ul {
   background-color: #007bff;
   color: #FFF;
 }
-input#img_thumb_vn, input#multiimages,input#img_vn {
+input#img_thumb_vn, input#multiimages,input#img_vn,#video_file {
   display: none;
 }
 .pagination-wrapper {
@@ -3470,4 +3493,123 @@ span.card-num {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.item-video video {
+  height: 70px;
+}
+.video-list {
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+  gap: 10px;
+}
+
+.video-list video {
+  width: 100%;
+}
+
+.upload-video {
+  margin: 20px 0;
+}
+
+/* khung upload */
+.upload-video .custom-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
+  height: 120px;
+  border: 2px dashed #d9d9d9;
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.upload-video .custom-upload i {
+  font-size: 28px;
+  color: #999;
+  margin-bottom: 8px;
+}
+.upload-video .custom-upload i.txt{
+  font-size: 13px;
+}
+.upload-video .custom-upload span {
+  font-size: 14px;
+  color: #666;
+}
+
+.upload-video .custom-upload:hover {
+  border-color: #1890ff;
+  background: #f0f8ff;
+  color: #1890ff;
+}
+
+.upload-video .custom-upload:hover i,
+.upload-video .custom-upload:hover span {
+  color: #1890ff;
+}
+
+/* ẩn input file */
+.upload-video input[type="file"] {
+  display: none;
+}
+/* từng item */
+#video-list .video-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+#video-list .video-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* video preview */
+#video-list .video-item video {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* input title */
+#video-list .video-item input {
+  margin-top: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+#video-list .video-item input:focus {
+  border-color: #1890ff;
+  outline: none;
+}
+
+/* nút xoá */
+#video-list .video-item .remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#video-list .video-item .remove:hover {
+  background: red;
 }

@@ -55,6 +55,20 @@
       </div>
       <div class="product-detail-des" itemprop="articleBody">
         <h1 class="ttl01 --detail" itemprop="headline">{$detail.name}</h1>
+        {if $videos}
+            <div class="box-videos">
+              <div class="box-videos__ttl">Video giới thiệu
+              </div><div class="video-list">
+                {foreach from=$videos item=item key=i}
+                <div class="video-item" data-index="{$i}">
+                  <video preload="metadata" autoplay="" loop="" muted="" playsinline="">
+                    <source src="{$item.video_file}" type="video/mp4">
+                  </video>
+                </div>
+                {/foreach}
+              </div>
+            </div>
+          {/if}
         <div class="list-pickup">
           {if $diemdon}
           <div class="pickup-box">
@@ -162,19 +176,7 @@
             </div>
           </div>
           {/if}
-          <!-- {if $cungduong}
-          <div class="pickup-box">
-            <div class="pickup-header">
-              {$cungduong.name}
-              <span class="pickup-arrow">▼</span>
-            </div>
-            <div class="pickup-body">
-              <div class="route-item">
-                {$cungduong.content}
-              </div>
-            </div>
-          </div>
-          {/if} -->
+        
           {if $haihoa}
           <div class="pickup-box">
             <div class="pickup-header">
@@ -251,6 +253,26 @@
             </div>
           </div>
           {/if}
+          <!-- {if $videos}
+          <div class="pickup-box">
+            <div class="pickup-header">
+              Video
+              <span class="pickup-arrow">▼</span>
+            </div>
+            <div class="pickup-body">
+              <div class="video-list">
+                {foreach from=$videos item=item key=i}
+                <div class="video-item" data-index="{$i}">
+                  <video preload="metadata">
+                    <source src="{$item.video_file}" type="video/mp4">
+                  </video>
+                </div>
+                {/foreach}
+              </div>
+            </div>
+           
+          </div>
+          {/if} -->
         </div>
       </div>
 
@@ -267,3 +289,99 @@
   {/if}
   </div>
 </main>
+<div id="videoPopup" class="video-popup">
+  <span class="close">×</span>
+
+  <video id="popupVideo" playsinline controls></video>
+
+  <div class="nav prev">❮</div>
+  <div class="nav next">❯</div>
+</div>
+<script>
+  const videoList = {$videos|@json_encode};
+</script>
+{literal}
+<script>
+
+  let currentIndex = 0;
+
+  const popup = document.getElementById("videoPopup");
+  const video = document.getElementById("popupVideo");
+
+  // 👉 CLICK ITEM
+  document.querySelector(".video-list").addEventListener("click", function (e) {
+    const item = e.target.closest(".video-item");
+    if (!item) return;
+
+    currentIndex = Number(item.dataset.index);
+    openPopup();
+  });
+
+  // 👉 OPEN
+  function openPopup() {
+    popup.style.display = "flex";
+    playCurrent();
+  }
+
+  // 👉 CLOSE
+  document.querySelector(".close").onclick = closePopup;
+
+  function closePopup() {
+    popup.style.display = "none";
+    video.pause();
+    video.src = "";
+  }
+
+  // 👉 NEXT / PREV
+  document.querySelector(".next").onclick = nextVideo;
+  document.querySelector(".prev").onclick = prevVideo;
+
+  function nextVideo() {
+    currentIndex = (currentIndex + 1) % videoList.length;
+    playCurrent();
+  }
+
+  function prevVideo() {
+    currentIndex = (currentIndex - 1 + videoList.length) % videoList.length;
+    playCurrent();
+  }
+
+  // 👉 PLAY
+  function playCurrent() {
+    video.src = videoList[currentIndex].video_file;
+    video.play();
+  }
+
+  // 👉 AUTO NEXT
+  video.addEventListener("ended", nextVideo);
+
+
+  // =====================
+  // 👉 SWIPE MOBILE 🔥
+  // =====================
+  let startX = 0;
+
+  popup.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+
+  popup.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if (startX - endX > 50) {
+      nextVideo(); // swipe left
+    }
+    if (endX - startX > 50) {
+      prevVideo(); // swipe right
+    }
+  });
+  // click vào nền (ngoài video)
+  popup.addEventListener("click", function (e) {
+    // nếu click đúng vào nền (không phải video hay nút)
+    if (e.target === popup) {
+      closePopup();
+    }
+  });
+</script>
+
+{/literal}

@@ -274,6 +274,7 @@
   display: block;
   overflow: hidden;
   height: 25rem;
+  border-radius: 1rem;
 }
 @media (min-width: 768px) {
   .p-news .news-item__img {

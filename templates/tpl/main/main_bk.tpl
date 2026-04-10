@@ -176,7 +176,116 @@
          </div>
       </div>
    </div>
-  
-  
+   <div class="p-video">
+      <div class="container">
+         <h2 class="ttl02">video mới nhất</h2>
+         <div class="p-news-wrap js-video">
+            {foreach from=$video_home item=item key=i}
+            <div class="video-item" data-index="{$i}">
+               <video preload="metadata">
+                  <source src="{$item.video}" type="video/mp4">
+               </video>
+               <h3 class="video-item__ttl">{$item.name_detail}</h3>
+            </div>
+            {/foreach}
+         </div>
+      </div>
+   </div>
+   <div id="videoPopup" class="video-popup">
+      <span class="close">×</span>
+
+      <video id="popupVideo" playsinline controls></video>
+
+      <div class="nav prev">❮</div>
+      <div class="nav next">❯</div>
+   </div>
 </main>
 {include file='popup.tpl'}
+<script>
+   const videoList = {$video_home|@json_encode};
+</script>
+{literal}
+<script>
+
+   let currentIndex = 0;
+
+   const popup = document.getElementById("videoPopup");
+   const video = document.getElementById("popupVideo");
+
+   // 👉 CLICK ITEM
+   document.querySelector(".js-video").addEventListener("click", function (e) {
+      const item = e.target.closest(".video-item");
+      if (!item) return;
+
+      currentIndex = Number(item.dataset.index);
+      openPopup();
+   });
+
+   // 👉 OPEN
+   function openPopup() {
+      popup.style.display = "flex";
+      playCurrent();
+   }
+
+   // 👉 CLOSE
+   document.querySelector(".close").onclick = closePopup;
+
+   function closePopup() {
+      popup.style.display = "none";
+      video.pause();
+      video.src = "";
+   }
+
+   // 👉 NEXT / PREV
+   document.querySelector(".next").onclick = nextVideo;
+   document.querySelector(".prev").onclick = prevVideo;
+
+   function nextVideo() {
+      currentIndex = (currentIndex + 1) % videoList.length;
+      playCurrent();
+   }
+
+   function prevVideo() {
+      currentIndex = (currentIndex - 1 + videoList.length) % videoList.length;
+      playCurrent();
+   }
+
+   // 👉 PLAY
+   function playCurrent() {
+      video.src = videoList[currentIndex].video;
+      video.play();
+   }
+
+   // 👉 AUTO NEXT
+   video.addEventListener("ended", nextVideo);
+
+
+   // =====================
+   // 👉 SWIPE MOBILE 🔥
+   // =====================
+   let startX = 0;
+
+   popup.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+   });
+
+   popup.addEventListener("touchend", e => {
+      let endX = e.changedTouches[0].clientX;
+
+      if (startX - endX > 50) {
+         nextVideo(); // swipe left
+      }
+      if (endX - startX > 50) {
+         prevVideo(); // swipe right
+      }
+   });
+   // click vào nền (ngoài video)
+   popup.addEventListener("click", function(e){
+      // nếu click đúng vào nền (không phải video hay nút)
+      if(e.target === popup){
+         closePopup();
+      }
+   });
+</script>
+
+{/literal}

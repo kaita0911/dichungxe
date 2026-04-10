@@ -476,6 +476,7 @@
          display: block;
          overflow: hidden;
          height: 25rem;
+         border-radius: 1rem;
 
          @include mq('md', min) {
             height: 30rem;
@@ -513,3 +514,25 @@
       }
    }
 }
+
+// .p-video {
+//    .video-item {
+//       margin: 0 1.5rem;
+
+//       video {
+//          height: 25rem;
+//          width: 100%;
+//          object-fit: cover;
+//       }
+
+//       &__ttl {
+//          text-align: center;
+//          font-size: 1.7rem;
+//          font-weight: 600;
+//          margin: 1rem 0 5rem;
+//          text-transform: capitalize;
+//          line-height: 1.5;
+//          margin-bottom: 5rem;
+//       }
+//    }
+// }

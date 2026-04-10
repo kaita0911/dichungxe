@@ -6,18 +6,18 @@
 </div>
 
 <div class="item">
+    <div class="title">Messenger</div>
+    <div class="info-title">
+        <input type="text" name="printest" value="{$edit.printest}" class="InputText" />
+    </div>
+</div>
+
+<div class="item">
     <div class="title">Threads</div>
     <div class="info-title">
         <input type="text" name="linkedin" value="{$edit.linkedin}" class="InputText" />
     </div>
 </div>
-<!-- 
-<div class="item">
-    <div class="title">Pinterest</div>
-    <div class="info-title">
-        <input type="text" name="printest" value="{$edit.printest}" class="InputText" />
-    </div>
-</div> -->
 
 <div class="item">
     <div class="title">Instagram</div>

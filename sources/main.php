@@ -1,4 +1,5 @@
 <?php
+
 //Banner
 $rs_banner = $GLOBALS['sp']->getAll("SELECT * FROM {$GLOBALS['db_sp']}.articlelist WHERE active = 1 and comp = 7");
 $smarty->assign("view_banner", $rs_banner);
@@ -59,7 +60,7 @@ if (!empty($articles)) {
 }
 
 $smarty->assign("product_new", $articles);
-////
+////tin tức
 $sql = "
 SELECT a.img_thumb_vn,
        d.name AS name_detail, d.unique_key, d.short
@@ -71,6 +72,18 @@ ORDER BY a.num DESC
 ";
 $news_home = $GLOBALS['sp']->getAll($sql);
 $smarty->assign("news_home", $news_home);
+///video
+$sql = "
+SELECT a.img_thumb_vn,a.video,
+       d.name AS name_detail, d.unique_key, d.short
+FROM {$GLOBALS['db_sp']}.articlelist AS a
+LEFT JOIN {$GLOBALS['db_sp']}.articlelist_detail AS d 
+    ON a.id = d.articlelist_id AND d.languageid = {$langid}
+WHERE a.active = 1 AND a.comp = 31
+ORDER BY a.num DESC
+";
+$video_home = $GLOBALS['sp']->getAll($sql);
+$smarty->assign("video_home", $video_home);
 ///
 
 $sqlCat = "

@@ -1,7 +1,8 @@
 <?php
+
 switch ($act) {
     case "detail":
-        
+
         // ==============================
         // 1️⃣ CHI TIẾT SẢN PHẨM
         // ==============================
@@ -23,9 +24,21 @@ switch ($act) {
             WHERE unique_key = '{$unique_key}' AND languageid = {$langid}
         ");
         $article_id = isset($rs_id['articlelist_id']) ? (int)$rs_id['articlelist_id'] : 0;
+        // ==============================
+        // 🎬 LẤY VIDEO
+        // ==============================
+        $sql_video = "
+        SELECT *
+        FROM {$GLOBALS['db_sp']}.articlelist_videos
+        WHERE articlelist_id = {$article_id}
+        AND active = 1
+        ORDER BY num ASC, id DESC
+        ";
 
+        $videos = $GLOBALS['sp']->getAll($sql_video);
+
+        $smarty->assign("videos", $videos);
         ////lấy điểm đón định vị
-       
         $sql_diemdon = "
                 SELECT *
                 FROM {$GLOBALS['db_sp']}.articlelist_diemdon
@@ -33,11 +46,10 @@ switch ($act) {
                 AND languageid = {$langid}
                 ORDER BY id ASC
             ";
-    
+
         $diemdon = $GLOBALS['sp']->getAll($sql_diemdon);
         $smarty->assign("diemdon", $diemdon);
         //lịch trình
-    
         $sql_lichtrinh = "
         SELECT *
         FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh
@@ -48,25 +60,25 @@ switch ($act) {
         $lichtrinh = $GLOBALS['sp']->getAll($sql_lichtrinh);
         // 🔥 Lấy mô tả cho từng lịch trình
         if (!empty($lichtrinh)) {
-        
+
             foreach ($lichtrinh as $k => $lt) {
-        
+
                 $sql_mota = "
                 SELECT mota
                 FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
                 WHERE lichtrinh_id = {$lt['id']}
                 ORDER BY id ASC
                 ";
-        
+
                 $mota = $GLOBALS['sp']->getAll($sql_mota);
-        
+
                 $lichtrinh[$k]['extra'] = array_column($mota, 'mota');
             }
         }
-        
+
         $smarty->assign("lichtrinhtrongngay", $lichtrinh);
 
-       ////
+        ////
         $sql_lichtrinh_quadem = "
         SELECT *
         FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
@@ -105,11 +117,11 @@ switch ($act) {
         ORDER BY id ASC
         LIMIT 1
         ";
-        
+
         $cungduong = $GLOBALS['sp']->getRow($sql_cungduong);
         $smarty->assign("cungduong", $cungduong);
         //haihoa
-         $sql_haihoa = "
+        $sql_haihoa = "
          SELECT *
          FROM {$GLOBALS['db_sp']}.articlelist_haihoa
          WHERE articlelist_id = {$article_id}
@@ -117,11 +129,11 @@ switch ($act) {
          ORDER BY id ASC
          LIMIT 1
          ";
-         
-         $haihoa = $GLOBALS['sp']->getRow($sql_haihoa);
-         $smarty->assign("haihoa", $haihoa);
-         //BOLAC
-         $sql_bolac = "
+
+        $haihoa = $GLOBALS['sp']->getRow($sql_haihoa);
+        $smarty->assign("haihoa", $haihoa);
+        //BOLAC
+        $sql_bolac = "
          SELECT *
          FROM {$GLOBALS['db_sp']}.articlelist_bolac
          WHERE articlelist_id = {$article_id}
@@ -129,8 +141,8 @@ switch ($act) {
          ORDER BY id ASC
          LIMIT 1
          ";
-         $bolac = $GLOBALS['sp']->getRow($sql_bolac);
-         $smarty->assign("bolac", $bolac);
+        $bolac = $GLOBALS['sp']->getRow($sql_bolac);
+        $smarty->assign("bolac", $bolac);
         // ===== LẤY DANH SÁCH VÉ =====
         $sql_ticket = "
         SELECT *
@@ -144,7 +156,7 @@ switch ($act) {
 
         $smarty->assign("tickets", $tickets);
         // ====== LỊCH TRÌNH ======
-      
+
         // Lấy nội dung bài viết
         $content = $rs['content'];
         // Gọi hàm tạo mục lục
@@ -171,7 +183,7 @@ switch ($act) {
             $smarty->assign("c_ttl", $rs['name']);
         }
 
-        
+
         //$smarty->assign('article_id', $article_id);
         //$smarty->assign('total_images', $article_id);
         // lấy mã sản phẩm
@@ -376,9 +388,9 @@ switch ($act) {
         $template = "products/detail.tpl";
         break;
 
-    // ==============================
-    // 2️⃣ DANH SÁCH (SUB + DEFAULT)
-    // ==============================
+        // ==============================
+        // 2️⃣ DANH SÁCH (SUB + DEFAULT)
+        // ==============================
     default:
         $isSub = ($act == 'sub');
         $template = $isSub ? "products/sub.tpl" : "products/view.tpl";

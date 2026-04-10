@@ -1,5 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-03-06 08:43:38
+<?php /* Smarty version 2.6.30, created on 2026-04-08 22:48:20
          compiled from main/main.tpl */ ?>
+<?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'json_encode', 'main/main.tpl', 205, false),)), $this); ?>
 <main class="home">
    <div class="container">
       <div class="p-commit">
@@ -10,8 +12,7 @@ if ($this->_foreach['tab']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['tab']['iteration']++;
 ?>
-            <li class="<?php if (($this->_foreach['tab']['iteration'] <= 1)): ?>active<?php endif; ?>"
-               data-tab="commit-tab-<?php echo ($this->_foreach['tab']['iteration']-1); ?>
+            <li class="<?php if (($this->_foreach['tab']['iteration'] <= 1)): ?>active<?php endif; ?>" data-tab="commit-tab-<?php echo ($this->_foreach['tab']['iteration']-1); ?>
 ">
                <?php echo $this->_tpl_vars['item']['name_detail']; ?>
 
@@ -28,11 +29,8 @@ if ($this->_foreach['tab']['total'] > 0):
                id="commit-tab-<?php echo ($this->_foreach['tab']['iteration']-1); ?>
 ">
                <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-"
-                  alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-"
-                  class="img-cover"
-                  loading="lazy">
+" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+" class="img-cover" loading="lazy">
             </div>
             <?php endforeach; endif; unset($_from); ?>
          </div>
@@ -69,8 +67,7 @@ if ($this->_foreach['tab']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                      <div class="product-item">
-                        <a class="product-item__img"
-                           href="<?php echo $this->_tpl_vars['path_url']; ?>
+                        <a class="product-item__img" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
 .html"
@@ -78,20 +75,15 @@ if ($this->_foreach['tab']['total'] > 0):
 ">
                            <div class="img-gall-js">
                               <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-"
-                                 alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-"
-                                 class="img-cover img-gall"
+" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+" class="img-cover img-gall"
                                  loading="lazy">
                               <?php $_from = $this->_tpl_vars['item']['gallery']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['img']):
 ?>
                               <img src="<?php echo $this->_tpl_vars['img']; ?>
-"
-                                 alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-"
-                                 class="img-cover img-gall"
-                                 loading="lazy">
+" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+" class="img-cover img-gall" loading="lazy">
                               <?php endforeach; endif; unset($_from); ?>
                            </div>
                            <div class="product-item__ct">
@@ -116,8 +108,7 @@ if ($this->_foreach['tab']['total'] > 0):
                         </a>
 
                         <h3>
-                           <a class="product-item__ttl hover"
-                              href="<?php echo $this->_tpl_vars['path_url']; ?>
+                           <a class="product-item__ttl hover" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
 .html"
@@ -144,8 +135,7 @@ if ($this->_foreach['tab']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['cat']):
         $this->_foreach['tab']['iteration']++;
 ?>
-            <div class="cate-tab-pane"
-               id="cate-tab-<?php echo ($this->_foreach['tab']['iteration']-1); ?>
+            <div class="cate-tab-pane" id="cate-tab-<?php echo ($this->_foreach['tab']['iteration']-1); ?>
 ">
 
                <section class="home-category">
@@ -154,8 +144,7 @@ if ($this->_foreach['tab']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                      <div class="product-item">
-                        <a class="product-item__img"
-                           href="<?php echo $this->_tpl_vars['path_url']; ?>
+                        <a class="product-item__img" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
 .html"
@@ -163,20 +152,15 @@ if ($this->_foreach['tab']['total'] > 0):
 ">
                            <div class="img-gall-js">
                               <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-"
-                                 alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-"
-                                 class="img-cover img-gall"
+" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+" class="img-cover img-gall"
                                  loading="lazy">
                               <?php $_from = $this->_tpl_vars['item']['gallery']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['img']):
 ?>
                               <img src="<?php echo $this->_tpl_vars['img']; ?>
-"
-                                 alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-"
-                                 class="img-cover img-gall"
-                                 loading="lazy">
+" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+" class="img-cover img-gall" loading="lazy">
                               <?php endforeach; endif; unset($_from); ?>
                            </div>
                            <div class="product-item__ct">
@@ -200,8 +184,7 @@ if ($this->_foreach['tab']['total'] > 0):
                            </div>
                         </a>
                         <h3>
-                           <a class="product-item__ttl hover"
-                              href="<?php echo $this->_tpl_vars['path_url']; ?>
+                           <a class="product-item__ttl hover" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
 .html"
@@ -237,7 +220,8 @@ if ($this->_foreach['tab']['total'] > 0):
                <div class="feedback-item__img">
                   <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
 ?width=800&height=800&mode=cover" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-" class="img-cover" loading="lazy">
+"
+                     class="img-cover" loading="lazy">
                </div>
                <div class="feedback-item__meta">
                   <div class="feedback-item__short"><?php echo $this->_tpl_vars['item']['content']; ?>
@@ -262,16 +246,19 @@ if ($this->_foreach['tab']['total'] > 0):
                <a class="news-item__img hover-img" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
-.html" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+.html"
+                  title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 ">
                   <img src="<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
 ?width=800&height=600&mode=cover" alt="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
-" class="img-cover" loading="lazy">
+"
+                     class="img-cover" loading="lazy">
                </a>
                <h3><a class="news-item__ttl hover" href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
-.html" title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
+.html"
+                     title="<?php echo $this->_tpl_vars['item']['name_detail']; ?>
 "><?php echo $this->_tpl_vars['item']['name_detail']; ?>
 </a></h3>
                <div class="news-item__short"><?php echo $this->_tpl_vars['item']['short']; ?>
@@ -279,11 +266,40 @@ if ($this->_foreach['tab']['total'] > 0):
                <a href="<?php echo $this->_tpl_vars['path_url']; ?>
 /<?php echo $this->_tpl_vars['lang_prefix']; ?>
 <?php echo $this->_tpl_vars['item']['unique_key']; ?>
-.html" class="viewmore" title="xem thêm">Xem thêm</a>
+.html" class="viewmore" title="xem thêm">Xem
+                  thêm</a>
             </div>
             <?php endforeach; endif; unset($_from); ?>
          </div>
       </div>
+   </div>
+   <div class="p-video">
+      <div class="container">
+         <h2 class="ttl02">video mới nhất</h2>
+         <div class="p-news-wrap js-video">
+            <?php $_from = $this->_tpl_vars['video_home']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['i'] => $this->_tpl_vars['item']):
+?>
+            <div class="video-item" data-index="<?php echo $this->_tpl_vars['i']; ?>
+">
+               <video preload="metadata">
+                  <source src="<?php echo $this->_tpl_vars['item']['video']; ?>
+" type="video/mp4">
+               </video>
+               <h3 class="video-item__ttl"><?php echo $this->_tpl_vars['item']['name_detail']; ?>
+</h3>
+            </div>
+            <?php endforeach; endif; unset($_from); ?>
+         </div>
+      </div>
+   </div>
+   <div id="videoPopup" class="video-popup">
+      <span class="close">×</span>
+
+      <video id="popupVideo" playsinline controls></video>
+
+      <div class="nav prev">❮</div>
+      <div class="nav next">❯</div>
    </div>
 </main>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -291,3 +307,92 @@ $this->_smarty_include(array('smarty_include_tpl_file' => 'popup.tpl', 'smarty_i
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
+<script>
+   const videoList = <?php echo json_encode($this->_tpl_vars['video_home']); ?>
+;
+</script>
+<?php echo '
+<script>
+
+   let currentIndex = 0;
+
+   const popup = document.getElementById("videoPopup");
+   const video = document.getElementById("popupVideo");
+
+   // 👉 CLICK ITEM
+   document.querySelector(".js-video").addEventListener("click", function (e) {
+      const item = e.target.closest(".video-item");
+      if (!item) return;
+
+      currentIndex = Number(item.dataset.index);
+      openPopup();
+   });
+
+   // 👉 OPEN
+   function openPopup() {
+      popup.style.display = "flex";
+      playCurrent();
+   }
+
+   // 👉 CLOSE
+   document.querySelector(".close").onclick = closePopup;
+
+   function closePopup() {
+      popup.style.display = "none";
+      video.pause();
+      video.src = "";
+   }
+
+   // 👉 NEXT / PREV
+   document.querySelector(".next").onclick = nextVideo;
+   document.querySelector(".prev").onclick = prevVideo;
+
+   function nextVideo() {
+      currentIndex = (currentIndex + 1) % videoList.length;
+      playCurrent();
+   }
+
+   function prevVideo() {
+      currentIndex = (currentIndex - 1 + videoList.length) % videoList.length;
+      playCurrent();
+   }
+
+   // 👉 PLAY
+   function playCurrent() {
+      video.src = videoList[currentIndex].video;
+      video.play();
+   }
+
+   // 👉 AUTO NEXT
+   video.addEventListener("ended", nextVideo);
+
+
+   // =====================
+   // 👉 SWIPE MOBILE 🔥
+   // =====================
+   let startX = 0;
+
+   popup.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+   });
+
+   popup.addEventListener("touchend", e => {
+      let endX = e.changedTouches[0].clientX;
+
+      if (startX - endX > 50) {
+         nextVideo(); // swipe left
+      }
+      if (endX - startX > 50) {
+         prevVideo(); // swipe right
+      }
+   });
+   // click vào nền (ngoài video)
+   popup.addEventListener("click", function(e){
+      // nếu click đúng vào nền (không phải video hay nút)
+      if(e.target === popup){
+         closePopup();
+      }
+   });
+</script>
+
+'; ?>

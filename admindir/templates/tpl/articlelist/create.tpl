@@ -206,6 +206,30 @@
                         <div class="title">Link</div>
                         <input type="text" name="link_out" class="InputText">
                      </div>
+                     <div class="item">
+                        <div class="title">Video</div>
+                        <div class="info-title">
+
+                           {if $articlelist.video neq ""}
+                           <video width="120" controls style="margin-bottom:10px;">
+                              <source src="../{$articlelist.video}" type="video/mp4">
+                           </video>
+                           {/if}
+
+                           <!-- Upload video -->
+                           <label for="video_file" class="custom-upload">
+                              <i class="fa fa-upload"></i> Upload video
+                           </label>
+
+                           <input type="file" name="video_file" id="video_file" accept="video/mp4,video/mov,video/avi">
+
+                           <!-- Preview video -->
+                           <video id="preview-video" width="120" controls
+                              style="display:none; margin-top:10px;"></video>
+
+                        </div>
+                     </div>
+
                      {/if}
 
                      {if $tinhnang.hinhanh == 1}

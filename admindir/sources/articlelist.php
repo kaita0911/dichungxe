@@ -125,7 +125,206 @@ $smarty->assign('categories', $categories);
 // 🔁 Xử lý các hành động
 // ============================
 switch ($act) {
-    /////////Xoa nhieu anh//////////
+    case 'video':
+        $article_id = intval($_GET['id']);
+
+        $videos = $GLOBALS['sp']->getAll("
+            SELECT * FROM {$GLOBALS['db_sp']}.articlelist_videos
+            WHERE articlelist_id = {$article_id}
+            ORDER BY num ASC, id DESC
+        ");
+
+        $smarty->assign('videos', $videos);
+        $smarty->assign('article_id', $article_id);
+
+        $template = 'articlelist/video.tpl';
+        break;
+    case 'addvideo':
+        $article_id = intval($_POST['article_id']);
+        if (!empty($_FILES['video_file']['name'][0])) {
+
+            $dir = '../hinh-anh/video/';
+            if (!is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+
+            foreach ($_FILES['video_file']['name'] as $key => $fileName) {
+
+                if (empty($fileName)) {
+                    continue;
+                }
+
+                $tmpName = $_FILES['video_file']['tmp_name'][$key];
+                $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+
+                // 👉 lấy title theo index
+                $title = isset($_POST['title'][$key]) ? $_POST['title'][$key] : 'video';
+
+                // slug
+                $slug = strtolower($title);
+                $slug = preg_replace('/[^\p{L}\p{N}]+/u', '-', $slug);
+                $slug = trim($slug, '-');
+
+                if (empty($slug)) {
+                    $slug = 'video';
+                }
+
+                $newName = $slug . '-' . time() . '-' . $key . '.' . $ext;
+
+                move_uploaded_file($tmpName, $dir . $newName);
+
+                $video_file_path = 'hinh-anh/video/' . $newName;
+
+                $GLOBALS['sp']->Execute("
+                    INSERT INTO {$GLOBALS['db_sp']}.articlelist_videos
+                    (articlelist_id, title, video_url, video_file, num)
+                    VALUES (?, ?, ?, ?, 0)
+                ", [$article_id, $title, '', $video_file_path]);
+            }
+        }
+        //$title = trim($_POST['title']);
+        //$video_url = trim($_POST['video_url']);
+        // if (!empty($_FILES['video_file']['name'][0])) {
+
+        //     $dir = '../hinh-anh/video/';
+        //     if (!is_dir($dir)) {
+        //         mkdir($dir, 0755, true);
+        //     }
+
+        //     foreach ($_FILES['video_file']['name'] as $key => $fileName) {
+
+        //         if (empty($fileName)) {
+        //             continue;
+        //         }
+
+        //         $tmpName = $_FILES['video_file']['tmp_name'][$key];
+        //         $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+
+        //         // 👉 tạo slug từ title
+        //         if (!function_exists('slugify')) {
+        //             function slugify($text)
+        //             {
+        //                 $text = strtolower($text);
+        //                 $text = preg_replace('/[^\p{L}\p{N}]+/u', '-', $text);
+        //                 return trim($text, '-');
+        //             }
+        //         }
+        //         $slug = slugify($title);
+        //         if (empty($slug)) {
+        //             $slug = 'video';
+        //         }
+
+        //         $newName = $slug . '-' . time() . '-' . $key . '.' . $ext;
+
+        //         move_uploaded_file($tmpName, $dir . $newName);
+
+        //         $video_file_path = 'hinh-anh/video/' . $newName;
+
+        //         // 👉 insert từng video
+        //         $GLOBALS['sp']->Execute("
+        //             INSERT INTO {$GLOBALS['db_sp']}.articlelist_videos
+        //             (articlelist_id, title, video_url, video_file, num)
+        //             VALUES (?, ?, ?, ?, 0)
+        //         ", [$article_id, $title, '', $video_file_path]);
+        //     }
+        // }
+        //$video_file_path = '';
+
+        // upload file nếu có
+        // if (!empty($_FILES['video_file']['name'])) {
+
+        //     $dir = '../hinh-anh/video/';
+        //     if (!is_dir($dir)) {
+        //         mkdir($dir, 0755, true);
+        //     }
+
+        //     $ext = pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION);
+        //     $name = 'video' . '-'. time() . '.' . $ext;
+
+        //     move_uploaded_file($_FILES['video_file']['tmp_name'], $dir . $name);
+
+        //     $video_file_path = 'hinh-anh/video/' . $name;
+        // }
+
+        // $GLOBALS['sp']->Execute("
+        //         INSERT INTO {$GLOBALS['db_sp']}.articlelist_videos
+        //         (articlelist_id, title, video_url, video_file, num)
+        //         VALUES (?, ?, ?, ?, 0)
+        //     ", [$article_id, $title, $video_url, $video_file_path]);
+
+        header("Location: index.php?do=articlelist&act=video&id=".$article_id);
+        exit;
+    case 'updatevideo':
+
+        $id = intval($_POST['id']);
+        $title = trim($_POST['title']);
+
+        if ($id > 0) {
+            $GLOBALS['sp']->Execute("
+                    UPDATE {$GLOBALS['db_sp']}.articlelist_videos
+                    SET title = ?
+                    WHERE id = ?
+                ", [$title, $id]);
+        }
+
+        echo 'ok';
+        exit;
+    case 'deletevideo':
+        $id = intval($_GET['id']);
+        $article_id = intval($_GET['article_id']);
+
+        $row = $GLOBALS['sp']->getRow("
+                SELECT video_file FROM {$GLOBALS['db_sp']}.articlelist_videos WHERE id = {$id}
+            ");
+
+        if (!empty($row['video_file']) && file_exists('../'.$row['video_file'])) {
+            unlink('../'.$row['video_file']);
+        }
+
+        $GLOBALS['sp']->Execute("
+                DELETE FROM {$GLOBALS['db_sp']}.articlelist_videos WHERE id = {$id}
+            ");
+
+        header("Location: index.php?do=articlelist&act=video&id=".$article_id);
+        exit;
+    case 'deletevideo_multi':
+
+        $ids = isset($_GET['ids']) ? $_GET['ids'] : '';
+        $article_id = intval($_GET['article_id']);
+
+        if ($ids != '') {
+
+            $arr = explode(',', $ids);
+
+            foreach ($arr as $id) {
+
+                $id = intval($id);
+
+                // 👉 lấy file để xoá
+                $row = $GLOBALS['sp']->GetRow("
+                        SELECT video_file 
+                        FROM {$GLOBALS['db_sp']}.articlelist_videos 
+                        WHERE id = ?
+                    ", [$id]);
+
+                if ($row && $row['video_file'] != '') {
+                    $file = '../' . $row['video_file'];
+                    if (file_exists($file)) {
+                        unlink($file);
+                    }
+                }
+
+                // 👉 xoá DB
+                $GLOBALS['sp']->Execute("
+                        DELETE FROM {$GLOBALS['db_sp']}.articlelist_videos 
+                        WHERE id = ?
+                    ", [$id]);
+            }
+        }
+
+        header("Location: index.php?do=articlelist&act=video&id=" . $article_id);
+        exit;
+        ////////////////////////
     case 'deleteimage':
         ob_clean();
         $id = intval(isset($_POST['id']) ? $_POST['id'] : 0);
@@ -134,7 +333,9 @@ switch ($act) {
             $row = $GLOBALS['sp']->getRow("SELECT img_vn FROM {$GLOBALS['db_sp']}.gallery_sp WHERE id=$id");
             if ($row) {
                 $filePath = '../' . $row['img_vn'];
-                if (file_exists($filePath)) unlink($filePath); // xóa file
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                } // xóa file
                 $GLOBALS['sp']->query("DELETE FROM {$GLOBALS['db_sp']}.gallery_sp WHERE id=$id"); // xóa DB
             }
             echo json_encode(['success' => true]);
@@ -165,17 +366,17 @@ switch ($act) {
         WHERE lt.articlelist_id = {$id}
         ORDER BY lt.id ASC
         ";
-        
+
         $rs = $GLOBALS['sp']->Execute($sql);
-        
+
         $lichtrinhtrongngay = [];
-        
+
         while (!$rs->EOF) {
-        
+
             $lid = $rs->fields['id'];
-        
+
             if (!isset($lichtrinhtrongngay[$lid])) {
-        
+
                 $lichtrinhtrongngay[$lid] = [
                     'id' => $lid,
                     'name' => $rs->fields['name'],
@@ -183,16 +384,16 @@ switch ($act) {
                     'extra' => []
                 ];
             }
-        
+
             if (!empty($rs->fields['mota'])) {
                 $lichtrinhtrongngay[$lid]['extra'][] = $rs->fields['mota'];
             }
-        
+
             $rs->MoveNext();
         }
-        
+
         $lichtrinhtrongngay = array_values($lichtrinhtrongngay);
-        
+
         $smarty->assign('lichtrinhtrongngay', $lichtrinhtrongngay);
         //////qua đêm
         $lichtrinh = $GLOBALS['sp']->getAll("
@@ -368,9 +569,13 @@ switch ($act) {
             $thumbs = $GLOBALS["sp"]->getAll("SELECT img_thumb_vn FROM {$GLOBALS['db_sp']}.articlelist WHERE id IN ($idList)");
             foreach ($thumbs as $row) {
                 $thumb = $row['img_thumb_vn'];
-                if (!$thumb) continue;
+                if (!$thumb) {
+                    continue;
+                }
                 $file = '../' . $thumb;
-                if (file_exists($file)) @unlink($file);
+                if (file_exists($file)) {
+                    @unlink($file);
+                }
             }
             // 1️⃣ xoá giá + màu (variants)
             $GLOBALS["sp"]->query("DELETE v FROM {$GLOBALS['db_sp']}.articlelist_attributes v INNER JOIN {$GLOBALS['db_sp']}.articlelist_codes c ON c.id = v.code_id  WHERE c.articlelist_id IN ($idList)");
@@ -392,7 +597,9 @@ switch ($act) {
             $images = $GLOBALS["sp"]->getCol("SELECT img_vn FROM {$GLOBALS['db_sp']}.gallery_sp WHERE articlelist_id IN ($idList)");
             foreach ($images as $img) {
                 $file = '../' . $img;
-                if (file_exists($file)) @unlink($file);
+                if (file_exists($file)) {
+                    @unlink($file);
+                }
             }
             $GLOBALS["sp"]->query("DELETE FROM {$GLOBALS['db_sp']}.gallery_sp WHERE articlelist_id IN ($idList)");
 
@@ -439,7 +646,9 @@ switch ($act) {
                     FROM {$GLOBALS['db_sp']}.articlelist
                     WHERE id = {$id}
                 ");
-            if (!$r) continue;
+            if (!$r) {
+                continue;
+            }
 
             // ============================
             // 2️⃣ COPY ARTICLELIST
@@ -481,7 +690,9 @@ switch ($act) {
             }
 
             $id_new = vaInsert('articlelist', $newArr);
-            if (!$id_new) continue;
+            if (!$id_new) {
+                continue;
+            }
 
             // ============================
             // 3️⃣ COPY ARTICLELIST_DETAIL
@@ -764,7 +975,7 @@ switch ($act) {
         foreach ($articles as &$item) {
             $id = $item['id'];
             $item['details'] = isset($articlelistDetail[$id]) ? $articlelistDetail[$id] : [];
-            $item['price']   = isset($articlelistPrice[$id])   ? $articlelistPrice[$id]   : [];
+            $item['price']   = isset($articlelistPrice[$id]) ? $articlelistPrice[$id] : [];
         }
         unset($item);
 
@@ -814,6 +1025,52 @@ function saveArticle()
         'link_zalo'       => trim(isset($_POST["link_zalo"]) ? $_POST["link_zalo"] : ''),
         'difficulty'       => trim(isset($_POST["difficulty"]) ? $_POST["difficulty"] : ''),
     ];
+    // ============================
+    // 🎬 UPLOAD VIDEO
+    // ============================
+    if (!empty($_FILES['video_file']['name']) && $_FILES['video_file']['error'] === UPLOAD_ERR_OK) {
+
+        // 🔹 Xóa video cũ nếu edit
+        if ($act === 'editsm' && !empty($id)) {
+            $oldVideo = $GLOBALS['sp']->getOne("SELECT video FROM {$GLOBALS['db_sp']}.articlelist WHERE id = " . intval($id));
+            if (!empty($oldVideo) && file_exists('../' . $oldVideo)) {
+                @unlink('../' . $oldVideo);
+            }
+        }
+
+        $uploadDir = '../hinh-anh/video/';
+        $uploadDirPre = 'hinh-anh/video/';
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $file = $_FILES['video_file'];
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+        $allowed = ['mp4','mov','avi'];
+
+        if (!in_array($ext, $allowed)) {
+            die('Sai định dạng video');
+        }
+
+        if ($file['size'] > 100 * 1024 * 1024) {
+            die('Video quá lớn (max 100MB)');
+        }
+
+        $nameOnly = pathinfo($file['name'], PATHINFO_FILENAME);
+        $safeName = StripUnicode($nameOnly);
+        if ($safeName == '') {
+            $safeName = 'video';
+        }
+
+        $fileName = $safeName . '-' . time() . '.' . $ext;
+        $uploadPath = $uploadDir . $fileName;
+
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            $arr['video'] = $uploadDirPre . $fileName;
+        }
+    }
     // 2️⃣ Upload ảnh
     if (!empty($_FILES['img_thumb_vn']['name']) && $_FILES['img_thumb_vn']['error'] === UPLOAD_ERR_OK) {
 
@@ -833,8 +1090,8 @@ function saveArticle()
 
                 $uploadDir_pre = 'hinh-anh/banner/';
                 break;
-            case 73;
-            case 75;
+            case 73:
+            case 75:
             case 74:
                 $uploadDir = $predix . 'hinh-anh/quang-cao/';
                 $uploadDir_pre = 'hinh-anh/quang-cao/';
@@ -915,7 +1172,9 @@ function saveArticle()
     ////upload nhieu hinh ko co thuoc tinh
     if (!empty($_FILES['multiimages']['name'][0])) {
         define('UPLOAD_DIR_MULTI', '../hinh-anh/hinh-san-pham/');
-        if (!is_dir(UPLOAD_DIR_MULTI)) mkdir(UPLOAD_DIR_MULTI, 0755, true);
+        if (!is_dir(UPLOAD_DIR_MULTI)) {
+            mkdir(UPLOAD_DIR_MULTI, 0755, true);
+        }
 
         $maxNum = (int)$GLOBALS['sp']->getOne(
             "SELECT MAX(num) FROM {$GLOBALS['db_sp']}.gallery_sp WHERE articlelist_id = $id"
@@ -925,20 +1184,28 @@ function saveArticle()
         $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
         for ($i = 0; $i < count($files['name']); $i++) {
-            if ($files['error'][$i] !== UPLOAD_ERR_OK) continue;
+            if ($files['error'][$i] !== UPLOAD_ERR_OK) {
+                continue;
+            }
 
             $ext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
-            if (!in_array($ext, $allowedExt)) continue;
+            if (!in_array($ext, $allowedExt)) {
+                continue;
+            }
 
             // 🔹 Tạo tên file an toàn
             $originalName = pathinfo($files['name'][$i], PATHINFO_FILENAME);
             $safeName = StripUnicode($originalName);
-            if ($safeName === '') $safeName = 'image';
+            if ($safeName === '') {
+                $safeName = 'image';
+            }
 
             $fileName = $safeName . '-' . time() . '-' . rand(100, 999) . '.' . $ext;
             $uploadPath = UPLOAD_DIR_MULTI . $fileName;
 
-            if (!move_uploaded_file($files['tmp_name'][$i], $uploadPath)) continue;
+            if (!move_uploaded_file($files['tmp_name'][$i], $uploadPath)) {
+                continue;
+            }
 
             // 👉 Nếu cần watermark thì bật dòng này
             // addLogoWatermarkOpacity($uploadPath, $uploadPath, $logoPath, 20, 0.4, 100);
@@ -982,11 +1249,15 @@ function saveArticle()
                 }
 
                 $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                if (!in_array($ext, $allowedExt)) continue;
+                if (!in_array($ext, $allowedExt)) {
+                    continue;
+                }
 
                 $originName = pathinfo($name, PATHINFO_FILENAME);
                 $safeName = StripUnicode($originName);
-                if ($safeName === '') $safeName = 'image';
+                if ($safeName === '') {
+                    $safeName = 'image';
+                }
 
                 $fileName = $safeName . '-' . time() . '-' . rand(100, 999) . '.' . $ext;
                 $uploadPath = UPLOAD_DIR_MULTI . $fileName;
@@ -1031,14 +1302,18 @@ function saveArticle()
         $tags = [];
         if (!empty($data['tags'])) {
             $tags = json_decode($data['tags'], true);
-            if (!is_array($tags)) $tags = [];
+            if (!is_array($tags)) {
+                $tags = [];
+            }
         }
 
         $tags = array_map('trim', $tags); // loại khoảng trắng
         $tags = array_filter($tags);       // loại tag rỗng
 
         // Bỏ qua nếu không có tên
-        if ($name === '') continue;
+        if ($name === '') {
+            continue;
+        }
 
         // Tạo unique_key riêng cho từng ngôn ngữ
         $unique_key = isset($data['unique_key']) && trim($data['unique_key']) !== '' ? trim($data['unique_key']) : StripUnicode($name);
@@ -1123,7 +1398,9 @@ function saveArticle()
         // Duyệt các category được chọn
         foreach ($selectedCategories as $catId) {
             $catId = intval($catId);
-            if ($catId <= 0) continue;
+            if ($catId <= 0) {
+                continue;
+            }
 
             $categoriesToSave[$catId] = $catId;
 
@@ -1214,7 +1491,9 @@ function saveArticle()
         foreach ($products as $product) {
 
             $code = isset($product['code']) ? trim($product['code']) : '';
-            if ($code === '') continue;
+            if ($code === '') {
+                continue;
+            }
             $code_sort = isset($product['sort_order'])
                 ? (int)$product['sort_order']
                 : 0;
@@ -1238,7 +1517,9 @@ function saveArticle()
                     $price = isset($variant['price'])
                         ? (int) str_replace('.', '', $variant['price'])
                         : 0;
-                    if ($color_name === '') continue;
+                    if ($color_name === '') {
+                        continue;
+                    }
 
                     // 👉 TÌM MÀU CŨ CÙNG TÊN
                     foreach ($oldColors as $old) {
@@ -1294,8 +1575,10 @@ function saveArticle()
             $link     = isset($links[$key]) ? trim($links[$key]) : '';
             $location = isset($locations[$key]) ? trim($locations[$key]) : '';
 
-            if ($title === '') continue;
-            
+            if ($title === '') {
+                continue;
+            }
+
             // 🔹 Nếu link không có http hoặc https thì thêm https
             if ($link != '' && !preg_match('#^https?://#i', $link)) {
                 $link = 'https://' . $link;
@@ -1337,12 +1620,14 @@ function saveArticle()
     if (!empty($schedule_time)) {
 
         foreach ($schedule_time as $key => $time_lichtrinh) {
-    
+
             $time_lichtrinh = trim($time_lichtrinh);
             $content_lichtrinh = isset($schedule_content[$key]) ? $schedule_content[$key] : '';
-    
-            if ($time_lichtrinh === '') continue;
-    
+
+            if ($time_lichtrinh === '') {
+                continue;
+            }
+
             // lưu lịch trình
             $GLOBALS['sp']->Execute(
                 "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh
@@ -1350,58 +1635,62 @@ function saveArticle()
                 VALUES (?, ?, ?, ?)",
                 [$id, $time_lichtrinh, $content_lichtrinh, 1]
             );
-    
+
             $lichtrinh_id = $GLOBALS['sp']->Insert_ID();
-    
+
             // 🔥 lưu mô tả thêm
             if (!empty($schedule_extra[$key])) {
-    
+
                 foreach ($schedule_extra[$key] as $num => $mota) {
-    
+
                     $mota = trim($mota);
-                    if ($mota == '') continue;
-    
+                    if ($mota == '') {
+                        continue;
+                    }
+
                     $GLOBALS['sp']->Execute(
                         "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
                         (lichtrinh_id, mota)
                         VALUES (?, ?)",
                         [$lichtrinh_id, $mota]
                     );
-    
+
                 }
-    
+
             }
-    
+
         }
-    
+
     }
-     // ============================
+    // ============================
     // 💾 LƯU DANH SÁCH LỊCH TRÌNH] qua đêm
     // ============================
 
     $schedule_time_more    = isset($_POST['schedule_name_more']) ? $_POST['schedule_name_more'] : [];
     $schedule_content_more = isset($_POST['schedule_content_more']) ? $_POST['schedule_content_more'] : [];
     $day_content           = isset($_POST['day_content']) ? $_POST['day_content'] : [];
-    
+
     $GLOBALS['sp']->Execute(
         "DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem WHERE articlelist_id = ?",
         [$id]
     );
-    
+
     foreach ($schedule_time_more as $day => $names) {
-    
+
         $content_day = isset($day_content[$day]) ? trim($day_content[$day]) : '';
-    
+
         foreach ($names as $key => $name) {
-    
+
             $name = trim($name);
-    
+
             $content = isset($schedule_content_more[$day][$key])
                 ? trim($schedule_content_more[$day][$key])
                 : '';
-    
-            if ($name == '' && $content == '' && $content_day == '') continue;
-    
+
+            if ($name == '' && $content == '' && $content_day == '') {
+                continue;
+            }
+
             $GLOBALS['sp']->Execute(
                 "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
                 (articlelist_id, day, day_content, name, content, languageid)
@@ -1423,12 +1712,14 @@ function saveArticle()
     if (!empty($ticket_names)) {
 
         foreach ($ticket_names as $key => $name) {
-    
+
             $name = trim($name);
             $content = isset($ticket_contents[$key]) ? trim($ticket_contents[$key]) : '';
-    
-            if ($name == '' && $content == '') continue;
-    
+
+            if ($name == '' && $content == '') {
+                continue;
+            }
+
             $GLOBALS['sp']->Execute(
                 "INSERT INTO {$GLOBALS['db_sp']}.articlelist_bolac_2
                 (articlelist_id, name, content, languageid)
@@ -1436,7 +1727,7 @@ function saveArticle()
                 [$id, $name, $content, 1]
             );
         }
-    
+
     }
     // ============================
     // 💾 LƯU VÉ HÁI HOA
@@ -1479,7 +1770,7 @@ function saveArticle()
             VALUES (?, ?, ?, ?)",
             [$id, $name_bolac, $bolac, 1]
         );
-    }  
+    }
     // ============================
     // 💾 LƯU cung duong
     // ============================
@@ -1487,7 +1778,7 @@ function saveArticle()
     $name_cungduong = isset($_POST['name_cungduong']) ? trim($_POST['name_cungduong']) : '';
     $cungduong      = isset($_POST['cungduong']) ? trim($_POST['cungduong']) : '';
     // 🔥 Nếu edit → xoá toàn bộ điểm đón cũ
-   // xoá dữ liệu cũ
+    // xoá dữ liệu cũ
     $GLOBALS['sp']->Execute(
         "DELETE FROM {$GLOBALS['db_sp']}.articlelist_thongtin WHERE articlelist_id = ?",
         [$id]

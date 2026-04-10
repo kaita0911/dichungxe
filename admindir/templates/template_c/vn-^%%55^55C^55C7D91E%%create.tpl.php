@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2026-03-07 11:04:03
+<?php /* Smarty version 2.6.30, created on 2026-04-08 22:09:45
          compiled from articlelist/create.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/create.tpl', 10, false),array('modifier', 'count', 'articlelist/create.tpl', 22, false),array('modifier', 'escape', 'articlelist/create.tpl', 191, false),)), $this); ?>
@@ -90,14 +90,14 @@ unset($_smarty_tpl_vars);
 ][short]" id="short_<?php echo $this->_tpl_vars['lang']['id']; ?>
 "></textarea>
                         </div>
-                        <div class="item">
+                        <!-- <div class="item">
                            <div class="title --cuz">Thông tin cung đường</div>
                            <div class="trip-item">
                               <input type="text" name="name_cungduong" class="InputText more-input"
                                  placeholder="Tiêu đề" />
                               <textarea name="cungduong" id="cungduong"></textarea>
                            </div>
-                        </div>
+                        </div> -->
                         <div class="item">
                            <div class="title --cuz">Các loại vé</div>
                            <div class="trip-item">
@@ -265,6 +265,31 @@ unset($_smarty_tpl_vars);
                         <div class="title">Link</div>
                         <input type="text" name="link_out" class="InputText">
                      </div>
+                     <div class="item">
+                        <div class="title">Video</div>
+                        <div class="info-title">
+
+                           <?php if ($this->_tpl_vars['articlelist']['video'] != ""): ?>
+                           <video width="120" controls style="margin-bottom:10px;">
+                              <source src="../<?php echo $this->_tpl_vars['articlelist']['video']; ?>
+" type="video/mp4">
+                           </video>
+                           <?php endif; ?>
+
+                           <!-- Upload video -->
+                           <label for="video_file" class="custom-upload">
+                              <i class="fa fa-upload"></i> Upload video
+                           </label>
+
+                           <input type="file" name="video_file" id="video_file" accept="video/mp4,video/mov,video/avi">
+
+                           <!-- Preview video -->
+                           <video id="preview-video" width="120" controls
+                              style="display:none; margin-top:10px;"></video>
+
+                        </div>
+                     </div>
+
                      <?php endif; ?>
 
                      <?php if ($this->_tpl_vars['tinhnang']['hinhanh'] == 1): ?>

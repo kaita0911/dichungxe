@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-02-03 14:03:39
+<?php /* Smarty version 2.6.30, created on 2026-04-09 08:38:10
          compiled from articlelist/list.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/list.tpl', 21, false),array('modifier', 'count', 'articlelist/list.tpl', 54, false),array('modifier', 'escape', 'articlelist/list.tpl', 155, false),array('modifier', 'date_format', 'articlelist/list.tpl', 174, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'articlelist/list.tpl', 21, false),array('modifier', 'count', 'articlelist/list.tpl', 55, false),array('modifier', 'escape', 'articlelist/list.tpl', 157, false),array('modifier', 'date_format', 'articlelist/list.tpl', 175, false),)), $this); ?>
 <div class="contentmain">
    <div class="main">
       <div class="left_sidebar padding10">
@@ -61,7 +61,8 @@ unset($_smarty_tpl_vars);
                   </select>
 
                   <input type="text" name="keyword" value="<?php echo $_REQUEST['keyword']; ?>
-" placeholder="Từ khóa sản phẩm..." style="min-width:200px; margin-left:10px;" />
+" placeholder="Từ khóa sản phẩm..."
+                     style="min-width:200px; margin-left:10px;" />
 
                   <button type="submit" name="search" value="1" style="margin-left:10px;">Tìm kiếm</button>
                </div>
@@ -105,8 +106,8 @@ unset($_smarty_tpl_vars);
                         <th align="center" class="width-image">Giá</th>
                         <?php endif; ?>
 
-                        <!-- <th align="center" class="width-image">Ngày tạo</th>
-                        <th align="center" class="width-image">Ngày sửa</th> -->
+                        <!-- <th align="center" class="width-image">Ngày tạo</th> -->
+                        <th align="center" class="width-image">Video</th>
 
                         <?php if ($this->_tpl_vars['tinhnang']['new'] == 1): ?>
                         <th align="center" class="width-show">Mới</th>
@@ -156,8 +157,7 @@ if ($this->_foreach['loop']['total'] > 0):
 " title="Làm mới">
                               <label class="img-change">
                                  <img src="/<?php echo $this->_tpl_vars['item']['img_thumb_vn']; ?>
-?width=80&height=80&mode=cover"
-                                    class="preview-img" />
+?width=80&height=80&mode=cover" class="preview-img" />
                                  <span class="img-overlay">
                                     <i class="fa fa-camera"></i>
                                     <small>Đổi ảnh</small>
@@ -191,11 +191,14 @@ if ($this->_foreach['loop']['total'] > 0):
                               <?php endif; ?>
                               <?php endforeach; endif; unset($_from); ?>
                               <span data-lang="<?php echo $this->_tpl_vars['lang']['id']; ?>
-" class="tab c-name editable-name <?php if ($this->_tpl_vars['lang']['id'] == $this->_tpl_vars['currentLang']): ?>active<?php endif; ?>" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
+"
+                                 class="tab c-name editable-name <?php if ($this->_tpl_vars['lang']['id'] == $this->_tpl_vars['currentLang']): ?>active<?php endif; ?>"
+                                 data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
 ">
                                  <span><?php echo ((is_array($_tmp=$this->_tpl_vars['detail']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
 </span>
-                                 <input type="text" class="edit-input form-control" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']['details']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
+                                 <input type="text" class="edit-input form-control"
+                                    value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']['details']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'html', 'UTF-8') : smarty_modifier_escape($_tmp, 'html', 'UTF-8')); ?>
 " style="display:none;">
                               </span>
                               <?php endforeach; endif; unset($_from); ?>
@@ -205,10 +208,8 @@ if ($this->_foreach['loop']['total'] > 0):
                         <?php if ($this->_tpl_vars['tinhnang']['price'] == 1): ?>
 
                         <td align="center">
-                           <span class="editable-price"
-                              data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
-"
-                              contenteditable="true">
+                           <span class="editable-price" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
+" contenteditable="true">
                               <?php echo $this->_tpl_vars['item']['price']['price']; ?>
 ₫
                            </span>
@@ -224,17 +225,21 @@ if ($this->_foreach['loop']['total'] > 0):
                            <?php echo ((is_array($_tmp=$this->_tpl_vars['item']['dated_edit'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%d/%m/%Y %H:%M") : smarty_modifier_date_format($_tmp, "%d/%m/%Y %H:%M")); ?>
 
                         </td> -->
+                        <td align="center">
+                           <a class="act-btn" title="Video"
+                              href="index.php?do=articlelist&act=video&id=<?php echo $this->_tpl_vars['item']['id']; ?>
+&comp=<?php echo $_REQUEST['comp']; ?>
+">
+                              <i class="fa-solid fa-video"></i>
+                           </a>
 
+                        </td>
                         <?php if ($this->_tpl_vars['tinhnang']['new'] == 1): ?>
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
+                           <button type="button" class="btn_checks btn_toggle" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
 "
                               data-active="<?php echo $this->_tpl_vars['item']['new']; ?>
-"
-                              data-column="new"
-                              data-table="articlelist">
+" data-column="new" data-table="articlelist">
                               <img src="images/<?php echo $this->_tpl_vars['item']['new']; ?>
 .png" alt="Trạng thái Mới" />
                            </button>
@@ -243,14 +248,10 @@ if ($this->_foreach['loop']['total'] > 0):
 
                         <?php if ($this->_tpl_vars['tinhnang']['hot'] == 1): ?>
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
+                           <button type="button" class="btn_checks btn_toggle" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
 "
                               data-active="<?php echo $this->_tpl_vars['item']['hot']; ?>
-"
-                              data-column="hot"
-                              data-table="articlelist">
+" data-column="hot" data-table="articlelist">
                               <img src="images/<?php echo $this->_tpl_vars['item']['hot']; ?>
 .png" alt="Trạng thái Hot" />
                            </button>
@@ -259,14 +260,10 @@ if ($this->_foreach['loop']['total'] > 0):
 
                         <?php if ($this->_tpl_vars['tinhnang']['mostview'] == 1): ?>
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
+                           <button type="button" class="btn_checks btn_toggle" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
 "
                               data-active="<?php echo $this->_tpl_vars['item']['mostview']; ?>
-"
-                              data-column="mostview"
-                              data-table="articlelist">
+" data-column="mostview" data-table="articlelist">
                               <img src="images/<?php echo $this->_tpl_vars['item']['mostview']; ?>
 .png" alt="Trạng thái Xem nhiều" />
                            </button>
@@ -274,14 +271,10 @@ if ($this->_foreach['loop']['total'] > 0):
                         <?php endif; ?>
 
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
+                           <button type="button" class="btn_checks btn_toggle" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
 "
                               data-active="<?php echo $this->_tpl_vars['item']['active']; ?>
-"
-                              data-column="active"
-                              data-table="articlelist">
+" data-column="active" data-table="articlelist">
                               <img src="images/<?php echo $this->_tpl_vars['item']['active']; ?>
 .png" alt="Hiển thị / Ẩn" />
                            </button>
@@ -304,7 +297,9 @@ if ($this->_foreach['loop']['total'] > 0):
                                  <?php endif; ?>
                                  <?php endforeach; endif; unset($_from); ?>
                                  <a data-lang="<?php echo $this->_tpl_vars['lang']['id']; ?>
-" class="tab act-btn btnView <?php if ($this->_tpl_vars['lang']['id'] == $this->_tpl_vars['currentLang']): ?>active<?php endif; ?>" href="<?php echo $this->_tpl_vars['web_base_url']; ?>
+"
+                                    class="tab act-btn btnView <?php if ($this->_tpl_vars['lang']['id'] == $this->_tpl_vars['currentLang']): ?>active<?php endif; ?>"
+                                    href="<?php echo $this->_tpl_vars['web_base_url']; ?>
 /<?php echo $this->_tpl_vars['detail']['unique_key']; ?>
 .html" target="_blank" title="Xem nhanh">
                                     <i class="fa fa-eye"></i>
@@ -312,18 +307,21 @@ if ($this->_foreach['loop']['total'] > 0):
                                  <?php endforeach; endif; unset($_from); ?>
                               </div>
                               <?php endif; ?>
-                              <a class="act-btn btnEdit" title="Chỉnh sửa" href="index.php?do=articlelist&act=edit&id=<?php echo $this->_tpl_vars['item']['id']; ?>
+                              <a class="act-btn btnEdit" title="Chỉnh sửa"
+                                 href="index.php?do=articlelist&act=edit&id=<?php echo $this->_tpl_vars['item']['id']; ?>
 &comp=<?php echo $_REQUEST['comp']; ?>
 ">
                                  <i class="fa fa-edit"></i>
                               </a>
                               <button class="act-btn btnUpdateNum" title="Làm mới" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
-" data-comp="<?php echo $_REQUEST['comp']; ?>
+"
+                                 data-comp="<?php echo $_REQUEST['comp']; ?>
 ">
                                  <i class="fa fa-refresh"></i>
                               </button>
                               <button class="act-btn btnDeleteRow" title="Xoá" data-id="<?php echo $this->_tpl_vars['item']['id']; ?>
-" data-comp="<?php echo $_REQUEST['comp']; ?>
+"
+                                 data-comp="<?php echo $_REQUEST['comp']; ?>
 ">
                                  <i class="fa fa-trash"></i>
                               </button>

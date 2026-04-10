@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-03-08 10:58:39
+<?php /* Smarty version 2.6.30, created on 2026-04-09 14:29:33
          compiled from products/detail.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'products/detail.tpl', 6, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'products/detail.tpl', 6, false),array('modifier', 'json_encode', 'products/detail.tpl', 301, false),)), $this); ?>
 <main>
   <div class="container">
     <ul class="breadcumb"><?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -85,6 +85,24 @@ if ($this->_foreach['imgloop']['total'] > 0):
       <div class="product-detail-des" itemprop="articleBody">
         <h1 class="ttl01 --detail" itemprop="headline"><?php echo $this->_tpl_vars['detail']['name']; ?>
 </h1>
+        <?php if ($this->_tpl_vars['videos']): ?>
+            <div class="box-videos">
+              <div class="box-videos__ttl">Video giới thiệu
+              </div><div class="video-list">
+                <?php $_from = $this->_tpl_vars['videos']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['i'] => $this->_tpl_vars['item']):
+?>
+                <div class="video-item" data-index="<?php echo $this->_tpl_vars['i']; ?>
+">
+                  <video preload="metadata" autoplay="" loop="" muted="" playsinline="">
+                    <source src="<?php echo $this->_tpl_vars['item']['video_file']; ?>
+" type="video/mp4">
+                  </video>
+                </div>
+                <?php endforeach; endif; unset($_from); ?>
+              </div>
+            </div>
+          <?php endif; ?>
         <div class="list-pickup">
           <?php if ($this->_tpl_vars['diemdon']): ?>
           <div class="pickup-box">
@@ -214,21 +232,7 @@ if ($this->_foreach['imgloop']['total'] > 0):
             </div>
           </div>
           <?php endif; ?>
-          <!-- <?php if ($this->_tpl_vars['cungduong']): ?>
-          <div class="pickup-box">
-            <div class="pickup-header">
-              <?php echo $this->_tpl_vars['cungduong']['name']; ?>
-
-              <span class="pickup-arrow">▼</span>
-            </div>
-            <div class="pickup-body">
-              <div class="route-item">
-                <?php echo $this->_tpl_vars['cungduong']['content']; ?>
-
-              </div>
-            </div>
-          </div>
-          <?php endif; ?> -->
+        
           <?php if ($this->_tpl_vars['haihoa']): ?>
           <div class="pickup-box">
             <div class="pickup-header">
@@ -322,6 +326,30 @@ if ($this->_foreach['imgloop']['total'] > 0):
             </div>
           </div>
           <?php endif; ?>
+          <!-- <?php if ($this->_tpl_vars['videos']): ?>
+          <div class="pickup-box">
+            <div class="pickup-header">
+              Video
+              <span class="pickup-arrow">▼</span>
+            </div>
+            <div class="pickup-body">
+              <div class="video-list">
+                <?php $_from = $this->_tpl_vars['videos']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['i'] => $this->_tpl_vars['item']):
+?>
+                <div class="video-item" data-index="<?php echo $this->_tpl_vars['i']; ?>
+">
+                  <video preload="metadata">
+                    <source src="<?php echo $this->_tpl_vars['item']['video_file']; ?>
+" type="video/mp4">
+                  </video>
+                </div>
+                <?php endforeach; endif; unset($_from); ?>
+              </div>
+            </div>
+           
+          </div>
+          <?php endif; ?> -->
         </div>
       </div>
 
@@ -342,3 +370,100 @@ unset($_smarty_tpl_vars);
   <?php endif; ?>
   </div>
 </main>
+<div id="videoPopup" class="video-popup">
+  <span class="close">×</span>
+
+  <video id="popupVideo" playsinline controls></video>
+
+  <div class="nav prev">❮</div>
+  <div class="nav next">❯</div>
+</div>
+<script>
+  const videoList = <?php echo json_encode($this->_tpl_vars['videos']); ?>
+;
+</script>
+<?php echo '
+<script>
+
+  let currentIndex = 0;
+
+  const popup = document.getElementById("videoPopup");
+  const video = document.getElementById("popupVideo");
+
+  // 👉 CLICK ITEM
+  document.querySelector(".video-list").addEventListener("click", function (e) {
+    const item = e.target.closest(".video-item");
+    if (!item) return;
+
+    currentIndex = Number(item.dataset.index);
+    openPopup();
+  });
+
+  // 👉 OPEN
+  function openPopup() {
+    popup.style.display = "flex";
+    playCurrent();
+  }
+
+  // 👉 CLOSE
+  document.querySelector(".close").onclick = closePopup;
+
+  function closePopup() {
+    popup.style.display = "none";
+    video.pause();
+    video.src = "";
+  }
+
+  // 👉 NEXT / PREV
+  document.querySelector(".next").onclick = nextVideo;
+  document.querySelector(".prev").onclick = prevVideo;
+
+  function nextVideo() {
+    currentIndex = (currentIndex + 1) % videoList.length;
+    playCurrent();
+  }
+
+  function prevVideo() {
+    currentIndex = (currentIndex - 1 + videoList.length) % videoList.length;
+    playCurrent();
+  }
+
+  // 👉 PLAY
+  function playCurrent() {
+    video.src = videoList[currentIndex].video_file;
+    video.play();
+  }
+
+  // 👉 AUTO NEXT
+  video.addEventListener("ended", nextVideo);
+
+
+  // =====================
+  // 👉 SWIPE MOBILE 🔥
+  // =====================
+  let startX = 0;
+
+  popup.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+
+  popup.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if (startX - endX > 50) {
+      nextVideo(); // swipe left
+    }
+    if (endX - startX > 50) {
+      prevVideo(); // swipe right
+    }
+  });
+  // click vào nền (ngoài video)
+  popup.addEventListener("click", function (e) {
+    // nếu click đúng vào nền (không phải video hay nút)
+    if (e.target === popup) {
+      closePopup();
+    }
+  });
+</script>
+
+'; ?>

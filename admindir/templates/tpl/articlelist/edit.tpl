@@ -156,7 +156,8 @@
                     <textarea id="short_{$lang.id}" name="languages[{$lang.id}][short]">{$detail.short}</textarea>
                   </div>
                 </div>
-                <!-- <div class="item">
+                <!--
+                <div class="item">
                   <div class="title --cuz">Thông tin cung đường</div>
 
                   <div class="trip-item">
@@ -165,7 +166,8 @@
                       rows="3">{$cungduong.content}</textarea>
                   </div>
 
-                </div> -->
+                </div>
+-->
                 <div class="item">
                   <div class="title --cuz">Các loại vé</div>
                   <div class="trip-item">
@@ -307,6 +309,28 @@
                 <div class="title">Link</div>
                 <div class="info-title">
                   <input type="text" name="link_out" id="link_out" class="InputText" value="{$articlelist.link_out}" />
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Video</div>
+                <div class="info-title">
+
+                  {if $articlelist.video neq ""}
+                  <video width="120" controls style="margin-bottom:10px;">
+                    <source src="../{$articlelist.video}" type="video/mp4">
+                  </video>
+                  {/if}
+
+                  <!-- Upload video -->
+                  <label for="video_file" class="custom-upload">
+                    <i class="fa fa-upload"></i> Upload video
+                  </label>
+
+                  <input type="file" name="video_file" id="video_file" accept="video/mp4,video/mov,video/avi">
+
+                  <!-- Preview video -->
+                  <video id="preview-video" width="250" controls style="display:none; margin-top:10px;"></video>
+
                 </div>
               </div>
               {/if}

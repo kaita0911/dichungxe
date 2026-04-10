@@ -42,7 +42,8 @@
                      {/foreach}
                   </select>
 
-                  <input type="text" name="keyword" value="{$smarty.request.keyword}" placeholder="Từ khóa sản phẩm..." style="min-width:200px; margin-left:10px;" />
+                  <input type="text" name="keyword" value="{$smarty.request.keyword}" placeholder="Từ khóa sản phẩm..."
+                     style="min-width:200px; margin-left:10px;" />
 
                   <button type="submit" name="search" value="1" style="margin-left:10px;">Tìm kiếm</button>
                </div>
@@ -82,8 +83,8 @@
                         <th align="center" class="width-image">Giá</th>
                         {/if}
 
-                        <!-- <th align="center" class="width-image">Ngày tạo</th>
-                        <th align="center" class="width-image">Ngày sửa</th> -->
+                        <!-- <th align="center" class="width-image">Ngày tạo</th> -->
+                        <th align="center" class="width-image">Video</th>
 
                         {if $tinhnang.new == 1}
                         <th align="center" class="width-show">Mới</th>
@@ -122,8 +123,7 @@
                            {if $item.img_thumb_vn neq ""}
                            <div class="c-img {$item.comp}" data-comp="{$item.comp}" title="Làm mới">
                               <label class="img-change">
-                                 <img src="/{$item.img_thumb_vn}?width=80&height=80&mode=cover"
-                                    class="preview-img" />
+                                 <img src="/{$item.img_thumb_vn}?width=80&height=80&mode=cover" class="preview-img" />
                                  <span class="img-overlay">
                                     <i class="fa fa-camera"></i>
                                     <small>Đổi ảnh</small>
@@ -151,9 +151,12 @@
                               {assign var=detail value=$ad}
                               {/if}
                               {/foreach}
-                              <span data-lang="{$lang.id}" class="tab c-name editable-name {if $lang.id==$currentLang}active{/if}" data-id="{$item.id}">
+                              <span data-lang="{$lang.id}"
+                                 class="tab c-name editable-name {if $lang.id==$currentLang}active{/if}"
+                                 data-id="{$item.id}">
                                  <span>{$detail.name|escape:'html':'UTF-8'}</span>
-                                 <input type="text" class="edit-input form-control" value="{$item.details.name|escape:'html':'UTF-8'}" style="display:none;">
+                                 <input type="text" class="edit-input form-control"
+                                    value="{$item.details.name|escape:'html':'UTF-8'}" style="display:none;">
                               </span>
                               {/foreach}
                            </div>
@@ -162,9 +165,7 @@
                         {if $tinhnang.price == 1}
 
                         <td align="center">
-                           <span class="editable-price"
-                              data-id="{$item.id}"
-                              contenteditable="true">
+                           <span class="editable-price" data-id="{$item.id}" contenteditable="true">
                               {$item.price.price}₫
                            </span>
                         </td>
@@ -177,15 +178,17 @@
                         <td align="center">
                            {$item.dated_edit|date_format:"%d/%m/%Y %H:%M"}
                         </td> -->
+                        <td align="center">
+                           <a class="act-btn" title="Video"
+                              href="index.php?do=articlelist&act=video&id={$item.id}&comp={$smarty.request.comp}">
+                              <i class="fa-solid fa-video"></i>
+                           </a>
 
+                        </td>
                         {if $tinhnang.new == 1}
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="{$item.id}"
-                              data-active="{$item.new}"
-                              data-column="new"
-                              data-table="articlelist">
+                           <button type="button" class="btn_checks btn_toggle" data-id="{$item.id}"
+                              data-active="{$item.new}" data-column="new" data-table="articlelist">
                               <img src="images/{$item.new}.png" alt="Trạng thái Mới" />
                            </button>
                         </td>
@@ -193,12 +196,8 @@
 
                         {if $tinhnang.hot == 1}
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="{$item.id}"
-                              data-active="{$item.hot}"
-                              data-column="hot"
-                              data-table="articlelist">
+                           <button type="button" class="btn_checks btn_toggle" data-id="{$item.id}"
+                              data-active="{$item.hot}" data-column="hot" data-table="articlelist">
                               <img src="images/{$item.hot}.png" alt="Trạng thái Hot" />
                            </button>
                         </td>
@@ -206,24 +205,16 @@
 
                         {if $tinhnang.mostview == 1}
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="{$item.id}"
-                              data-active="{$item.mostview}"
-                              data-column="mostview"
-                              data-table="articlelist">
+                           <button type="button" class="btn_checks btn_toggle" data-id="{$item.id}"
+                              data-active="{$item.mostview}" data-column="mostview" data-table="articlelist">
                               <img src="images/{$item.mostview}.png" alt="Trạng thái Xem nhiều" />
                            </button>
                         </td>
                         {/if}
 
                         <td align="center">
-                           <button type="button"
-                              class="btn_checks btn_toggle"
-                              data-id="{$item.id}"
-                              data-active="{$item.active}"
-                              data-column="active"
-                              data-table="articlelist">
+                           <button type="button" class="btn_checks btn_toggle" data-id="{$item.id}"
+                              data-active="{$item.active}" data-column="active" data-table="articlelist">
                               <img src="images/{$item.active}.png" alt="Hiển thị / Ẩn" />
                            </button>
                         </td>
@@ -245,19 +236,24 @@
                                  {assign var=detail value=$ad}
                                  {/if}
                                  {/foreach}
-                                 <a data-lang="{$lang.id}" class="tab act-btn btnView {if $lang.id==$currentLang}active{/if}" href="{$web_base_url}/{$detail.unique_key}.html" target="_blank" title="Xem nhanh">
+                                 <a data-lang="{$lang.id}"
+                                    class="tab act-btn btnView {if $lang.id==$currentLang}active{/if}"
+                                    href="{$web_base_url}/{$detail.unique_key}.html" target="_blank" title="Xem nhanh">
                                     <i class="fa fa-eye"></i>
                                  </a>
                                  {/foreach}
                               </div>
                               {/if}
-                              <a class="act-btn btnEdit" title="Chỉnh sửa" href="index.php?do=articlelist&act=edit&id={$item.id}&comp={$smarty.request.comp}">
+                              <a class="act-btn btnEdit" title="Chỉnh sửa"
+                                 href="index.php?do=articlelist&act=edit&id={$item.id}&comp={$smarty.request.comp}">
                                  <i class="fa fa-edit"></i>
                               </a>
-                              <button class="act-btn btnUpdateNum" title="Làm mới" data-id="{$item.id}" data-comp="{$smarty.request.comp}">
+                              <button class="act-btn btnUpdateNum" title="Làm mới" data-id="{$item.id}"
+                                 data-comp="{$smarty.request.comp}">
                                  <i class="fa fa-refresh"></i>
                               </button>
-                              <button class="act-btn btnDeleteRow" title="Xoá" data-id="{$item.id}" data-comp="{$smarty.request.comp}">
+                              <button class="act-btn btnDeleteRow" title="Xoá" data-id="{$item.id}"
+                                 data-comp="{$smarty.request.comp}">
                                  <i class="fa fa-trash"></i>
                               </button>
                               <!-- <span class="act-btn btnPassword"
