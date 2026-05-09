@@ -85,35 +85,69 @@
                   <div class="title --cuz">Lịch trình dự kiến </div>
                   <div id="scheduleList" class="trip-list">
                     {foreach from=$lichtrinhtrongngay item=schedule key=k}
-                    <div class="schedule-item" data-index="{$k}">
-                      <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+
+                    <div class="schedule-item">
+
+                      <div class="schedule-top">
+                        <span class="drag-handle">↕</span>
+
+                        <button type="button" class="remove-schedule btn-del-more">
+                          Xoá
+                        </button>
+                      </div>
+
+                      <input type="hidden" class="schedule-id" name="schedule_id[]" value="{$schedule.id}">
+
+                      <input type="hidden" name="schedule_sort[]" class="schedule-sort"
+                        value="{$schedule.sort_order|default:$k+1}">
+
                       <input type="text" class="more-input" name="schedule_time[]" value="{$schedule.name|escape}"
                         placeholder="Thời gian">
+
                       <input type="text" class="more-input" name="schedule_content[]" value="{$schedule.content|escape}"
                         placeholder="Nội dung">
+
                       <div class="extra-content-list">
-                        {foreach from=$schedule.extra item=extra}
+
+                        {foreach from=$schedule.extra item=extra key=ek}
+
+                        {assign var=editorId value="extra_editor_`$schedule.id`_`$ek`"}
+
                         <div class="extra-item">
-                          <textarea class="extra-editor" name="schedule_extra_content[{$k}][]"
+
+                          <textarea id="{$editorId}" class="extra-editor" name="schedule_extra_content[{$k}][]"
                             rows="3">{$extra|escape}</textarea>
-                          <button type="button" class="remove-extra">X</button>
+
+                          <button type="button" class="remove-extra">
+                            X
+                          </button>
+
                         </div>
+
                         {/foreach}
+
                       </div>
+
                       <button type="button" class="add-extra-content">
                         + Thêm nội dung (nếu có)
                       </button>
+
                     </div>
+
                     {/foreach}
                   </div>
                   <div id="dayList">
+
                     {foreach from=$days key=day item=data}
 
                     <div class="day-item">
 
                       <div class="day-header">
                         <strong>Ngày {$day}</strong>
-                        <button type="button" class="remove-day">Xoá ngày</button>
+
+                        <button type="button" class="remove-day btn-del-more">
+                          Xoá ngày
+                        </button>
                       </div>
 
                       <input type="text" class="more-input" name="day_content[{$day}]"
@@ -125,12 +159,23 @@
 
                         <div class="schedule-item">
 
-                          <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+                          <div class="schedule-top">
 
-                          <input type="text" class="more-input" name="schedule_name_more[{$day}][{$i}]"
+                            <span class="drag-handle">↕</span>
+
+                            <button type="button" class="remove-schedule-more btn-del-more">
+                              Xoá
+                            </button>
+
+                          </div>
+
+                          <input type="hidden" class="schedule-sort-more" name="schedule_sort_more[{$day}][]"
+                            value="{$row.sort_order|default:$i+1}">
+
+                          <input type="text" class="more-input" name="schedule_name_more[{$day}][]"
                             value="{$row.name|escape}" placeholder="Tên">
 
-                          <input type="text" class="more-input" name="schedule_content_more[{$day}][{$i}]"
+                          <input type="text" class="more-input" name="schedule_content_more[{$day}][]"
                             value="{$row.content|escape}" placeholder="Nội dung">
 
                         </div>
@@ -144,7 +189,9 @@
                       </button>
 
                     </div>
+
                     {/foreach}
+
                   </div>
                 </div>
                 <div id="addScheduleBtn" class="brn-add-more">+ Thêm lịch trình (trong ngày)</div>

@@ -1,7 +1,5 @@
-<?php /* Smarty version 2.6.30, created on 2026-04-08 22:48:20
+<?php /* Smarty version 2.6.30, created on 2026-04-10 13:43:33
          compiled from main/main.tpl */ ?>
-<?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'json_encode', 'main/main.tpl', 205, false),)), $this); ?>
 <main class="home">
    <div class="container">
       <div class="p-commit">
@@ -273,126 +271,11 @@ if ($this->_foreach['tab']['total'] > 0):
          </div>
       </div>
    </div>
-   <div class="p-video">
-      <div class="container">
-         <h2 class="ttl02">video mới nhất</h2>
-         <div class="p-news-wrap js-video">
-            <?php $_from = $this->_tpl_vars['video_home']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
-    foreach ($_from as $this->_tpl_vars['i'] => $this->_tpl_vars['item']):
-?>
-            <div class="video-item" data-index="<?php echo $this->_tpl_vars['i']; ?>
-">
-               <video preload="metadata">
-                  <source src="<?php echo $this->_tpl_vars['item']['video']; ?>
-" type="video/mp4">
-               </video>
-               <h3 class="video-item__ttl"><?php echo $this->_tpl_vars['item']['name_detail']; ?>
-</h3>
-            </div>
-            <?php endforeach; endif; unset($_from); ?>
-         </div>
-      </div>
-   </div>
-   <div id="videoPopup" class="video-popup">
-      <span class="close">×</span>
-
-      <video id="popupVideo" playsinline controls></video>
-
-      <div class="nav prev">❮</div>
-      <div class="nav next">❯</div>
-   </div>
+  
+  
 </main>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => 'popup.tpl', 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
- ?>
-<script>
-   const videoList = <?php echo json_encode($this->_tpl_vars['video_home']); ?>
-;
-</script>
-<?php echo '
-<script>
-
-   let currentIndex = 0;
-
-   const popup = document.getElementById("videoPopup");
-   const video = document.getElementById("popupVideo");
-
-   // 👉 CLICK ITEM
-   document.querySelector(".js-video").addEventListener("click", function (e) {
-      const item = e.target.closest(".video-item");
-      if (!item) return;
-
-      currentIndex = Number(item.dataset.index);
-      openPopup();
-   });
-
-   // 👉 OPEN
-   function openPopup() {
-      popup.style.display = "flex";
-      playCurrent();
-   }
-
-   // 👉 CLOSE
-   document.querySelector(".close").onclick = closePopup;
-
-   function closePopup() {
-      popup.style.display = "none";
-      video.pause();
-      video.src = "";
-   }
-
-   // 👉 NEXT / PREV
-   document.querySelector(".next").onclick = nextVideo;
-   document.querySelector(".prev").onclick = prevVideo;
-
-   function nextVideo() {
-      currentIndex = (currentIndex + 1) % videoList.length;
-      playCurrent();
-   }
-
-   function prevVideo() {
-      currentIndex = (currentIndex - 1 + videoList.length) % videoList.length;
-      playCurrent();
-   }
-
-   // 👉 PLAY
-   function playCurrent() {
-      video.src = videoList[currentIndex].video;
-      video.play();
-   }
-
-   // 👉 AUTO NEXT
-   video.addEventListener("ended", nextVideo);
-
-
-   // =====================
-   // 👉 SWIPE MOBILE 🔥
-   // =====================
-   let startX = 0;
-
-   popup.addEventListener("touchstart", e => {
-      startX = e.touches[0].clientX;
-   });
-
-   popup.addEventListener("touchend", e => {
-      let endX = e.changedTouches[0].clientX;
-
-      if (startX - endX > 50) {
-         nextVideo(); // swipe left
-      }
-      if (endX - startX > 50) {
-         prevVideo(); // swipe right
-      }
-   });
-   // click vào nền (ngoài video)
-   popup.addEventListener("click", function(e){
-      // nếu click đúng vào nền (không phải video hay nút)
-      if(e.target === popup){
-         closePopup();
-      }
-   });
-</script>
-
-'; ?>
+ ?>

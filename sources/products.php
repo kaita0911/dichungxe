@@ -55,7 +55,7 @@ switch ($act) {
         FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh
         WHERE articlelist_id = {$article_id}
         AND languageid = {$langid}
-        ORDER BY id ASC
+        ORDER BY sort_order ASC, id ASC
         ";
         $lichtrinh = $GLOBALS['sp']->getAll($sql_lichtrinh);
         // 🔥 Lấy mô tả cho từng lịch trình
@@ -84,7 +84,7 @@ switch ($act) {
         FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
         WHERE articlelist_id = {$article_id}
         AND languageid = {$langid}
-        ORDER BY day ASC, id ASC
+        ORDER BY day ASC, sort_order ASC, id ASC
         ";
 
         $rows = $GLOBALS['sp']->getAll($sql_lichtrinh_quadem);

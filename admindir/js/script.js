@@ -1326,32 +1326,65 @@ let extraEditorCount = 0;
 
 // ==========================
 // THÊM LỊCH TRÌNH
-// ==========================
 if (addScheduleBtn && scheduleList) {
   addScheduleBtn.addEventListener("click", function () {
     const scheduleIndex = scheduleCount++;
 
+    const tempId = "new_" + Date.now();
+
     const scheduleItem = document.createElement("div");
+
     scheduleItem.classList.add("schedule-item");
-    scheduleItem.dataset.index = scheduleIndex;
 
     scheduleItem.innerHTML = `
-      <button type="button" class="remove-schedule btn-del-more">Xoá</button>
 
-      <input class="more-input" type="text" 
-        name="schedule_time[]" placeholder="Thời gian">
+      <div class="schedule-top">
 
-      <input class="more-input" type="text" 
-        name="schedule_content[]" placeholder="Nội dung">
+        <span class="drag-handle">☰</span>
+
+        <button type="button"
+          class="remove-schedule btn-del-more">
+          Xoá
+        </button>
+
+      </div>
+
+      <input type="hidden"
+        class="schedule-id"
+        value="${tempId}">
+
+      <input type="hidden"
+        name="schedule_sort[]"
+        class="schedule-sort"
+        value="${scheduleIndex}">
+
+      <input class="more-input"
+        type="text"
+        name="schedule_time[]"
+        placeholder="Thời gian">
+
+      <input class="more-input"
+        type="text"
+        name="schedule_content[]"
+        placeholder="Nội dung">
 
       <div class="extra-content-list"></div>
 
-      <button type="button" class="add-extra-content">
+      <button type="button"
+        class="add-extra-content">
         + Thêm nội dung (nếu có)
       </button>
     `;
 
     scheduleList.appendChild(scheduleItem);
+  });
+}
+
+function updateScheduleSort() {
+  const items = scheduleList.querySelectorAll(".schedule-item");
+
+  items.forEach((item, index) => {
+    item.querySelector(".schedule-sort").value = index + 1;
   });
 }
 
@@ -1364,22 +1397,29 @@ document.addEventListener("click", function (e) {
   // =========================
   if (e.target.classList.contains("add-extra-content")) {
     const scheduleItem = e.target.closest(".schedule-item");
+
     const extraList = scheduleItem.querySelector(".extra-content-list");
-    const scheduleIndex = scheduleItem.dataset.index;
+
+    // const scheduleId = scheduleItem.querySelector(".schedule-id").value;
+    const scheduleIndex = scheduleCount++;
 
     const textareaId = "trip_editor_" + ++extraEditorCount;
 
     const extraItem = document.createElement("div");
+
     extraItem.classList.add("extra-item");
 
     extraItem.innerHTML = `
-      <textarea 
-        id="${textareaId}" 
-        name="schedule_extra_content[${scheduleIndex}][]" 
+      <textarea
+        id="${textareaId}"
+      name="schedule_extra_content[${scheduleIndex}][]"
         rows="3"
         placeholder="Mô tả thêm"></textarea>
-
-      <button type="button" class="remove-extra">X</button>
+  
+      <button type="button"
+        class="remove-extra">
+        X
+      </button>
     `;
 
     extraList.appendChild(extraItem);
@@ -1456,6 +1496,7 @@ $("#addDayBtn").click(function () {
 
   `);
 });
+//qua đêm
 $(document).on("click", ".add-schedule", function () {
   let day = $(this).data("day");
   let scheduleList = $(this).siblings(".schedule-list");
@@ -1463,7 +1504,19 @@ $(document).on("click", ".add-schedule", function () {
   scheduleList.append(`
       <div class="schedule-item">
 
-          <button type="button" class="remove-schedule-more btn-del-more">Xoá</button>
+          <div class="schedule-top">
+              <span class="drag-handle">☰</span>
+
+              <button type="button"
+                      class="remove-schedule-more btn-del-more">
+                  Xoá
+              </button>
+          </div>
+
+          <input type="hidden"
+                 class="schedule-sort-more"
+                 name="schedule_sort_more[${day}][]"
+                 value="0">
 
           <input type="text"
                  class="more-input"
@@ -1477,7 +1530,33 @@ $(document).on("click", ".add-schedule", function () {
 
       </div>
   `);
+
+  const currentList = scheduleList[0];
+
+  updateMoreScheduleSort(currentList);
+
+  if (!currentList.dataset.sortableInit) {
+    new Sortable(currentList, {
+      animation: 150,
+      handle: ".drag-handle",
+
+      onEnd() {
+        updateMoreScheduleSort(currentList);
+      },
+    });
+
+    currentList.dataset.sortableInit = "1";
+  }
 });
+function updateMoreScheduleSort(wrapper) {
+  wrapper.querySelectorAll(".schedule-item").forEach(function (item, index) {
+    const input = item.querySelector(".schedule-sort-more");
+
+    if (input) {
+      input.value = index + 1;
+    }
+  });
+}
 $(document).on("click", ".remove-schedule-more", function () {
   if (!confirm("Xoá nội dung này?")) return;
 
@@ -1518,7 +1597,50 @@ document.addEventListener("DOMContentLoaded", function () {
   const dayList = document.getElementById("dayList");
   const addScheduleBtn = document.getElementById("addScheduleBtn");
   const addDayBtn = document.getElementById("addDayBtn");
+  if (scheduleList) {
+    new Sortable(scheduleList, {
+      animation: 150,
+      handle: ".drag-handle",
 
+      onStart() {
+        for (const instance in CKEDITOR.instances) {
+          CKEDITOR.instances[instance].updateElement();
+        }
+      },
+
+      onEnd() {
+        updateScheduleSort();
+
+        // destroy + rebuild editor
+        document.querySelectorAll(".extra-editor").forEach(function (el) {
+          if (CKEDITOR.instances[el.id]) {
+            CKEDITOR.instances[el.id].destroy(true);
+          }
+        });
+
+        document.querySelectorAll(".extra-editor").forEach(function (el) {
+          CKEDITOR.replace(el.id, {
+            removePlugins: "exportpdf",
+            height: 120,
+            language: "vi",
+          });
+        });
+      },
+    });
+  }
+  // =========================
+  // SORTABLE: LỊCH TRÌNH QUA ĐÊM
+  // =========================
+  document.querySelectorAll("#dayList .schedule-list").forEach(function (list) {
+    new Sortable(list, {
+      animation: 150,
+      handle: ".drag-handle",
+
+      onEnd() {
+        updateMoreScheduleSort(list);
+      },
+    });
+  });
   if (!scheduleList || !dayList) return;
 
   function checkLists() {
@@ -1646,4 +1768,27 @@ document.addEventListener("click", function (e) {
 
     removeTicket(e.target);
   }
+});
+document.getElementById("ArticleForm").addEventListener("submit", function () {
+  // cập nhật CKEditor về textarea
+  for (const instance in CKEDITOR.instances) {
+    CKEDITOR.instances[instance].updateElement();
+  }
+
+  // rebuild lại key extra theo vị trí hiện tại
+  document
+    .querySelectorAll("#scheduleList .schedule-item")
+    .forEach(function (item, index) {
+      // update sort
+      const sortInput = item.querySelector(".schedule-sort");
+
+      if (sortInput) {
+        sortInput.value = index + 1;
+      }
+
+      // update name extra
+      item.querySelectorAll(".extra-editor").forEach(function (textarea) {
+        textarea.name = `schedule_extra_content[${index}][]`;
+      });
+    });
 });

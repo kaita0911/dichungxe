@@ -355,7 +355,7 @@ switch ($act) {
         /////trong ngày
         $sql = "
         SELECT 
-            lt.id,
+            lt.id,lt.sort_order,
             lt.name,
             lt.content,
             mt.id AS mota_id,
@@ -364,7 +364,7 @@ switch ($act) {
         LEFT JOIN {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota mt
         ON lt.id = mt.lichtrinh_id
         WHERE lt.articlelist_id = {$id}
-        ORDER BY lt.id ASC
+        ORDER BY lt.sort_order ASC, lt.id ASC
         ";
 
         $rs = $GLOBALS['sp']->Execute($sql);
@@ -400,7 +400,7 @@ switch ($act) {
         SELECT *
         FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
         WHERE articlelist_id = {$id}
-        ORDER BY day ASC, id ASC
+        ORDER BY sort_order ASC, id ASC
         ");
 
         $days = [];
@@ -997,6 +997,7 @@ $smarty->display('footer.tpl');
 function saveArticle()
 {
     global $act, $comp;
+
     $logoPath = __DIR__ . "/../images/logo_nhathuy.png"; // đường dẫn logo
     $sp    = $GLOBALS['sp'];
     $id  = intval(isset($_POST['id']) ? $_POST['id'] : 0);
@@ -1602,7 +1603,7 @@ function saveArticle()
     $schedule_time    = isset($_POST['schedule_time']) ? $_POST['schedule_time'] : [];
     $schedule_content  = isset($_POST['schedule_content']) ? $_POST['schedule_content'] : [];
     $schedule_extra    = isset($_POST['schedule_extra_content']) ? $_POST['schedule_extra_content'] : [];
-
+    $schedule_sort  = isset($_POST['schedule_sort']) ? $_POST['schedule_sort'] : [];
     // 🔥 xoá mô tả trước
     $GLOBALS['sp']->Execute(
         "DELETE mt FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota mt
@@ -1617,67 +1618,153 @@ function saveArticle()
         "DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh WHERE articlelist_id = ?",
         [$id]
     );
+    // if (!empty($schedule_time)) {
+
+    //     foreach ($schedule_time as $key => $time_lichtrinh) {
+
+    //         $time_lichtrinh = trim($time_lichtrinh);
+    //         $content_lichtrinh = isset($schedule_content[$key]) ? $schedule_content[$key] : '';
+
+    //         if ($time_lichtrinh === '') {
+    //             continue;
+    //         }
+
+    //         // lưu lịch trình
+    //         $GLOBALS['sp']->Execute(
+    //             "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh
+    //             (articlelist_id, name, content, languageid, sort_order)
+    //             VALUES (?, ?, ?, ?, ?)",
+    //             [$id, $time_lichtrinh, $content_lichtrinh, 1, isset($schedule_sort[$key]) ? (int)$schedule_sort[$key] : 0]
+    //         );
+
+    //         $lichtrinh_id = $GLOBALS['sp']->Insert_ID();
+
+    //         // 🔥 lưu mô tả thêm
+    //         if (!empty($schedule_extra[$key])) {
+
+    //             foreach ($schedule_extra[$key] as $num => $mota) {
+
+    //                 $mota = trim($mota);
+    //                 if ($mota == '') {
+    //                     continue;
+    //                 }
+
+    //                 $GLOBALS['sp']->Execute(
+    //                     "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
+    //                     (lichtrinh_id, mota)
+    //                     VALUES (?, ?)",
+    //                     [$lichtrinh_id, $mota]
+    //                 );
+
+    //             }
+
+    //         }
+
+    //     }
+
+    // }
     if (!empty($schedule_time)) {
 
         foreach ($schedule_time as $key => $time_lichtrinh) {
 
             $time_lichtrinh = trim($time_lichtrinh);
-            $content_lichtrinh = isset($schedule_content[$key]) ? $schedule_content[$key] : '';
+
+            $content_lichtrinh =
+                isset($schedule_content[$key])
+                ? $schedule_content[$key]
+                : '';
 
             if ($time_lichtrinh === '') {
                 continue;
             }
 
-            // lưu lịch trình
+            $sort =
+                isset($schedule_sort[$key])
+                ? (int)$schedule_sort[$key]
+                : ($key + 1);
+
+            // insert lịch trình
             $GLOBALS['sp']->Execute(
                 "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh
-                (articlelist_id, name, content, languageid)
-                VALUES (?, ?, ?, ?)",
-                [$id, $time_lichtrinh, $content_lichtrinh, 1]
+                (
+                    articlelist_id,
+                    name,
+                    content,
+                    languageid,
+                    sort_order
+                )
+                VALUES (?, ?, ?, ?, ?)",
+                [
+                    $id,
+                    $time_lichtrinh,
+                    $content_lichtrinh,
+                    1,
+                    $sort
+                ]
             );
 
             $lichtrinh_id = $GLOBALS['sp']->Insert_ID();
 
-            // 🔥 lưu mô tả thêm
-            if (!empty($schedule_extra[$key])) {
+            // lấy extra theo key hiện tại
+            $extras =
+                isset($schedule_extra[$key])
+                ? $schedule_extra[$key]
+                : [];
 
-                foreach ($schedule_extra[$key] as $num => $mota) {
+            foreach ($extras as $mota) {
 
-                    $mota = trim($mota);
-                    if ($mota == '') {
-                        continue;
-                    }
+                $mota = trim($mota);
 
-                    $GLOBALS['sp']->Execute(
-                        "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
-                        (lichtrinh_id, mota)
-                        VALUES (?, ?)",
-                        [$lichtrinh_id, $mota]
-                    );
-
+                if ($mota === '') {
+                    continue;
                 }
 
+                $GLOBALS['sp']->Execute(
+                    "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_mota
+                    (
+                        lichtrinh_id,
+                        mota
+                    )
+                    VALUES (?, ?)",
+                    [
+                        $lichtrinh_id,
+                        $mota
+                    ]
+                );
             }
-
         }
-
     }
     // ============================
-    // 💾 LƯU DANH SÁCH LỊCH TRÌNH] qua đêm
+    // 💾 LƯU DANH SÁCH LỊCH TRÌNH QUA ĐÊM
     // ============================
 
-    $schedule_time_more    = isset($_POST['schedule_name_more']) ? $_POST['schedule_name_more'] : [];
-    $schedule_content_more = isset($_POST['schedule_content_more']) ? $_POST['schedule_content_more'] : [];
-    $day_content           = isset($_POST['day_content']) ? $_POST['day_content'] : [];
+    $schedule_time_more    = isset($_POST['schedule_name_more'])
+    ? $_POST['schedule_name_more']
+    : [];
+
+    $schedule_content_more = isset($_POST['schedule_content_more'])
+    ? $_POST['schedule_content_more']
+    : [];
+
+    $schedule_sort_more = isset($_POST['schedule_sort_more'])
+    ? $_POST['schedule_sort_more']
+    : [];
+
+    $day_content = isset($_POST['day_content'])
+    ? $_POST['day_content']
+    : [];
 
     $GLOBALS['sp']->Execute(
-        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem WHERE articlelist_id = ?",
+        "DELETE FROM {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
+    WHERE articlelist_id = ?",
         [$id]
     );
 
     foreach ($schedule_time_more as $day => $names) {
 
-        $content_day = isset($day_content[$day]) ? trim($day_content[$day]) : '';
+        $content_day = isset($day_content[$day])
+            ? trim($day_content[$day])
+            : '';
 
         foreach ($names as $key => $name) {
 
@@ -1687,15 +1774,35 @@ function saveArticle()
                 ? trim($schedule_content_more[$day][$key])
                 : '';
 
+            $sort_order = isset($schedule_sort_more[$day][$key])
+                ? (int)$schedule_sort_more[$day][$key]
+                : ($key + 1);
+
             if ($name == '' && $content == '' && $content_day == '') {
                 continue;
             }
 
             $GLOBALS['sp']->Execute(
                 "INSERT INTO {$GLOBALS['db_sp']}.articlelist_lichtrinh_quadem
-                (articlelist_id, day, day_content, name, content, languageid)
-                VALUES (?, ?, ?, ?, ?, ?)",
-                [$id, $day, $content_day, $name, $content, 1]
+        (
+            articlelist_id,
+            day,
+            day_content,
+            name,
+            content,
+            sort_order,
+            languageid
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [
+                    $id,
+                    $day,
+                    $content_day,
+                    $name,
+                    $content,
+                    $sort_order,
+                    1
+                ]
             );
         }
     }

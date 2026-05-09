@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.30, created on 2026-04-09 08:24:12
+<?php /* Smarty version 2.6.30, created on 2026-05-09 10:08:10
          compiled from articlelist/edit.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'replace', 'articlelist/edit.tpl', 389, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 447, false),array('modifier', 'default', 'articlelist/edit.tpl', 485, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 504, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count', 'articlelist/edit.tpl', 25, false),array('modifier', 'escape', 'articlelist/edit.tpl', 44, false),array('modifier', 'default', 'articlelist/edit.tpl', 102, false),array('modifier', 'replace', 'articlelist/edit.tpl', 436, false),array('modifier', 'is_array', 'articlelist/edit.tpl', 494, false),array('modifier', 'number_format', 'articlelist/edit.tpl', 551, false),)), $this); ?>
 <div class="contentmain">
   <div class="main">
     <div class="left_sidebar padding10">
@@ -125,35 +125,68 @@ if ($this->_foreach['loop']['total'] > 0):
                     <?php $_from = $this->_tpl_vars['lichtrinhtrongngay']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['k'] => $this->_tpl_vars['schedule']):
 ?>
-                    <div class="schedule-item" data-index="<?php echo $this->_tpl_vars['k']; ?>
+
+                    <div class="schedule-item">
+
+                      <div class="schedule-top">
+                        <span class="drag-handle">↕</span>
+
+                        <button type="button" class="remove-schedule btn-del-more">
+                          Xoá
+                        </button>
+                      </div>
+
+                      <input type="hidden" class="schedule-id" name="schedule_id[]" value="<?php echo $this->_tpl_vars['schedule']['id']; ?>
 ">
-                      <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+
+                      <input type="hidden" name="schedule_sort[]" class="schedule-sort"
+                        value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['schedule']['sort_order'])) ? $this->_run_mod_handler('default', true, $_tmp, @$this->_tpl_vars['k']+1) : smarty_modifier_default($_tmp, @$this->_tpl_vars['k']+1)); ?>
+">
+
                       <input type="text" class="more-input" name="schedule_time[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['schedule']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
 "
                         placeholder="Thời gian">
+
                       <input type="text" class="more-input" name="schedule_content[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['schedule']['content'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
 "
                         placeholder="Nội dung">
+
                       <div class="extra-content-list">
+
                         <?php $_from = $this->_tpl_vars['schedule']['extra']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
-    foreach ($_from as $this->_tpl_vars['extra']):
+    foreach ($_from as $this->_tpl_vars['ek'] => $this->_tpl_vars['extra']):
 ?>
+
+                        <?php $this->assign('editorId', "extra_editor_".($this->_tpl_vars['schedule']['id'])."_".($this->_tpl_vars['ek'])); ?>
+
                         <div class="extra-item">
-                          <textarea class="extra-editor" name="schedule_extra_content[<?php echo $this->_tpl_vars['k']; ?>
+
+                          <textarea id="<?php echo $this->_tpl_vars['editorId']; ?>
+" class="extra-editor" name="schedule_extra_content[<?php echo $this->_tpl_vars['k']; ?>
 ][]"
                             rows="3"><?php echo ((is_array($_tmp=$this->_tpl_vars['extra'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
 </textarea>
-                          <button type="button" class="remove-extra">X</button>
+
+                          <button type="button" class="remove-extra">
+                            X
+                          </button>
+
                         </div>
+
                         <?php endforeach; endif; unset($_from); ?>
+
                       </div>
+
                       <button type="button" class="add-extra-content">
                         + Thêm nội dung (nếu có)
                       </button>
+
                     </div>
+
                     <?php endforeach; endif; unset($_from); ?>
                   </div>
                   <div id="dayList">
+
                     <?php $_from = $this->_tpl_vars['days']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['day'] => $this->_tpl_vars['data']):
 ?>
@@ -163,7 +196,10 @@ if ($this->_foreach['loop']['total'] > 0):
                       <div class="day-header">
                         <strong>Ngày <?php echo $this->_tpl_vars['day']; ?>
 </strong>
-                        <button type="button" class="remove-day">Xoá ngày</button>
+
+                        <button type="button" class="remove-day btn-del-more">
+                          Xoá ngày
+                        </button>
                       </div>
 
                       <input type="text" class="more-input" name="day_content[<?php echo $this->_tpl_vars['day']; ?>
@@ -179,17 +215,28 @@ if ($this->_foreach['loop']['total'] > 0):
 
                         <div class="schedule-item">
 
-                          <button type="button" class="remove-schedule btn-del-more">Xoá</button>
+                          <div class="schedule-top">
+
+                            <span class="drag-handle">↕</span>
+
+                            <button type="button" class="remove-schedule-more btn-del-more">
+                              Xoá
+                            </button>
+
+                          </div>
+
+                          <input type="hidden" class="schedule-sort-more" name="schedule_sort_more[<?php echo $this->_tpl_vars['day']; ?>
+][]"
+                            value="<?php echo ((is_array($_tmp=@$this->_tpl_vars['row']['sort_order'])) ? $this->_run_mod_handler('default', true, $_tmp, @$this->_tpl_vars['i']+1) : smarty_modifier_default($_tmp, @$this->_tpl_vars['i']+1)); ?>
+">
 
                           <input type="text" class="more-input" name="schedule_name_more[<?php echo $this->_tpl_vars['day']; ?>
-][<?php echo $this->_tpl_vars['i']; ?>
-]"
+][]"
                             value="<?php echo ((is_array($_tmp=$this->_tpl_vars['row']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
 " placeholder="Tên">
 
                           <input type="text" class="more-input" name="schedule_content_more[<?php echo $this->_tpl_vars['day']; ?>
-][<?php echo $this->_tpl_vars['i']; ?>
-]"
+][]"
                             value="<?php echo ((is_array($_tmp=$this->_tpl_vars['row']['content'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
 " placeholder="Nội dung">
 
@@ -205,7 +252,9 @@ if ($this->_foreach['loop']['total'] > 0):
                       </button>
 
                     </div>
+
                     <?php endforeach; endif; unset($_from); ?>
+
                   </div>
                 </div>
                 <div id="addScheduleBtn" class="brn-add-more">+ Thêm lịch trình (trong ngày)</div>
